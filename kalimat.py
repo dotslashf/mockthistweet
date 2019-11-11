@@ -1,5 +1,3 @@
-from PIL import I
-
 class Kalimat:
     def __init__(self, kalimat):
         self.kalimat = kalimat
@@ -16,8 +14,3 @@ class Kalimat:
                 kataJadi += huruf
         self.kalimat = kataJadi
         return self.kalimat
-
-
-k = Kalimat('Ya kalau lu belajar budaya yg serius lah, bercandain tarian mana itu bagian dari budaya suatu kelompok masyarakat, lu bercandain kaya gitu. belajar ada pakem-pakemnya. masih juga lu belain? hadeh')
-k.transform()
-print(k.kalimat)
