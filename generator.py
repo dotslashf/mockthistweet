@@ -80,9 +80,9 @@ def drawText(text, pos):
 
     print(lines)
 
-    lastY = -h
+    lastY = -h + 25
     if pos == "bottom":
-        lastY = img.height - h * (lineCount+1) - 10
+        lastY = img.height - h * (lineCount+1) - 25
 
     for i in range(0, lineCount):
         w, h = draw.textsize(lines[i], font)
