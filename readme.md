@@ -5,11 +5,12 @@ you hate someone tweet? let this bot mock it for you, simply reply the tweet tha
 ### Example
 
 ```
-hated tweet: Dear Diary,
+hated tweet: Sudah 3x Dejavu hari ini
 
-mocked tweet: dEaR DiArY + meme of spongebob
-![spongebob meme](https://i.ibb.co/t3fkHmy/meme-final.png)
+mocked tweet: sUdAh 3X DeJaVu hArI InI
 ```
+
+![spongebob meme](https://i.ibb.co/t3fkHmy/meme-final.png)
 
 ### Built With
 
