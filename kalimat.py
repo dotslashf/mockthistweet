@@ -23,6 +23,7 @@ class Kalimat:
             for i, char in enumerate(word):
                 for ec in excludedChars:  # remove unnecessary char
                     char = char.replace(ec, '')
+                char = char.lower()
                 finalText += char
         self.sentence = finalText
         return self.sentence
