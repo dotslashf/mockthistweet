@@ -45,11 +45,11 @@ while True:
     last_id = loadData(FILE_LAST_ID)
     last_id = int(last_id[-1])
     since_id = getMentionTweet(triggeringWords, last_id)
-    print(since_id, last_id)
+    print("newest tweet: ", since_id, "oldest tweet: ", last_id)
     if (last_id != since_id):
         writeData(FILE_LAST_ID, str(since_id))
     else:
-        print('not posting and writing')
+        print('no new mention')
     for sec in range(300, 0, -1):
         sys.stdout.write("\r")
         sys.stdout.write("{:2d} second to check mention.\r".format(sec))
