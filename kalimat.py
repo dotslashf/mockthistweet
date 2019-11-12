@@ -9,11 +9,15 @@ class Kalimat:
     def removeWords(self):
         finalText = ''
         excludedChars = [',', '.', '!', '?']
-        excludedWords = ['2beer', 'mksfess']
+        excludedWords = ['2beer', 'mksfess', '[askmf]']
         words = [i for j in self.sentence.split() for i in (j, ' ')][:-1]
+
         for i, word in enumerate(words):
-            if word[0] == '@':
+            if word[0] == '@':  # remove the username
                 word = word.replace(word, '')
+            if word[0:4] == 'http':  # remove link
+                word = word.replace(word, '')
+
             for ew in excludedWords:  # remove unnecassary words
                 word = word.replace(ew, '')
             for i, char in enumerate(word):

@@ -97,3 +97,4 @@ def drawText(topText, bottomText, memeLocation):
 
     splitLines(topText, img, draw, "top")
     splitLines(bottomText, img, draw, "bottom")
+    print('-------------------------------------')
