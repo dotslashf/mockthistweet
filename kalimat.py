@@ -3,12 +3,12 @@ class Kalimat:
         self.sentence = sentence
 
     def getSentence(self):
-        return self.sentence
+        text = self.removeWords()
+        return text
 
-    def transform(self):
+    def removeWords(self):
         finalText = ''
         excludedChars = [',', '.', '!', '?']
-        excludedChars = ''
         excludedWords = ['2beer', 'mksfess']
         words = [i for j in self.sentence.split() for i in (j, ' ')][:-1]
         for i, word in enumerate(words):
@@ -19,15 +19,23 @@ class Kalimat:
             for i, char in enumerate(word):
                 for ec in excludedChars:  # remove unnecessary char
                     char = char.replace(ec, '')
-                if char.isupper():  # make char all lowercase
-                    char = char.lower()
-                if i % 2 != 0:  # transform text based on meme
-                    char = char.upper()
+                finalText += char
+        self.sentence = finalText
+        return self.sentence
+
+    def transform(self):
+        finalText = ''
+        text = self.removeWords()
+        for i, char in enumerate(text):
+            if i % 2 != 0:
+                char = char.replace(char, char.upper())
+                finalText += char
+            else:
                 finalText += char
         self.sentence = finalText
         return self.sentence
 
 
-# k = Kalimat("@asssaa asdasd asdsad asdsa zzz ")
+# k = Kalimat("heh gaboleh gitu tapi bener, juga sih haha norak")
 # k.transform()
 # print(k.sentence)
