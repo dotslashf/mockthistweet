@@ -12,6 +12,8 @@ class Kalimat:
         excludedWords = ['2beer', 'mksfess']
         words = [i for j in self.sentence.split() for i in (j, ' ')][:-1]
         for i, word in enumerate(words):
+            if word[0] == '@':
+                word = word.replace(word, '')
             for ew in excludedWords:  # remove unnecassary words
                 word = word.replace(ew, '')
             for i, char in enumerate(word):
@@ -24,3 +26,8 @@ class Kalimat:
                 finalText += char
         self.sentence = finalText
         return self.sentence
+
+
+# k = Kalimat("@asssaa asdasd asdsad asdsa zzz ")
+# k.transform()
+# print(k.sentence)
