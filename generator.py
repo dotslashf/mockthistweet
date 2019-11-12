@@ -3,14 +3,12 @@ from PIL import ImageFont
 from PIL import ImageDraw
 
 # importing image
-img = Image.open("img/meme_squared.png")
-draw = ImageDraw.Draw(img)
+# img = Image.open("img/meme_squared.png")
+# draw = ImageDraw.Draw(img)
 font = ImageFont.truetype("impact.ttf", 42)
 
 # draw the text and outline
-
-
-def drawTextOutline(text, x, y):
+def drawTextOutline(text, x, y, draw):
     draw.text((x-2, y-2), text, (0, 0, 0), font=font)
     draw.text((x+2, y-2), text, (0, 0, 0), font=font)
     draw.text((x+2, y+2), text, (0, 0, 0), font=font)
@@ -18,12 +16,8 @@ def drawTextOutline(text, x, y):
     draw.text((x, y), text, (255, 255, 255), font=font)
     return
 
-# draw text
-
-
-def drawText(text, pos):
+def splitLines(text, img, draw, pos):
     w, h = draw.textsize(text, font)  # measure the size the text will take
-
     lineCount = 1
     if w > img.width:
         lineCount = int(round((w / img.width) + 1))
@@ -80,15 +74,26 @@ def drawText(text, pos):
 
     print(lines)
 
-    lastY = -h + 25
-    if pos == "bottom":
+    if pos == "top":
+        lastY = -h + 25
+    elif pos == "bottom":
         lastY = img.height - h * (lineCount+1) - 25
+
 
     for i in range(0, lineCount):
         w, h = draw.textsize(lines[i], font)
         x = img.width/2 - w/2
         y = lastY + h
-        drawTextOutline(lines[i], x, y)
+        drawTextOutline(lines[i], x, y, draw)
         lastY = y
 
     img.save("img/meme_final.png")
+
+
+# draw text
+def drawText(topText, bottomText, memeLocation):
+    img = Image.open(memeLocation)
+    draw = ImageDraw.Draw(img)
+
+    splitLines(topText, img, draw, "top")
+    splitLines(bottomText, img, draw, "bottom")
