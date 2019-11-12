@@ -1,3 +1,4 @@
 __pycache__
 .env
 img/
+text/last_id.txt
