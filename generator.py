@@ -1,10 +1,8 @@
 from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw
+from kalimat import Kalimat
 
-# importing image
-# img = Image.open("img/meme_squared.png")
-# draw = ImageDraw.Draw(img)
 font = ImageFont.truetype("impact.ttf", 42)
 
 # draw the text and outline
@@ -87,14 +85,19 @@ def splitLines(text, img, draw, pos):
         drawTextOutline(lines[i], x, y, draw)
         lastY = y
 
-    img.save("img/meme_final.png")
+    img.save("img/meme_new_format.png")
 
 
 # draw text
-def drawText(topText, bottomText, memeLocation):
+def drawText(bottomText, memeLocation):
     img = Image.open(memeLocation)
     draw = ImageDraw.Draw(img)
 
-    splitLines(topText, img, draw, "top")
     splitLines(bottomText, img, draw, "bottom")
     print('-------------------------------------')
+
+
+# k = Kalimat(
+#     "coba dulu ini deh ya semoga bisa dong hehe coba dulu ini deh ya semoga bisa dong hehe")
+# text = k.transform()
+# drawText(text, "img/meme_new_2.png")
