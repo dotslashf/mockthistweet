@@ -9,8 +9,8 @@ from load import loadData, writeData
 
 auth = authentication()
 
-fileMeme = 'img/meme_final.png'
-fileMemeOriginal = 'img/meme_squared.png'
+fileMeme = 'img/meme_new_format.png'
+fileMemeOriginal = 'img/meme_new.png'
 triggeringWords = ["please", "pliisi"]
 
 FILE_LAST_ID = os.getenv("FILE_LAST_ID")
@@ -37,9 +37,8 @@ def getMentionTweet(keywords, since_id):
             elif tw == "please" in words:
                 tweet_target = api.get_status(tweet.in_reply_to_status_id)
                 k = Kalimat(tweet_target.text)
-                textNormal = k.getSentence()
                 textTransformed = k.transform()
-                drawText(textNormal, textTransformed, fileMemeOriginal)
+                drawText(textTransformed, fileMemeOriginal)
                 time.sleep(15)
                 api.update_with_media(
                     fileMeme,
@@ -49,6 +48,7 @@ def getMentionTweet(keywords, since_id):
                 print("tweeted: ", textTransformed)
 
     return new_since_id
+
 
 while True:
     last_id = loadData(FILE_LAST_ID)
