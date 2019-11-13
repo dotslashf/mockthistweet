@@ -10,10 +10,9 @@ from load import loadData, writeData
 auth = authentication()
 
 fileMeme = 'img/meme_final.png'
-triggeringWords = ["please", "mock", "pls"]
+triggeringWords = ["please", "pliisi"]
 
 FILE_LAST_ID = os.getenv("FILE_LAST_ID")
-
 
 def getMentionTweet(keywords, since_id):
     api = tweepy.API(auth)
@@ -25,12 +24,20 @@ def getMentionTweet(keywords, since_id):
         words = tweet.text.split()
 
         for tw in triggeringWords:
-            if tw in words:
+            if tw == "pliisi" in words:
+                tweet_target = api.get_status(tweet.in_reply_to_status_id)
+                k = Kalimat(tweet_target.text)
+                textTrinsfirmid = k.trinsfirm()
+                api.update_status(status=textTrinsfirmid, in_reply_to_status_id=tweet.id,
+                                  auto_populate_reply_metadata=True)
+                print("tweeted: ", textTrinsfirmid)
+                time.sleep(15)
+            elif tw == "please" in words:
                 tweet_target = api.get_status(tweet.in_reply_to_status_id)
                 k = Kalimat(tweet_target.text)
                 textNormal = k.getSentence()
                 textTransformed = k.transform()
-                drawText(textNormal, textTransformed, "img/meme_squared.png")
+                drawText(textNormal, textTransformed, fileMeme)
                 time.sleep(15)
                 api.update_with_media(
                     fileMeme,
@@ -55,3 +62,8 @@ while True:
         sys.stdout.write("{:2d} second to check mention.\r".format(sec))
         sys.stdout.flush()
         time.sleep(1)
+
+# Testing purpose
+# last_id = loadData(FILE_LAST_ID)
+# last_id = int(last_id[-1])
+# print(getMentionTweet(triggeringWords, 1194499648083226626))
