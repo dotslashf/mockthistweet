@@ -1,16 +1,18 @@
 # MOCK THAT TWEET
 
-you hate someone tweet? let this bot mock it for you, simply reply the tweet that you hate and tagging me + "please" and ill mock that tweet with spongebob meme.
+you hate someone tweet? let this bot mock it for you, simply reply the tweet that you hate and tag me + "please" and ill mock that tweet with spongebob meme, or + "pliisi" and see the different.
 
 ### Example
 
 ```
-hated tweet: Sudah 3x Dejavu hari ini
+hated tweet: khusus yg headernya quotes raden raup nga bole ketawa😠
 
-mocked tweet: sUdAh 3X DeJaVu hArI InI
+mocked tweet: KhUsUs yG HeAdErNyA QuOtEs rAdEn rAuP NgA BoLe kEtAwA😠
+
+mickid twiit: khisis yg hiidirnyi qiitis ridin riip ngi bili kitiwi😠
 ```
 
-![spongebob meme](https://i.ibb.co/t3fkHmy/meme-final.png)
+![spongebob meme](https://i.ibb.co/VSwyfFK/meme-new-format.png)
 
 ### Built With
 
