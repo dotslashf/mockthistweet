@@ -34,7 +34,7 @@ def getMentionTweet(keywords, since_id):
     for tweet in tweepy.Cursor(api.mentions_timeline, since_id=since_id).items():
         new_since_id = max(tweet.id, new_since_id)
 
-        words = tweet.text.split()
+        words = tweet.text.lower().split()
 
         for tw in triggeringWords:
             if tw == "pliisi" in words:
