@@ -41,6 +41,7 @@ def getMentionTweet(keywords, since_id):
                 follower_status = api.show_friendship(source_id=my_bot_id,
                                                       target_id=tweet.user.id)
                 if (follower_status[0].followed_by):
+                    api.create_friendship(id=tweet.user.id)  # follow the user
                     if my_user_id == tweet.in_reply_to_user_id or my_bot_id == tweet.in_reply_to_user_id:
                         dontMockYouselfAndMe(api, youdontmockme, tweet.id)
                     else:
@@ -66,6 +67,7 @@ def getMentionTweet(keywords, since_id):
                                                       target_id=tweet.user.id)
                 # get status, false = tidak follow, true = follower
                 if (follower_status[0].followed_by):
+                    api.create_friendship(id=tweet.user.id)  # follow the user
                     if my_user_id == tweet.in_reply_to_user_id or my_bot_id == tweet.in_reply_to_user_id:
                         dontMockYouselfAndMe(api, youdontmockme, tweet.id)
                     else:
