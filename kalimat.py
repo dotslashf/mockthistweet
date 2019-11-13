@@ -40,7 +40,20 @@ class Kalimat:
         self.sentence = finalText
         return self.sentence
 
+    def trinsfirm(self):
+        finalText = ''
+        text = self.removeWords()
+        consonant = ['a', 'u', 'e', 'o']
+        for char in text:
+            if char in consonant:
+                char = char.replace(char, 'i')
+                finalText += char
+            else:
+                finalText += char
+        self.sentence = finalText
+        return self.sentence
 
+# Testing purpose
 # k = Kalimat("heh gaboleh gitu tapi bener, juga sih haha norak")
-# k.transform()
+# k.trinsfirm()
 # print(k.sentence)
