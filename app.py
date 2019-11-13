@@ -19,7 +19,7 @@ youdontmockme = "ye enak aja yang punya bot mau di mock, gak boleh kurang ajar. 
 FILE_LAST_ID = os.getenv("FILE_LAST_ID")
 
 
-def dontMockMe(api, tweet, tweet_id):  # dont mock the creator
+def dontMockYouselfAndMe(api, tweet, tweet_id):  # dont mock the creator
     api.update_status(status=tweet+str(tweet_id),
                       in_reply_to_status_id=tweet_id,
                       auto_populate_reply_metadata=True)
@@ -41,8 +41,8 @@ def getMentionTweet(keywords, since_id):
                 follower_status = api.show_friendship(source_id=my_bot_id,
                                                       target_id=tweet.user.id)
                 if (follower_status[0].followed_by):
-                    if my_user_id == tweet.in_reply_to_user_id:
-                        dontMockMe(api, youdontmockme, tweet.id)
+                    if my_user_id == tweet.in_reply_to_user_id or my_bot_id == tweet.in_reply_to_user_id:
+                        dontMockYouselfAndMe(api, youdontmockme, tweet.id)
                     else:
                         print('')
                         tweet_target = api.get_status(
@@ -66,8 +66,8 @@ def getMentionTweet(keywords, since_id):
                                                       target_id=tweet.user.id)
                 # get status, false = tidak follow, true = follower
                 if (follower_status[0].followed_by):
-                    if my_user_id == tweet.in_reply_to_user_id:
-                        dontMockMe(api, youdontmockme, tweet.id)
+                    if my_user_id == tweet.in_reply_to_user_id or my_bot_id == tweet.in_reply_to_user_id:
+                        dontMockYouselfAndMe(api, youdontmockme, tweet.id)
                     else:
                         print('')
                         tweet_target = api.get_status(
