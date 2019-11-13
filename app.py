@@ -46,9 +46,9 @@ def getMentionTweet(keywords, since_id):
                     status=textTransformed,
                     in_reply_to_status_id=tweet.id,
                     auto_populate_reply_metadata=True)
+                print("tweeted: ", textTransformed)
 
     return new_since_id
-
 
 while True:
     last_id = loadData(FILE_LAST_ID)
@@ -69,3 +69,9 @@ while True:
 # last_id = loadData(FILE_LAST_ID)
 # last_id = int(last_id[-1])
 # print(getMentionTweet(triggeringWords, 1194499648083226626))
+# api = tweepy.API(auth)
+
+# tweet_target = api.get_status(1194254123463393282)
+
+# for property, value in vars(tweet_target).items():
+#     print (property, ": ", value)
