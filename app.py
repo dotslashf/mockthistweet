@@ -2,6 +2,7 @@ import sys
 import tweepy
 import time
 import os
+import random
 from kalimat import Kalimat
 from generator import drawText
 from auth import authentication
@@ -14,13 +15,13 @@ fileMemeOriginal = 'img/meme_new.png'
 triggeringWords = ["please", "pliisi"]
 my_user_id = 1012117785512558592
 my_bot_id = 1157825461277167616
-youdontmockme = "ye enak aja yang punya bot mau di mock, gak boleh kurang ajar. "
+youdontmockme = "ye enak aja yang punya bot mau di mock, gak boleh kurang ajar. unique id: "
 
 FILE_LAST_ID = os.getenv("FILE_LAST_ID")
 
 
 def dontMockYouselfAndMe(api, tweet, tweet_id):  # dont mock the creator
-    api.update_status(status=tweet+str(tweet_id),
+    api.update_status(status=tweet+str(random.randint(0, 1000)),
                       in_reply_to_status_id=tweet_id,
                       auto_populate_reply_metadata=True)
     print("tweeted: ", tweet)
@@ -36,61 +37,63 @@ def getMentionTweet(keywords, since_id):
 
         words = tweet.text.lower().split()
 
-        for tw in triggeringWords:
-            if tw == "pliisi" in words:
-                follower_status = api.show_friendship(source_id=my_bot_id,
-                                                      target_id=tweet.user.id)
-                if (follower_status[0].followed_by):
-                    api.create_friendship(id=tweet.user.id)  # follow the user
-                    if my_user_id == tweet.in_reply_to_user_id or my_bot_id == tweet.in_reply_to_user_id:
-                        dontMockYouselfAndMe(api, youdontmockme, tweet.id)
+        try:
+            for tw in triggeringWords:
+                if tw == "pliisi" in words:
+                    follower_status = api.show_friendship(source_id=my_bot_id,
+                                                        target_id=tweet.user.id)
+                    if (follower_status[0].followed_by):
+                        api.create_friendship(id=tweet.user.id)  # follow the user
+                        if my_user_id == tweet.in_reply_to_user_id or my_bot_id == tweet.in_reply_to_user_id:
+                            dontMockYouselfAndMe(api, youdontmockme, tweet.id)
+                        else:
+                            tweet_target = api.get_status(
+                                tweet.in_reply_to_status_id)
+                            k = Kalimat(tweet_target.text)
+                            textTrinsfirmid = k.trinsfirm()
+                            api.update_status(status=textTrinsfirmid,
+                                            in_reply_to_status_id=tweet.id,
+                                            auto_populate_reply_metadata=True)
+                            print("tweeted: ", textTrinsfirmid)
+                            time.sleep(15)
                     else:
-                        print('')
-                        tweet_target = api.get_status(
-                            tweet.in_reply_to_status_id)
-                        k = Kalimat(tweet_target.text)
-                        textTrinsfirmid = k.trinsfirm()
-                        api.update_status(status=textTrinsfirmid,
-                                          in_reply_to_status_id=tweet.id,
-                                          auto_populate_reply_metadata=True)
-                        print("tweeted: ", textTrinsfirmid)
-                        time.sleep(15)
-                else:
-                    api.update_status(status="Follow dulu dong, nih gue follow duluan, tapi follback ya",
-                                      in_reply_to_status_id=tweet.id,
-                                      auto_populate_reply_metadata=True)
-                    api.create_friendship(id=tweet.user.id)  # follow the user
-                    print("user: ", tweet.user.name, " followed")
+                        api.update_status(status="Follow dulu dong, nih gue follow duluan, tapi follback ya",
+                                        in_reply_to_status_id=tweet.id,
+                                        auto_populate_reply_metadata=True)
+                        api.create_friendship(id=tweet.user.id)  # follow the user
+                        print("user: ", tweet.user.name, " followed")
 
-            elif tw == "please" in words:
-                follower_status = api.show_friendship(source_id=my_bot_id,
-                                                      target_id=tweet.user.id)
-                # get status, false = tidak follow, true = follower
-                if (follower_status[0].followed_by):
-                    api.create_friendship(id=tweet.user.id)  # follow the user
-                    if my_user_id == tweet.in_reply_to_user_id or my_bot_id == tweet.in_reply_to_user_id:
-                        dontMockYouselfAndMe(api, youdontmockme, tweet.id)
+                elif tw == "please" in words:
+                    follower_status = api.show_friendship(source_id=my_bot_id,
+                                                        target_id=tweet.user.id)
+                    # get status, false = tidak follow, true = follower
+                    if (follower_status[0].followed_by):
+                        api.create_friendship(id=tweet.user.id)  # follow the user
+                        if my_user_id == tweet.in_reply_to_user_id or my_bot_id == tweet.in_reply_to_user_id:
+                            dontMockYouselfAndMe(api, youdontmockme, tweet.id)
+                        else:
+                            tweet_target = api.get_status(
+                                tweet.in_reply_to_status_id)
+                            k = Kalimat(tweet_target.text)
+                            textTransformed = k.transform()
+                            drawText(textTransformed, fileMemeOriginal)
+                            time.sleep(15)
+                            api.update_with_media(
+                                fileMeme,
+                                status=textTransformed,
+                                in_reply_to_status_id=tweet.id,
+                                auto_populate_reply_metadata=True)
+                            print("tweeted: ", textTransformed)
                     else:
-                        print('')
-                        tweet_target = api.get_status(
-                            tweet.in_reply_to_status_id)
-                        k = Kalimat(tweet_target.text)
-                        textTransformed = k.transform()
-                        drawText(textTransformed, fileMemeOriginal)
-                        time.sleep(15)
-                        api.update_with_media(
-                            fileMeme,
-                            status=textTransformed,
-                            in_reply_to_status_id=tweet.id,
-                            auto_populate_reply_metadata=True)
-                        print("tweeted: ", textTransformed)
-                else:
-                    api.update_status(status="Follow dulu dong, nih gue follow duluan, tapi follback ya",
-                                      in_reply_to_status_id=tweet.id,
-                                      auto_populate_reply_metadata=True)
-                    api.create_friendship(id=tweet.user.id)  # follow the user
-                    print("user: ", tweet.user.name, " followed")
-
+                        api.update_status(status="Follow dulu dong, nih gue follow duluan, tapi follback ya",
+                                        in_reply_to_status_id=tweet.id,
+                                        auto_populate_reply_metadata=True)
+                        api.create_friendship(id=tweet.user.id)  # follow the user
+                        print("user: ", tweet.user.name, " followed")
+        except Exception as e:
+            print(e)
+            return new_since_id
+            
     return new_since_id
 
 
@@ -103,7 +106,7 @@ while True:
         writeData(FILE_LAST_ID, str(since_id))
     else:
         print('no new mention')
-    for sec in range(300, 0, -1):
+    for sec in range(90, 0, -1):
         sys.stdout.write("\r")
         sys.stdout.write("{:2d} second to check mention.\r".format(sec))
         sys.stdout.flush()
@@ -112,7 +115,7 @@ while True:
 # Testing purpose
 # last_id = loadData(FILE_LAST_ID)
 # last_id = int(last_id[-1])
-# print(getMentionTweet(triggeringWords, 1194663906595131393))
+# print(getMentionTweet(triggeringWords, 1194701185317343232))
 # api = tweepy.API(auth)
 
 # for property, value in vars(tweet_target).items():
