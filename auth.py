@@ -16,6 +16,9 @@ def authentication():
     auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
     return auth
 
-# api = authentication()
 
-# print(api.get_username())
+# auth = authentication()
+# api = tweepy.API(auth)
+
+# for tweet in tweepy.Cursor(api.mentions_timeline, since_id=1194930186497581057, tweet_mode="extended").items():
+#     print(tweet.full_text)
