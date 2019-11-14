@@ -96,6 +96,9 @@ def getMentionTweet(keywords, since_id):
 
         except Exception as e:
             print(e)
+            api.update_status(status="error: "+str(e),
+                                in_reply_to_status_id=tweet.id,
+                                auto_populate_reply_metadata=True)
             return new_since_id
             
     return new_since_id
