@@ -95,11 +95,16 @@ def getMentionTweet(keywords, since_id):
                         followDuluDong(api, followdulu, tweet)
 
         except Exception as e:
-            print(e)
-            api.update_status(status="error: "+str(e),
-                                in_reply_to_status_id=tweet.id,
-                                auto_populate_reply_metadata=True)
-            return new_since_id
+            error = str(e).split()
+            print(error)
+            for e in error:
+                if e == '179,':
+                    tweet_err = "akunnya ke kunci, gimana caranya gue mock hAdEh"
+                    api.update_status(status=tweet_err,
+                                        in_reply_to_status_id=tweet.id,
+                                        auto_populate_reply_metadata=True)
+                    print(tweet_err)
+            continue
             
     return new_since_id
 
