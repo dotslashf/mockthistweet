@@ -15,27 +15,29 @@ fileMemeOriginal = 'img/meme_new.png'
 triggeringWords = ["please", "pliisi"]
 my_user_id = 1012117785512558592
 my_bot_id = 1157825461277167616
-youdontmockme = "ye enak aja yang punya bot mau di mock, gak boleh kurang ajar. unique id: "
-followdulu = "Follow dulu dong kak, ini aku follow kakak deh. "
+dontmockme_text = ["ye enak aja yang punya bot mau di mock, unique id: ", "ya masa gue ngemock diri gue sendiri ya nggalah, unique id: "]
+followDulu_text = "Follow dulu dong kak. "
 
 FILE_LAST_ID = os.getenv("FILE_LAST_ID")
 
 
-def dontMockYouselfAndMe(api, tweet, tweet_id):  # dont mock the creator
-    api.update_status(status=tweet+str(random.randint(0, 1000)),
-                      in_reply_to_status_id=tweet_id,
-                      auto_populate_reply_metadata=True)
-    print("tweeted: ", tweet)
-    time.sleep(5)
+def showWhatTweeted(tweet_text): #logger
+    print("#######################################################")
+    print("tweeted: ", tweet_text)
+    print("#######################################################")
+    time.sleep(2)
 
-def followDuluDong(api, my_tweet, tweet): # tweet when mentioned user is not follower
-    api.update_status(status=my_tweet,
+def dontMockYouselfAndMe(api, tweet_text, tweet):  # dont mock the creator
+    api.update_status(status=tweet_text+str(random.randint(0, 1000)),
+                      in_reply_to_status_id=tweet.id,
+                      auto_populate_reply_metadata=True)
+    showWhatTweeted(tweet_text)
+
+def followDuluDong(api, tweet_text, tweet): # tweet when mentioned user is not follower
+    api.update_status(status=tweet_text,
                     in_reply_to_status_id=tweet.id,
                     auto_populate_reply_metadata=True)
-    api.create_friendship(id=tweet.user.id)  # follow the user
-    print("tweeted: ", my_tweet)
-    print("user: ", tweet.user.name, " followed")
-    time.sleep(5)
+    showWhatTweeted(tweet_text)
 
 
 def getMentionTweet(keywords, since_id):
@@ -44,6 +46,7 @@ def getMentionTweet(keywords, since_id):
 
     for tweet in tweepy.Cursor(api.mentions_timeline, since_id=since_id, tweet_mode="extended").items():
         new_since_id = max(tweet.id, new_since_id)
+        print("current tweet id: ", tweet.id, "tweet: ", tweet.full_text)
 
         words = tweet.full_text.lower().split()
 
@@ -53,9 +56,12 @@ def getMentionTweet(keywords, since_id):
                     follower_status = api.show_friendship(source_id=my_bot_id,
                                                         target_id=tweet.user.id)
                     if (follower_status[0].followed_by):
-                        api.create_friendship(id=tweet.user.id)  # follow the user
-                        if my_user_id == tweet.in_reply_to_user_id or my_bot_id == tweet.in_reply_to_user_id:
-                            dontMockYouselfAndMe(api, youdontmockme, tweet.id)
+                        if my_user_id == tweet.in_reply_to_user_id:
+                            dontMockYouselfAndMe(
+                                api, dontmockme_text[0], tweet)
+                        elif my_bot_id == tweet.in_reply_to_user_id:
+                            dontMockYouselfAndMe(
+                                api, dontmockme_text[1], tweet)
                         else:
                             tweet_target = api.get_status(tweet.in_reply_to_status_id, 
                                                           tweet_mode="extended")
@@ -64,10 +70,10 @@ def getMentionTweet(keywords, since_id):
                             api.update_status(status=textTrinsfirmid,
                                             in_reply_to_status_id=tweet.id,
                                             auto_populate_reply_metadata=True)
-                            print("tweeted: ", textTrinsfirmid)
-                            time.sleep(15)
+                            showWhatTweeted(textTrinsfirmid)
+                            time.sleep(3)
                     else:
-                        followDuluDong(api, followdulu, tweet)
+                        followDuluDong(api, followDulu_text, tweet)
 
                 elif tw == "please" in words:
                     follower_status = api.show_friendship(source_id=my_bot_id,
@@ -75,28 +81,50 @@ def getMentionTweet(keywords, since_id):
 
                     # get status, false = tidak follow, true = follower
                     if (follower_status[0].followed_by):
-                        api.create_friendship(id=tweet.user.id)  # follow the user
-                        if my_user_id == tweet.in_reply_to_user_id or my_bot_id == tweet.in_reply_to_user_id:
-                            dontMockYouselfAndMe(api, youdontmockme, tweet.id)
+                        if my_user_id == tweet.in_reply_to_user_id:
+                            dontMockYouselfAndMe(api, dontmockme_text[0], tweet)
+                        elif my_bot_id == tweet.in_reply_to_user_id:
+                            dontMockYouselfAndMe(api, dontmockme_text[1], tweet)
                         else:
                             tweet_target = api.get_status(tweet.in_reply_to_status_id,
                                                           tweet_mode="extended")
                             k = Kalimat(tweet_target.full_text)
                             textTransformed = k.transform()
                             drawText(textTransformed, fileMemeOriginal)
-                            time.sleep(15)
+                            time.sleep(5)
                             api.update_with_media(
                                 fileMeme,
                                 status=textTransformed,
                                 in_reply_to_status_id=tweet.id,
                                 auto_populate_reply_metadata=True)
-                            print("tweeted: ", textTransformed)
+                            showWhatTweeted(textTransformed)
                     else:
-                        followDuluDong(api, followdulu, tweet)
+                        followDuluDong(api, followDulu_text, tweet)
 
-        except Exception as e:
-            print(e)
-            return new_since_id
+        except tweepy.TweepError as e:
+            error_code = e.api_code
+            errorPrivateAcc = 179
+            errorBlocked = 136
+            if errorPrivateAcc == error_code:
+                tweet_err = "akunnya ke kunci, gimana caranya gue mock hAdEh"
+                api.update_status(status=tweet_err,
+                                    in_reply_to_status_id=tweet.id,
+                                    auto_populate_reply_metadata=True)
+                showWhatTweeted(tweet_err)
+            elif errorBlocked == error_code:
+                tweet_err = "sayangnya gue diblock sama user yang mau lo mock, cari korban yang lain"
+                api.update_status(status=tweet_err,
+                                  in_reply_to_status_id=tweet.id,
+                                  auto_populate_reply_metadata=True)
+                showWhatTweeted(tweet_err)
+            else:
+                print(error_code)
+                tweet_err = "error code: "+str(error_code)
+                api.update_status(status=tweet_err,
+                                  in_reply_to_status_id=tweet.id,
+                                  auto_populate_reply_metadata=True)
+                showWhatTweeted(tweet_err)
+            continue
             
     return new_since_id
 

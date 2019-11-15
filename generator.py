@@ -15,6 +15,7 @@ def drawTextOutline(text, x, y, draw):
     return
 
 def splitLines(text, img, draw, pos):
+    print("------------------------------------------------")
     w, h = draw.textsize(text, font)  # measure the size the text will take
     lineCount = 1
     if w > img.width:
@@ -94,7 +95,7 @@ def drawText(bottomText, memeLocation):
     draw = ImageDraw.Draw(img)
 
     splitLines(bottomText, img, draw, "bottom")
-    print('-------------------------------------')
+    print("------------------------------------------------")
 
 
 # k = Kalimat(
