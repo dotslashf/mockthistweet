@@ -8,7 +8,7 @@ class Kalimat:
 
     def removeWords(self):
         finalText = ''
-        excludedChars = [',', '.', '!', '?']
+        excludedChars = [',', '.', '!', '?', '&', '-', '"']
         excludedWords = ['2beer!', 'mksfess', '[askmf]', '[cm]', '[gmf]', ]
         words = [i for j in self.sentence.split() for i in (j, ' ')][:-1]
 
