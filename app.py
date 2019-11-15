@@ -16,7 +16,7 @@ triggeringWords = ["please", "pliisi"]
 my_user_id = 1012117785512558592
 my_bot_id = 1157825461277167616
 dontmockme_text = ["ye enak aja yang punya bot mau di mock, unique id: ", "ya masa gue ngemock diri gue sendiri ya nggalah, unique id: "]
-followDulu_text = "Follow dulu dong kak, ini aku follow kakak deh. "
+followDulu_text = "Follow dulu dong kak. "
 
 FILE_LAST_ID = os.getenv("FILE_LAST_ID")
 
@@ -37,8 +37,6 @@ def followDuluDong(api, tweet_text, tweet): # tweet when mentioned user is not f
     api.update_status(status=tweet_text,
                     in_reply_to_status_id=tweet.id,
                     auto_populate_reply_metadata=True)
-    api.create_friendship(id=tweet.user.id)  # follow the user
-    print("user: ", tweet.user.name, " followed")
     showWhatTweeted(tweet_text)
 
 
@@ -48,6 +46,7 @@ def getMentionTweet(keywords, since_id):
 
     for tweet in tweepy.Cursor(api.mentions_timeline, since_id=since_id, tweet_mode="extended").items():
         new_since_id = max(tweet.id, new_since_id)
+        print("current tweet id: ", tweet.id, "tweet: ", tweet.full_text)
 
         words = tweet.full_text.lower().split()
 
@@ -57,7 +56,6 @@ def getMentionTweet(keywords, since_id):
                     follower_status = api.show_friendship(source_id=my_bot_id,
                                                         target_id=tweet.user.id)
                     if (follower_status[0].followed_by):
-                        api.create_friendship(id=tweet.user.id)  # follow the user
                         if my_user_id == tweet.in_reply_to_user_id:
                             dontMockYouselfAndMe(
                                 api, dontmockme_text[0], tweet)
@@ -83,7 +81,6 @@ def getMentionTweet(keywords, since_id):
 
                     # get status, false = tidak follow, true = follower
                     if (follower_status[0].followed_by):
-                        api.create_friendship(id=tweet.user.id)  # follow the user
                         if my_user_id == tweet.in_reply_to_user_id:
                             dontMockYouselfAndMe(api, dontmockme_text[0], tweet)
                         elif my_bot_id == tweet.in_reply_to_user_id:
@@ -106,14 +103,14 @@ def getMentionTweet(keywords, since_id):
 
         except Exception as e:
             error = str(e).split()
-            print(error)
-            for e in error:
-                if e == '179,':
-                    tweet_err = "akunnya ke kunci, gimana caranya gue mock hAdEh"
-                    api.update_status(status=tweet_err,
-                                        in_reply_to_status_id=tweet.id,
-                                        auto_populate_reply_metadata=True)
-                    showWhatTweeted(tweet_err)
+            errorPrivateAcc = '179,'
+            if errorPrivateAcc in error:
+                print(e)
+                tweet_err = "akunnya ke kunci, gimana caranya gue mock hAdEh"
+                api.update_status(status=tweet_err,
+                                    in_reply_to_status_id=tweet.id,
+                                    auto_populate_reply_metadata=True)
+                showWhatTweeted(tweet_err)
             continue
             
     return new_since_id
