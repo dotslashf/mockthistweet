@@ -15,7 +15,6 @@ triggeringWords = ["please", "pliisi"]
 
 FILE_LAST_ID = os.getenv("FILE_LAST_ID")
 
-
 def getMentionTweet(keywords, since_id):
     api = tweepy.API(auth)
     new_since_id = since_id
