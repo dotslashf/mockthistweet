@@ -101,15 +101,22 @@ def getMentionTweet(keywords, since_id):
                     else:
                         followDuluDong(api, followDulu_text, tweet)
 
-        except Exception as e:
-            error = str(e).split()
-            errorPrivateAcc = '179,'
-            if errorPrivateAcc in error:
-                print(e)
+        except tweepy.TweepError as e:
+            error_code = e.api_code
+            errorPrivateAcc = 179
+            if errorPrivateAcc == error_code:
+                print(error_code)
                 tweet_err = "akunnya ke kunci, gimana caranya gue mock hAdEh"
                 api.update_status(status=tweet_err,
                                     in_reply_to_status_id=tweet.id,
                                     auto_populate_reply_metadata=True)
+                showWhatTweeted(tweet_err)
+            else:
+                print(error_code)
+                tweet_err = "error code: "+str(error_code)
+                api.update_status(status=tweet_err,
+                                  in_reply_to_status_id=tweet.id,
+                                  auto_populate_reply_metadata=True)
                 showWhatTweeted(tweet_err)
             continue
             
