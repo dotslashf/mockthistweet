@@ -104,12 +104,18 @@ def getMentionTweet(keywords, since_id):
         except tweepy.TweepError as e:
             error_code = e.api_code
             errorPrivateAcc = 179
+            errorBlocked = 136
             if errorPrivateAcc == error_code:
-                print(error_code)
                 tweet_err = "akunnya ke kunci, gimana caranya gue mock hAdEh"
                 api.update_status(status=tweet_err,
                                     in_reply_to_status_id=tweet.id,
                                     auto_populate_reply_metadata=True)
+                showWhatTweeted(tweet_err)
+            elif errorBlocked == error_code:
+                tweet_err = "sayangnya gue diblock sama user yang mau lo mock, cari korban yang lain"
+                api.update_status(status=tweet_err,
+                                  in_reply_to_status_id=tweet.id,
+                                  auto_populate_reply_metadata=True)
                 showWhatTweeted(tweet_err)
             else:
                 print(error_code)
