@@ -85,7 +85,9 @@ def getMentionTweet(keywords, since_id):
 
     for tweet in tweepy.Cursor(api.mentions_timeline, since_id=since_id, tweet_mode="extended").items():
         new_since_id = max(tweet.id, new_since_id)
-        print("current tweet id: ", tweet.id, "tweet: ", tweet.full_text)
+        print("current tweet id: ", tweet.id, "\ntweet: ", tweet.full_text,
+        "\nusername: ", tweet.user.screen_name, 
+        "\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
 
         words = tweet.full_text.lower().split()
 
