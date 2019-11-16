@@ -120,7 +120,7 @@ def getMentionTweet(keywords, since_id):
                         elif my_bot_id == tweet.in_reply_to_user_id:
                             dontMockYouselfAndMe(api, dontmockme_text[1], tweet)
                         else:
-                            mockInPliisi(api, tweet)
+                            mockInPlease(api, tweet)
                     else:
                         followDuluDong(api, followDulu_text, tweet)
 
