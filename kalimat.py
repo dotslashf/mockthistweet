@@ -1,4 +1,5 @@
-import demoji #for removing emoji
+import demoji  # for removing emoji
+
 
 class Kalimat:
     def __init__(self, sentence):
@@ -59,6 +60,9 @@ class Kalimat:
                 finalText += char
         self.sentence = finalText
         return self.sentence
+
+    def transformoji(self):
+        print('test')
 
 
 # Testing purpose
