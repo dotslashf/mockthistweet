@@ -14,8 +14,8 @@ def drawTextOutline(text, x, y, draw):
     draw.text((x, y), text, (255, 255, 255), font=font)
     return
 
+
 def splitLines(text, img, draw, pos):
-    print("------------------------------------------------")
     w, h = draw.textsize(text, font)  # measure the size the text will take
     lineCount = 1
     if w > img.width:
@@ -77,7 +77,6 @@ def splitLines(text, img, draw, pos):
         lastY = -h + 25
     elif pos == "bottom":
         lastY = img.height - h * (lineCount+1) - 25
-
 
     for i in range(0, lineCount):
         w, h = draw.textsize(lines[i], font)
