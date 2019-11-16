@@ -98,7 +98,10 @@ def drawText(bottomText, memeLocation):
     print("------------------------------------------------")
 
 
-# k = Kalimat(
-#     "coba dulu ini deh ya semoga bisa dong hehe coba dulu ini deh ya semoga bisa dong hehe")
+# k = Kalimat("so are you hating me because im making a bot?")
 # text = k.transform()
-# drawText(text, "img/meme_new_2.png")
+# text2 = k.trinsfirm()
+# text3 = k.transformoji("laugh")
+# text4 = k.transformoji("clap")
+# drawText(text, "img/meme_new.png")
+# print(text4)
