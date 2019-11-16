@@ -1,4 +1,5 @@
 __pycache__
 .env
-img/
+!img/meme_new.png
+img/*
 text/last_id.txt
