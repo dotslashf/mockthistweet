@@ -12,7 +12,7 @@ auth = authentication()
 
 fileMeme = 'img/meme_new_format.png'
 fileMemeOriginal = 'img/meme_new.png'
-triggeringWords = ["please", "pliisi", "ple😂se"]
+triggeringWords = ["please", "pliisi", "ple😂se", "ple👏se"]
 my_user_id = 1012117785512558592
 my_bot_id = 1157825461277167616
 dontmockme_text = ["ye enak aja yang punya bot mau di mock, unique id: ", "ya masa gue ngemock diri gue sendiri ya nggalah, unique id: "]
