@@ -12,7 +12,7 @@ auth = authentication()
 
 fileMeme = 'img/meme_new_format.png'
 fileMemeOriginal = 'img/meme_new.png'
-triggeringWords = ["please", "pliisi"]
+triggeringWords = ["please", "pliisi", "ple😂se", "ple👏se"]
 my_user_id = 1012117785512558592
 my_bot_id = 1157825461277167616
 dontmockme_text = ["ye enak aja yang punya bot mau di mock, unique id: ", "ya masa gue ngemock diri gue sendiri ya nggalah, unique id: "]
@@ -39,6 +39,45 @@ def followDuluDong(api, tweet_text, tweet): # tweet when mentioned user is not f
                     auto_populate_reply_metadata=True)
     showWhatTweeted(tweet_text)
 
+def checkFollowedOrNot(api, source_id, target_id):
+    fs = api.show_friendship(source_id=source_id, target_id=target_id)
+    return fs
+
+def mockInPliisi(api, tweet):
+    tweet_target = api.get_status(tweet.in_reply_to_status_id, tweet_mode="extended")
+    k = Kalimat(tweet_target.full_text)
+    textTrinsfirmid = k.trinsfirm()
+    api.update_status(status=textTrinsfirmid, in_reply_to_status_id=tweet.id, auto_populate_reply_metadata=True)
+    showWhatTweeted(textTrinsfirmid)
+    time.sleep(3)
+
+def mockInPlease(api, tweet):
+    tweet_target = api.get_status(tweet.in_reply_to_status_id, tweet_mode="extended")
+    k = Kalimat(tweet_target.full_text)
+    textTransformed = k.transform()
+    drawText(textTransformed, fileMemeOriginal)
+    time.sleep(5)
+    api.update_with_media(fileMeme, status=textTransformed, in_reply_to_status_id=tweet.id, auto_populate_reply_metadata=True)
+    showWhatTweeted(textTransformed)
+
+def mockInEmoji(api, tweet, emoji_type):
+    if emoji_type == "laugh":
+        tweet_target = api.get_status(tweet.in_reply_to_status_id, tweet_mode="extended")
+        k = Kalimat(tweet_target.full_text)
+        textTransformoji = k.transformoji(emoji_type)
+        api.update_status(status=textTransformoji, in_reply_to_status_id=tweet.id, auto_populate_reply_metadata=True)
+        showWhatTweeted(textTransformoji)
+        time.sleep(3)
+
+    elif emoji_type == "clap":
+        tweet_target = api.get_status(
+            tweet.in_reply_to_status_id, tweet_mode="extended")
+        k = Kalimat(tweet_target.full_text)
+        textTransformoji = k.transformoji(emoji_type)
+        api.update_status(status=textTransformoji,
+                          in_reply_to_status_id=tweet.id, auto_populate_reply_metadata=True)
+        showWhatTweeted(textTransformoji)
+        time.sleep(3)
 
 def getMentionTweet(keywords, since_id):
     api = tweepy.API(auth)
@@ -53,8 +92,10 @@ def getMentionTweet(keywords, since_id):
         try:
             for tw in triggeringWords:
                 if tw == "pliisi" in words:
-                    follower_status = api.show_friendship(source_id=my_bot_id,
-                                                        target_id=tweet.user.id)
+
+                    #check is follower or not
+                    follower_status = checkFollowedOrNot(api, my_bot_id, tweet.user.id)
+
                     if (follower_status[0].followed_by):
                         if my_user_id == tweet.in_reply_to_user_id:
                             dontMockYouselfAndMe(
@@ -63,43 +104,60 @@ def getMentionTweet(keywords, since_id):
                             dontMockYouselfAndMe(
                                 api, dontmockme_text[1], tweet)
                         else:
-                            tweet_target = api.get_status(tweet.in_reply_to_status_id, 
-                                                          tweet_mode="extended")
-                            k = Kalimat(tweet_target.full_text)
-                            textTrinsfirmid = k.trinsfirm()
-                            api.update_status(status=textTrinsfirmid,
-                                            in_reply_to_status_id=tweet.id,
-                                            auto_populate_reply_metadata=True)
-                            showWhatTweeted(textTrinsfirmid)
-                            time.sleep(3)
+                            mockInPliisi(api, tweet)
                     else:
                         followDuluDong(api, followDulu_text, tweet)
 
                 elif tw == "please" in words:
-                    follower_status = api.show_friendship(source_id=my_bot_id,
-                                                        target_id=tweet.user.id)
 
-                    # get status, false = tidak follow, true = follower
+                    #check is follower or not
+                    follower_status = checkFollowedOrNot(
+                        api, my_bot_id, tweet.user.id)
+
                     if (follower_status[0].followed_by):
                         if my_user_id == tweet.in_reply_to_user_id:
                             dontMockYouselfAndMe(api, dontmockme_text[0], tweet)
                         elif my_bot_id == tweet.in_reply_to_user_id:
                             dontMockYouselfAndMe(api, dontmockme_text[1], tweet)
                         else:
-                            tweet_target = api.get_status(tweet.in_reply_to_status_id,
-                                                          tweet_mode="extended")
-                            k = Kalimat(tweet_target.full_text)
-                            textTransformed = k.transform()
-                            drawText(textTransformed, fileMemeOriginal)
-                            time.sleep(5)
-                            api.update_with_media(
-                                fileMeme,
-                                status=textTransformed,
-                                in_reply_to_status_id=tweet.id,
-                                auto_populate_reply_metadata=True)
-                            showWhatTweeted(textTransformed)
+                            mockInPlease(api, tweet)
                     else:
                         followDuluDong(api, followDulu_text, tweet)
+
+                elif tw == "ple😂se" in words:
+                    #check is follower or not
+                    follower_status = checkFollowedOrNot(
+                        api, my_bot_id, tweet.user.id)
+
+                    if (follower_status[0].followed_by):
+                        if my_user_id == tweet.in_reply_to_user_id:
+                            dontMockYouselfAndMe(
+                                api, dontmockme_text[0], tweet)
+                        elif my_bot_id == tweet.in_reply_to_user_id:
+                            dontMockYouselfAndMe(
+                                api, dontmockme_text[1], tweet)
+                        else:
+                            mockInEmoji(api, tweet, "laugh")
+                    else:
+                        followDuluDong(api, followDulu_text, tweet)
+
+                elif tw == "ple👏se" in words:
+                    #check is follower or not
+                    follower_status = checkFollowedOrNot(
+                        api, my_bot_id, tweet.user.id)
+
+                    if (follower_status[0].followed_by):
+                        if my_user_id == tweet.in_reply_to_user_id:
+                            dontMockYouselfAndMe(
+                                api, dontmockme_text[0], tweet)
+                        elif my_bot_id == tweet.in_reply_to_user_id:
+                            dontMockYouselfAndMe(
+                                api, dontmockme_text[1], tweet)
+                        else:
+                            mockInEmoji(api, tweet, "clap")
+                    else:
+                        followDuluDong(api, followDulu_text, tweet)
+
 
         except tweepy.TweepError as e:
             error_code = e.api_code
