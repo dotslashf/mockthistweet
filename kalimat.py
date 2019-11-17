@@ -64,32 +64,26 @@ class Kalimat:
     def transformoji(self, emoji_type):
         finalText = ''
         text = self.removeWords()
+        text = text.split()
+
         if emoji_type == "laugh":
-            for char in text:
-                if char == ' ':
-                    char = char.replace(char, "😂")
-                    finalText += char
-                else:
-                    finalText += char
-            self.sentence = finalText
-            return self.sentence
+            for word in text:
+                word += "😂"
+                finalText += word
+            return finalText
 
         elif emoji_type == "clap":
-            for char in text:
-                if char == ' ':
-                    char = char.replace(char, "👏")
-                    finalText += char
-                else:
-                    finalText += char
-            self.sentence = finalText
-            return self.sentence
+            for word in text:
+                word += "👏"
+                finalText += word
+            return finalText
 
-# CHANGE HOW transformoji WORK
 
 # Testing purpose
 # k = Kalimat("coba coba coba coba test test test")
 # k.removeWords()
 # kalimat = k.getSentence()
 # print(k.sentence)
-# k.transformoji("clap")
+# print(k.transformoji("clap"))
+# print(k.transformoji("laugh"))
 # print(k.sentence)
