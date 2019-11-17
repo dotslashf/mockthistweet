@@ -11,15 +11,15 @@ from load import loadData, writeData
 auth = authentication()
 
 fileMeme = {"output": "img/meme_new_format.png", "input": "img/meme_new.png"}
-errorCode = {"private_account": 179, "blocked_account": 136}
-triggeringWords = ["please", "pliisi", "ple😂se", "ple👏se"]
+errorCode = {"private_account": 179, "blocked_account": 136, "duplicate_tweet": 187}
+triggeringWords = ["please", "pliisi", "please😂", "please👏"]
 dontmockme_text = ["Gaboleh nge mock creator, jangan ngelawak deh. Unique ID: ",
                    "Ya lu mau nyoba buat gue ngemock diri gue sendiri? Lucu banget. Unique ID: "]
 followDulu_text = "Udah pake bot gratis apa susahnya follow dulu sih. "
 
 FILE_LAST_ID = os.getenv("FILE_LAST_ID")
-MY_USER_ID = 1012117785512558592
-MY_BOT_ID = 1157825461277167616
+my_user_id = 1012117785512558592
+my_bot_id = 1157825461277167616
 
 
 def showWhatTweeted(tweet_text):  # logger
@@ -181,19 +181,19 @@ def getMentionTweet(keywords, since_id, error_code):
         words = tweet.full_text.lower().split()
 
         try:
-            for tw in triggeringWords:
+            for tw in keywords:
 
                 if tw == "pliisi" in words:
 
                     # check is follower or not
                     follower_status = checkFollowedOrNot(
-                        api, MY_BOT_ID, tweet.user.id)
+                        api, my_bot_id, tweet.user.id)
 
                     if (follower_status[0].followed_by):
-                        if MY_USER_ID == tweet.in_reply_to_user_id:
+                        if my_user_id == tweet.in_reply_to_user_id:
                             dontMockYouselfAndMe(
                                 api, dontmockme_text[0], tweet)
-                        elif MY_BOT_ID == tweet.in_reply_to_user_id:
+                        elif my_bot_id == tweet.in_reply_to_user_id:
                             dontMockYouselfAndMe(
                                 api, dontmockme_text[1], tweet)
                         else:
@@ -205,13 +205,13 @@ def getMentionTweet(keywords, since_id, error_code):
 
                     # check is follower or not
                     follower_status = checkFollowedOrNot(
-                        api, MY_BOT_ID, tweet.user.id)
+                        api, my_bot_id, tweet.user.id)
 
                     if (follower_status[0].followed_by):
-                        if MY_USER_ID == tweet.in_reply_to_user_id:
+                        if my_user_id == tweet.in_reply_to_user_id:
                             dontMockYouselfAndMe(
                                 api, dontmockme_text[0], tweet)
-                        elif MY_BOT_ID == tweet.in_reply_to_user_id:
+                        elif my_bot_id == tweet.in_reply_to_user_id:
                             dontMockYouselfAndMe(
                                 api, dontmockme_text[1], tweet)
                         else:
@@ -219,17 +219,17 @@ def getMentionTweet(keywords, since_id, error_code):
                     else:
                         followDuluDong(api, followDulu_text, tweet)
 
-                elif tw == "ple😂se" in words:
+                elif tw == "please😂" in words:
 
                     # check is follower or not
                     follower_status = checkFollowedOrNot(
-                        api, MY_BOT_ID, tweet.user.id)
+                        api, my_bot_id, tweet.user.id)
 
                     if (follower_status[0].followed_by):
-                        if MY_USER_ID == tweet.in_reply_to_user_id:
+                        if my_user_id == tweet.in_reply_to_user_id:
                             dontMockYouselfAndMe(
                                 api, dontmockme_text[0], tweet)
-                        elif MY_BOT_ID == tweet.in_reply_to_user_id:
+                        elif my_bot_id == tweet.in_reply_to_user_id:
                             dontMockYouselfAndMe(
                                 api, dontmockme_text[1], tweet)
                         else:
@@ -237,17 +237,17 @@ def getMentionTweet(keywords, since_id, error_code):
                     else:
                         followDuluDong(api, followDulu_text, tweet)
 
-                elif tw == "ple👏se" in words:
+                elif tw == "please👏" in words:
 
                     # check is follower or not
                     follower_status = checkFollowedOrNot(
-                        api, MY_BOT_ID, tweet.user.id)
+                        api, my_bot_id, tweet.user.id)
 
                     if (follower_status[0].followed_by):
-                        if MY_USER_ID == tweet.in_reply_to_user_id:
+                        if my_user_id == tweet.in_reply_to_user_id:
                             dontMockYouselfAndMe(
                                 api, dontmockme_text[0], tweet)
-                        elif MY_BOT_ID == tweet.in_reply_to_user_id:
+                        elif my_bot_id == tweet.in_reply_to_user_id:
                             dontMockYouselfAndMe(
                                 api, dontmockme_text[1], tweet)
                         else:
@@ -271,6 +271,9 @@ def getMentionTweet(keywords, since_id, error_code):
                                   in_reply_to_status_id=tweet.id,
                                   auto_populate_reply_metadata=True)
                 showWhatTweeted(tweet_err)
+            elif error == error_code['duplicate_tweet']:
+                tweet_err = "Duplicated"
+                showWhatTweeted(tweet_err)
             else:
                 print(error)
                 tweet_err = "error code: "+str(error)
@@ -278,6 +281,7 @@ def getMentionTweet(keywords, since_id, error_code):
                                   in_reply_to_status_id=tweet.id,
                                   auto_populate_reply_metadata=True)
                 showWhatTweeted(tweet_err)
+                
             continue
 
     return new_since_id
