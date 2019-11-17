@@ -11,7 +11,8 @@ from load import loadData, writeData
 auth = authentication()
 
 fileMeme = {"output": "img/meme_new_format.png", "input": "img/meme_new.png"}
-errorCode = {"private_account": 179, "blocked_account": 136, "duplicate_tweet": 187}
+errorCode = {"private_account": 179, "blocked_account": 136,
+             "duplicate_tweet": 187, "tweet_target_deleted": 144}
 triggeringWords = ["please", "pliisi", "please😂", "please👏"]
 dontmockme_text = ["Gaboleh nge mock creator, jangan ngelawak deh. Unique ID: ",
                    "Ya lu mau nyoba buat gue ngemock diri gue sendiri? Lucu banget. Unique ID: "]
@@ -274,6 +275,12 @@ def getMentionTweet(keywords, since_id, error_code):
             elif error == error_code['duplicate_tweet']:
                 tweet_err = "Duplicated"
                 showWhatTweeted(tweet_err)
+            elif error == error_code['tweet_target_deleted']:
+                tweet_err = "Tweetnya udah dihapus sama si dia:("
+                api.update_status(status=tweet_err,
+                                  in_reply_to_status_id=tweet.id,
+                                  auto_populate_reply_metadata=True)
+                showWhatTweeted(tweet_err)
             else:
                 print(error)
                 tweet_err = "error code: "+str(error)
@@ -281,7 +288,7 @@ def getMentionTweet(keywords, since_id, error_code):
                                   in_reply_to_status_id=tweet.id,
                                   auto_populate_reply_metadata=True)
                 showWhatTweeted(tweet_err)
-                
+
             continue
 
     return new_since_id
