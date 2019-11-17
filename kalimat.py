@@ -14,7 +14,7 @@ class Kalimat:
         finalText = ''
         excludedChars = [',', '.', '!', '?', '&', '-', '"']
         excludedWords = ['2beer!', 'mksfess',
-                         '[askmf]', '[cm]', '[gmf]', '[tanyarl]']
+                         '[askmf]', '[cm]', '[gmf]', '[tanyarl]', '/wal', '/rlt/']
         words = [i for j in self.sentence.split() for i in (j, ' ')][:-1]
         for word in words:
             # bt = 0
@@ -84,6 +84,7 @@ class Kalimat:
             self.sentence = finalText
             return self.sentence
 
+# CHANGE HOW transformoji WORK
 
 # Testing purpose
 # k = Kalimat("coba coba coba coba test test test")

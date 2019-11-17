@@ -18,8 +18,8 @@ dontmockme_text = ["Gaboleh nge mock creator, jangan ngelawak deh. Unique ID: ",
 followDulu_text = "Udah pake bot gratis apa susahnya follow dulu sih. "
 
 FILE_LAST_ID = os.getenv("FILE_LAST_ID")
-MY_USER_ID = os.getenv("MY_USER_ID")
-MY_BOT_ID = os.getenv("MY_BOT_ID")
+MY_USER_ID = 1012117785512558592
+MY_BOT_ID = 1157825461277167616
 
 
 def showWhatTweeted(tweet_text):  # logger
@@ -174,8 +174,8 @@ def getMentionTweet(keywords, since_id, error_code):
         new_since_id = max(tweet.id, new_since_id)
         print("------------------------------------------------",
               "\n| tweet id: ", tweet.id,
-              "\n| tweet: ", tweet.full_text,
               "\n| username: ", tweet.user.screen_name,
+              "\n| tweet: ", tweet.full_text,
               "\n------------------------------------------------\n")
 
         words = tweet.full_text.lower().split()
