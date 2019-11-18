@@ -19,7 +19,8 @@ class Twitter:
             "blocked_account": [136, "Yah yang di mention ngeblock botnya"],
             "duplicate_tweet": [187, "Duplicated tweet"],
             "tweet_target_deleted": [144, "Tweetnya udah dihapus sama dong:("],
-            "tweet_target_to_long": [186, "Tweetnya kepanjangan kalau di tambahin emoji, coba format yang lain"]
+            "tweet_target_to_long": [186, "Tweetnya kepanjangan kalau di tambahin emoji, coba format yang lain"],
+            "tweet_deleted_or_not_visible": [385, "Tweet deleted or not visible"]
         }
         self.triggering_words = ["please", "pliisi", "please😂", "please👏"]
         self.my_user_id = 1012117785512558592
@@ -231,15 +232,14 @@ class Twitter:
                     tweet_err = self.error_code['duplicate_tweet'][1]
                     self.show_what_tweeted(tweet_err)
 
-                elif error == None:
-                    self.show_what_tweeted("Error unknown")
-
+                elif error == self.error_code['tweet_deleted_or_not_visible'][0]:
+                    tweet_err = self.error_code['tweet_deleted_or_not_visible'][1]
+                    self.show_what_tweeted(tweet_err)
+                    
                 else:
                     print(error)
-                    tweet_err = "error code: "+str(error)
-                    self.api.update_status(status=tweet_err,
-                                           in_reply_to_status_id=tweet.id,
-                                           auto_populate_reply_metadata=True)
+                    tweet_err = "error code: "+str(error)+" "
+                    self.api.update_status(status=tweet_err+tweet.id_str)
                     self.show_what_tweeted(tweet_err)
 
                 continue
