@@ -20,7 +20,8 @@ class Twitter:
             "duplicate_tweet": [187, "Duplicated tweet"],
             "tweet_target_deleted": [144, "Tweetnya udah dihapus"],
             "tweet_target_to_long": [186, "Tweetnya kepanjangan kalau di tambahin emoji, coba format yang lain"],
-            "tweet_deleted_or_not_visible": [385, "Tweet deleted or not visible"]
+            "tweet_deleted_or_not_visible": [385, "Tweet deleted or not visible"],
+            "twitter_over_capacity": [130, "Twitternya lagi overcapacity, next time yah"]
         }
         self.triggering_words = ["please", "pliisi",
                                  "please😂", "please👏",
@@ -149,11 +150,12 @@ class Twitter:
                 fs = self.check_follower(self.my_bot_id, tweet.user.id)
                 if (fs[0].followed_by):
                     if self.my_user_id == tweet.in_reply_to_user_id:
-                        self.dont_mock_the_bot(
-                            self.tweet_text["dont_mock"][0], tweet)
+                        for tw in self.triggering_words:
+                            if tw in words:
+                                self.dont_mock_the_bot(self.tweet_text["dont_mock"][0], tweet)
                     elif self.my_bot_id == tweet.in_reply_to_user_id:
-                        self.dont_mock_the_bot(
-                            self.tweet_text["dont_mock"][1], tweet)
+                        for tw in words:
+                                self.dont_mock_the_bot(self.tweet_text["dont_mock"][1], tweet)
                     else:
                         for tw in self.triggering_words:
                             if tw is "pliisi" in words:
@@ -199,6 +201,13 @@ class Twitter:
 
                 elif error == self.error_code['tweet_target_to_long'][0]:
                     tweet_err = self.error_code['tweet_target_to_long'][1]
+                    self.api.update_status(status=tweet_err,
+                                           in_reply_to_status_id=tweet.id,
+                                           auto_populate_reply_metadata=True)
+                    self.show_what_tweeted(tweet_err)
+
+                elif error == self.error_code['twitter_over_capacity'][0]:
+                    tweet_err = self.error_code['twitter_over_capacity'][1]
                     self.api.update_status(status=tweet_err,
                                            in_reply_to_status_id=tweet.id,
                                            auto_populate_reply_metadata=True)
