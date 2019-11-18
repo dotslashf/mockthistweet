@@ -21,6 +21,8 @@ clapped tweet: so👏are👏you👏hating👏me👏because👏im👏making👏a�
 ### Built With
 
 - [Tweepy](https://www.tweepy.org/) - An easy-to-use Python library for accessing the Twitter API.
+- [Pillow](https://github.com/python-pillow/Pillow) - PIL is the Python Imaging Library by Fredrik Lundh and Contributors.
+- [Demoji](https://pypi.org/project/demoji/) - Accurately find or remove emojis from a blob of text.
 
 ### Inspired from
 
