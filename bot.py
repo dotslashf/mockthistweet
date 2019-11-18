@@ -51,6 +51,14 @@ class Twitter:
               "\n------------------------------------------------")
         time.sleep(2)
 
+    def show_status(self, tweet):
+        print("------------------------------------------------",
+              "\n| tweet id: ", tweet.id,
+              "\n| username: ", tweet.user.screen_name,
+              "\n| tweet: ", tweet.full_text,
+              "\n------------------------------------------------\n")
+        time.sleep(1)
+
     def follow_dulu_dong(self, tweet_text, tweet):
         self.api.update_status(status=tweet_text,
                                in_reply_to_status_id=tweet.id,
@@ -113,6 +121,7 @@ class Twitter:
 
         for tweet in tweepy.Cursor(self.api.mentions_timeline, since_id=since_id, tweet_mode="extended").items():
             new_since_id = max(tweet.id, new_since_id)
+            self.show_status(tweet)
 
             words = tweet.full_text.lower().split()
 
