@@ -59,7 +59,8 @@ class Twitter:
         time.sleep(1)
 
     def follow_dulu_dong(self, tweet_text, tweet):
-        self.api.update_status(status=tweet_text,
+        username = tweet.user.screen_name
+        self.api.update_status(status=tweet_text+username,
                                in_reply_to_status_id=tweet.id,
                                auto_populate_reply_metadata=True)
         self.show_what_tweeted(tweet_text)
