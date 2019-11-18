@@ -11,9 +11,12 @@ from load import loadData, writeData
 auth = authentication()
 
 fileMeme = {"output": "img/meme_new_format.png", "input": "img/meme_new.png"}
-errorCode = {"private_account": 179, "blocked_account": 136,
-             "duplicate_tweet": 187, "tweet_target_deleted": 144,
-             "tweet_target_to_long": 186}
+errorCode = {"private_account": [179, "Inikan private account, mana bisa gue ngeliat tweetnya"],
+             "blocked_account": [136, "Yah yang di mention ngeblock botnya"],
+             "duplicate_tweet": [187, "Duplicated tweet"],
+             "tweet_target_deleted": [144, "Tweetnya udah dihapus sama dong:("],
+             "tweet_target_to_long": [186, "Tweetnya kepanjangan kalau di tambahin emoji, coba format yang lain"]
+             }
 triggeringWords = ["please", "pliisi", "please😂", "please👏"]
 dontmockme_text = ["Gaboleh nge mock creator, jangan ngelawak deh. Unique ID: ",
                    "Ya lu mau nyoba buat gue ngemock diri gue sendiri? Lucu banget. Unique ID: "]
@@ -261,36 +264,39 @@ def getMentionTweet(keywords, since_id, error_code):
         except tweepy.TweepError as e:
             error = e.api_code
 
-            if error == error_code['private_account']:
-                tweet_err = "Inikan private account, mana bisa gue ngeliat tweetnya"
+            if error == error_code['private_account'][0]:
+                tweet_err = error_code['private_account'][1]
                 api.update_status(status=tweet_err,
                                   in_reply_to_status_id=tweet.id,
                                   auto_populate_reply_metadata=True)
                 showWhatTweeted(tweet_err)
 
-            elif error == error_code['blocked_account']:
-                tweet_err = "Yah yang di mention ngeblock botnya"
+            elif error == error_code['blocked_account'][0]:
+                tweet_err = error_code['blocked_account'][1]
                 api.update_status(status=tweet_err,
                                   in_reply_to_status_id=tweet.id,
                                   auto_populate_reply_metadata=True)
                 showWhatTweeted(tweet_err)
 
-            elif error == error_code['tweet_target_deleted']:
-                tweet_err = "Tweetnya udah dihapus sama si dia:("
+            elif error == error_code['tweet_target_deleted'][0]:
+                tweet_err = error_code['tweet_target_deleted'][1]
                 api.update_status(status=tweet_err,
                                   in_reply_to_status_id=tweet.id,
                                   auto_populate_reply_metadata=True)
                 showWhatTweeted(tweet_err)
 
-            elif error == error_code['tweet_target_to_long']:
-                tweet_err = "Tweetnya kepanjangan kalau di tambahin emoji, coba format yang lain"
+            elif error == error_code['tweet_target_to_long'][0]:
+                tweet_err = error_code['tweet_target_to_long'][1]
                 api.update_status(status=tweet_err,
                                   in_reply_to_status_id=tweet.id,
                                   auto_populate_reply_metadata=True)
-                showWhatTweeted(tweet_err   )
+                showWhatTweeted(tweet_err)
 
-            elif error == error_code['duplicate_tweet']:
-                tweet_err = "Duplicated"
+            elif error == error_code['duplicate_tweet'][0]:
+                tweet_err = error_code['duplicate_tweet'][1]
+                api.update_status(status=tweet_err,
+                                  in_reply_to_status_id=tweet.id,
+                                  auto_populate_reply_metadata=True)
                 showWhatTweeted(tweet_err)
 
             else:
@@ -326,13 +332,3 @@ while True:
         sys.stdout.write("{:2d} second to check mention.\r".format(sec))
         sys.stdout.flush()
         time.sleep(1)
-
-# Testing purpose
-# last_id = loadData(FILE_LAST_ID)
-# last_id = int(last_id[-1])
-# print(getMentionTweet(triggeringWords, 1194701185317343232))
-# api = tweepy.API(auth)
-
-# for property, value in vars(tweet_target).items():
-#     print (property, ": ", value)
-# my user id 1012117785512558592
