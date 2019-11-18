@@ -6,6 +6,8 @@ from kalimat import Kalimat
 font = ImageFont.truetype("impact.ttf", 42)
 
 # draw the text and outline
+
+
 def drawTextOutline(text, x, y, draw):
     draw.text((x-2, y-2), text, (0, 0, 0), font=font)
     draw.text((x+2, y-2), text, (0, 0, 0), font=font)
@@ -50,8 +52,12 @@ def splitLines(text, img, draw, pos):
                 print("may cut")
             else:
                 print("may not cut")
-                while text[nextCut] != " ":
-                    nextCut += 1
+                try:
+                    while text[nextCut] != " ":
+                        print(text[nextCut], nextCut)
+                        nextCut += 1
+                except:
+                    nextCut = round(len(text)/2)
                 print("new cut: {}".format(nextCut))
 
             line = text[cut:nextCut].strip()
@@ -97,10 +103,10 @@ def drawText(bottomText, memeLocation):
     print("------------------------------------------------")
 
 
-# k = Kalimat("so are you hating me because im making a bot?")
-# text = k.transform()
-# text2 = k.trinsfirm()
-# text3 = k.transformoji("laugh")
-# text4 = k.transformoji("clap")
-# drawText(text, "img/meme_new.png")
-# print(text4)
+k = Kalimat("AKWOAKWOAKWOWKSOWKAOWKIWKAOAKWOAKWOAKSKKSOWAKOAKAOWKSOWKSOK")
+text = k.getSentence()
+# # text2 = k.trinsfirm()
+# # text3 = k.transformoji("laugh")
+# # text4 = k.transformoji("clap")
+drawText(text, "img/meme_new.png")
+# # print(text4)
