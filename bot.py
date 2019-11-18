@@ -29,7 +29,7 @@ class Twitter:
                           "Ya lu mau nyoba buat gue ngemock diri gue sendiri? Lucu banget lo "],
             "follow_dulu": "Udah pake bot gratis apa susahnya follow dulu sih, "
         }
-        self.file_meme = {"output": ["img/meme_new_output.png", "img/meme_khaleesi_output.png"],
+        self.file_meme = {"output": ["img/meme_spongebob_output.png", "img/meme_khaleesi_output.png"],
                           "input": ["img/meme_new.png", "img/meme_khaleesi.png"]}
 
     def authentication(self):
@@ -75,10 +75,12 @@ class Twitter:
                                            tweet_mode="extended")
         k = Kalimat(tweet_target.full_text)
         text_trinsfirmid = k.trinsfirm()
-        drawText(text_trinsfirmid, self.file_meme["input"][1])
+        drawText(text_trinsfirmid, self.file_meme["input"][1], "khaleesi")
         time.sleep(5)
-        self.api.update_with_media(self.file_meme["output"][1],
-                                   status=text_trinsfirmid, in_reply_to_status_id=tweet.id, auto_populate_reply_metadata=True)
+        self.api.update_with_media(filename=self.file_meme["output"][1],
+                                   status=text_trinsfirmid,
+                                   in_reply_to_status_id=tweet.id,
+                                   auto_populate_reply_metadata=True)
         self.show_what_tweeted(text_trinsfirmid)
 
     def mock_in_please(self, tweet):
@@ -86,10 +88,12 @@ class Twitter:
                                            tweet_mode="extended")
         k = Kalimat(tweet_target.full_text)
         text_transformed = k.transform()
-        drawText(text_transformed, self.file_meme["input"][0])
+        drawText(text_transformed, self.file_meme["input"][0], "spongebob")
         time.sleep(5)
-        self.api.update_with_media(self.file_meme["output"][0],
-                                   status=text_transformed, in_reply_to_status_id=tweet.id, auto_populate_reply_metadata=True)
+        self.api.update_with_media(filename=self.file_meme["output"][0],
+                                   status=text_transformed,
+                                   in_reply_to_status_id=tweet.id,
+                                   auto_populate_reply_metadata=True)
         self.show_what_tweeted(text_transformed)
 
     def mock_in_emoji(self, tweet, emoji_type):
@@ -127,8 +131,7 @@ class Twitter:
             try:
                 for tw in self.triggering_words:
                     if tw == "pliisi" in words:
-                        fs = self.check_follower(self.my_bot_id,
-                                                 tweet.user.id)
+                        fs = self.check_follower(self.my_bot_id, tweet.user.id)
 
                         if (fs[0].followed_by):
                             if self.my_user_id == tweet.in_reply_to_user_id:
@@ -144,8 +147,7 @@ class Twitter:
                                                   tweet)
 
                     elif tw == "please" in words:
-                        fs = self.check_follower(self.my_bot_id,
-                                                 tweet.user.id)
+                        fs = self.check_follower(self.my_bot_id, tweet.user.id)
 
                         if (fs[0].followed_by):
                             if self.my_user_id == tweet.in_reply_to_user_id:
@@ -161,8 +163,7 @@ class Twitter:
                                                   tweet)
 
                     elif tw == "please😂" in words:
-                        fs = self.check_follower(self.my_bot_id,
-                                                 tweet.user.id)
+                        fs = self.check_follower(self.my_bot_id, tweet.user.id)
 
                         if (fs[0].followed_by):
                             if self.my_user_id == tweet.in_reply_to_user_id:
@@ -193,6 +194,7 @@ class Twitter:
                         else:
                             self.follow_dulu_dong(self.tweet_text["follow_dulu"],
                                                   tweet)
+
             except tweepy.TweepError as e:
                 error = e.api_code
 
@@ -227,6 +229,9 @@ class Twitter:
                 elif error == self.error_code['duplicate_tweet'][0]:
                     tweet_err = self.error_code['duplicate_tweet'][1]
                     self.show_what_tweeted(tweet_err)
+
+                elif error == None:
+                    self.show_what_tweeted("Error unknown")
 
                 else:
                     print(error)
