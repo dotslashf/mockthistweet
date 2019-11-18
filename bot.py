@@ -1,17 +1,10 @@
 import tweepy
 import os
+import time
 from dotenv import load_dotenv
 from generator import drawText
 from kalimat import Kalimat
-import time
-load_dotenv()
 
-CONSUMER_KEY = os.getenv("CONSUMER_KEY")
-CONSUMER_SECRET = os.getenv("CONSUMER_SECRET")
-ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
-ACCESS_TOKEN_SECRET = os.getenv("ACCESS_TOKEN_SECRET")
-FILE_NAMA = os.getenv("FILE_NAMA")
-FILE_KALIMAT = os.getenv("FILE_KALIMAT")
 
 fileMeme = {"output": "img/meme_new_format.png", "input": "img/meme_new.png"}
 
@@ -198,53 +191,43 @@ class Twitter:
                 if error == self.error_code['private_account'][0]:
                     tweet_err = self.error_code['private_account'][1]
                     self.api.update_status(status=tweet_err,
-                                      in_reply_to_status_id=tweet.id,
-                                      auto_populate_reply_metadata=True)
+                                           in_reply_to_status_id=tweet.id,
+                                           auto_populate_reply_metadata=True)
                     self.show_what_tweeted(tweet_err)
 
                 elif error == self.error_code['blocked_account'][0]:
                     tweet_err = self.error_code['blocked_account'][1]
                     self.api.update_status(status=tweet_err,
-                                      in_reply_to_status_id=tweet.id,
-                                      auto_populate_reply_metadata=True)
+                                           in_reply_to_status_id=tweet.id,
+                                           auto_populate_reply_metadata=True)
                     self.show_what_tweeted(tweet_err)
 
                 elif error == self.error_code['tweet_target_deleted'][0]:
                     tweet_err = self.error_code['tweet_target_deleted'][1]
                     self.api.update_status(status=tweet_err,
-                                      in_reply_to_status_id=tweet.id,
-                                      auto_populate_reply_metadata=True)
+                                           in_reply_to_status_id=tweet.id,
+                                           auto_populate_reply_metadata=True)
                     self.show_what_tweeted(tweet_err)
 
                 elif error == self.error_code['tweet_target_to_long'][0]:
                     tweet_err = self.error_code['tweet_target_to_long'][1]
                     self.api.update_status(status=tweet_err,
-                                      in_reply_to_status_id=tweet.id,
-                                      auto_populate_reply_metadata=True)
+                                           in_reply_to_status_id=tweet.id,
+                                           auto_populate_reply_metadata=True)
                     self.show_what_tweeted(tweet_err)
 
                 elif error == self.error_code['duplicate_tweet'][0]:
                     tweet_err = self.error_code['duplicate_tweet'][1]
-                    self.api.update_status(status=tweet_err,
-                                      in_reply_to_status_id=tweet.id,
-                                      auto_populate_reply_metadata=True)
                     self.show_what_tweeted(tweet_err)
 
                 else:
                     print(error)
                     tweet_err = "error code: "+str(error)
                     self.api.update_status(status=tweet_err,
-                                      in_reply_to_status_id=tweet.id,
-                                      auto_populate_reply_metadata=True)
+                                           in_reply_to_status_id=tweet.id,
+                                           auto_populate_reply_metadata=True)
                     self.show_what_tweeted(tweet_err)
 
                 continue
 
         return new_since_id
-
-
-twitter = Twitter(CONSUMER_KEY, CONSUMER_SECRET,
-                  ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
-uname = twitter.auth.get_username()
-# twitter.testMethod("test new structure file")
-print(uname)
