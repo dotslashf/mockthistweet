@@ -1,6 +1,6 @@
 # MOCK THAT TWEET
 
-you hate someone tweet? let this bot mock it for you, simply reply the tweet that you hate and tag me + "please" and ill mock that tweet with spongebob meme, or + "pliisi" and see the different, or you can use "ple😂se" and "ple👏se" for emoji mock.
+you hate someone tweet? let this bot mock it for you, simply reply the tweet that you hate and tag me + "please" and ill mock that tweet with spongebob meme, or + "pliisi" and see the different, or you can use "please😂" and "please👏" for emoji mock.
 
 ### Example
 
