@@ -54,7 +54,6 @@ def splitLines(text, img, draw, pos):
                 print("may not cut")
                 try:
                     while text[nextCut] != " ":
-                        print(text[nextCut], nextCut)
                         nextCut += 1
                 except:
                     nextCut = round(len(text)/2)
@@ -103,10 +102,10 @@ def drawText(bottomText, memeLocation):
     print("------------------------------------------------")
 
 
-k = Kalimat("AKWOAKWOAKWOWKSOWKAOWKIWKAOAKWOAKWOAKSKKSOWAKOAKAOWKSOWKSOK")
-text = k.getSentence()
-# # text2 = k.trinsfirm()
-# # text3 = k.transformoji("laugh")
-# # text4 = k.transformoji("clap")
-drawText(text, "img/meme_new.png")
-# # print(text4)
+# k = Kalimat("AKWOAKWOAKWOWKSOWKAOWKIWKAOAKWOAKWOAKSKKSOWAKOAKAOWKSOWKSOK")
+# text = k.getSentence()
+# # # text2 = k.trinsfirm()
+# # # text3 = k.transformoji("laugh")
+# # # text4 = k.transformoji("clap")
+# drawText(text, "img/meme_new.png")
+# # # print(text4)

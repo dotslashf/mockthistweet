@@ -41,3 +41,7 @@ def main(ck, cs, at, ats):
 
 if __name__ == "__main__":
     main(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+    # bot = Twitter(CONSUMER_KEY, CONSUMER_SECRET,
+    #               ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+    # api_bot = bot.api
+    # api_bot.update_status(status="test error code 400")
