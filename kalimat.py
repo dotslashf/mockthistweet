@@ -17,10 +17,6 @@ class Kalimat:
                          '[askmf]', '[cm]', '[gmf]', '[tanyarl]', '/wal', '/rlt/']
         words = [i for j in self.sentence.split() for i in (j, ' ')][:-1]
         for word in words:
-            # bt = 0
-            # if word == u"\u2800":
-            #     bt += 1
-            #     print(bt)
             word = word.lower()
             if word[0] == '@' or word[0] == '#' or word[0:4] == 'http':
                 word = word.replace(word, '')
@@ -29,6 +25,8 @@ class Kalimat:
                 word = word.replace(ew, '')
             for char in word:
                 if char == u"\u2800":  # remove BRAILLE PATTERN BLANK char
+                    char = char.replace(char, '')
+                if char == u"\u2063":  # remove INVISIBLE SEPARATOR char
                     char = char.replace(char, '')
                 for ec in excludedChars:  # remove unnecessary char
                     char = char.replace(ec, '')
