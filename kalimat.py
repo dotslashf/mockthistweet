@@ -15,18 +15,19 @@ class Kalimat:
         excludedChars = [',', '.', '!', '?', '&', '-', '"']
         excludedWords = ['2beer!', 'mksfess',
                          '[askmf]', '[cm]', '[gmf]', '[tanyarl]', '/wal', '/rlt/']
+        invisibleChar = [u"\u2800", u"\u2063"]
         words = [i for j in self.sentence.split() for i in (j, ' ')][:-1]
         for word in words:
             word = word.lower()
+
+            # remove twt username, hashtag, and links
             if word[0] == '@' or word[0] == '#' or word[0:4] == 'http':
                 word = word.replace(word, '')
-
             for ew in excludedWords:  # remove unnecassary words
                 word = word.replace(ew, '')
+
             for char in word:
-                if char == u"\u2800":  # remove BRAILLE PATTERN BLANK char
-                    char = char.replace(char, '')
-                if char == u"\u2063":  # remove INVISIBLE SEPARATOR char
+                if char in invisibleChar:  # remove invisible char
                     char = char.replace(char, '')
                 for ec in excludedChars:  # remove unnecessary char
                     char = char.replace(ec, '')
