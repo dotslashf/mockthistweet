@@ -22,10 +22,13 @@ def main(ck, cs, at, ats):
         last_id = int(last_id[-1])
         since_id = bot.get_mention_tweet(last_id)
 
-        print("------------------------------------------------",
+        follower = bot.api.get_user(user_id=1157825461277167616)
+
+        print("\n"+u"\u250C"+"------------------------------------------------",
               "\n| newest tweet: ", since_id,
               "\n| oldest tweet: ", last_id,
-              "\n------------------------------------------------\n")
+              "\n| current followers: ", follower.followers_count,
+              "\n"+u"\u2514"+"------------------------------------------------")
 
         if (last_id != since_id):
             writeData(FILE_LAST_ID, str(since_id))

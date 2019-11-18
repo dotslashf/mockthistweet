@@ -26,8 +26,8 @@ class Twitter:
         self.my_user_id = 1012117785512558592
         self.my_bot_id = 1157825461277167616
         self.tweet_text = {
-            "dont_mock": ["Gaboleh nge mock creator, jangan ngelawak deh ",
-                          "Ya lu mau nyoba buat gue ngemock diri gue sendiri? Lucu banget lo "],
+            "dont_mock": ["Enak aja developernya mau di mock, jangan ngelawak deh ",
+                          "Lu mau nyoba buat gue ngemock diri gue sendiri? Lucu banget lo "],
             "follow_dulu": "Udah pake bot gratis apa susahnya follow dulu sih, "
         }
         self.file_meme = {"output": ["img/meme_spongebob_output.png", "img/meme_khaleesi_output.png"],
@@ -44,19 +44,19 @@ class Twitter:
         return fs
 
     def show_what_tweeted(self, tweet_text):  # logger
-        print("------------------------------------------------",
+        print(u"\u250C"+"-----------------------------------------------",
               "\n|",
               "\n| tweeted: ", tweet_text,
               "\n| ",
-              "\n------------------------------------------------")
+              "\n"+u"\u2514"+"------------------------------------------------")
         time.sleep(2)
 
     def show_status(self, tweet):
-        print("------------------------------------------------",
+        print(u"\u250C"+"-----------------------------------------------",
               "\n| tweet id: ", tweet.id,
               "\n| username: ", tweet.user.screen_name,
               "\n| tweet: ", tweet.full_text,
-              "\n------------------------------------------------\n")
+              "\n"+u"\u2514"+"------------------------------------------------")
         time.sleep(1)
 
     def follow_dulu_dong(self, tweet_text, tweet):
