@@ -80,7 +80,7 @@ class Kalimat:
 
 
 # Testing purpose
-# k = Kalimat("coba coba coba coba test test test")
+# k = Kalimat("Mbanya ada masalah apasih sebenernya ? Psikologis mba keganggu ya ? Yuk mba kita meet up, biar mbayna ga bar bar di Twitter n bisa tau di rl ya !!! 🙃 Soalnya orang yg di twitter bar bar, pasti dirlnya ciut, ga berani ngomong apa apa, n malu ama yg dihujatmya 🙃")
 # k.removeWords()
 # kalimat = k.getSentence()
 # print(k.sentence)

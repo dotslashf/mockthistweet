@@ -12,7 +12,8 @@ auth = authentication()
 
 fileMeme = {"output": "img/meme_new_format.png", "input": "img/meme_new.png"}
 errorCode = {"private_account": 179, "blocked_account": 136,
-             "duplicate_tweet": 187, "tweet_target_deleted": 144}
+             "duplicate_tweet": 187, "tweet_target_deleted": 144,
+             "tweet_target_to_long": 186}
 triggeringWords = ["please", "pliisi", "please😂", "please👏"]
 dontmockme_text = ["Gaboleh nge mock creator, jangan ngelawak deh. Unique ID: ",
                    "Ya lu mau nyoba buat gue ngemock diri gue sendiri? Lucu banget. Unique ID: "]
@@ -266,21 +267,32 @@ def getMentionTweet(keywords, since_id, error_code):
                                   in_reply_to_status_id=tweet.id,
                                   auto_populate_reply_metadata=True)
                 showWhatTweeted(tweet_err)
+
             elif error == error_code['blocked_account']:
                 tweet_err = "Yah yang di mention ngeblock botnya"
                 api.update_status(status=tweet_err,
                                   in_reply_to_status_id=tweet.id,
                                   auto_populate_reply_metadata=True)
                 showWhatTweeted(tweet_err)
-            elif error == error_code['duplicate_tweet']:
-                tweet_err = "Duplicated"
-                showWhatTweeted(tweet_err)
+
             elif error == error_code['tweet_target_deleted']:
                 tweet_err = "Tweetnya udah dihapus sama si dia:("
                 api.update_status(status=tweet_err,
                                   in_reply_to_status_id=tweet.id,
                                   auto_populate_reply_metadata=True)
                 showWhatTweeted(tweet_err)
+
+            elif error == error_code['tweet_target_to_long']:
+                tweet_err = "Tweetnya kepanjangan kalau di tambahin emoji, coba format yang lain"
+                api.update_status(status=tweet_err,
+                                  in_reply_to_status_id=tweet.id,
+                                  auto_populate_reply_metadata=True)
+                showWhatTweeted(tweet_err   )
+
+            elif error == error_code['duplicate_tweet']:
+                tweet_err = "Duplicated"
+                showWhatTweeted(tweet_err)
+
             else:
                 print(error)
                 tweet_err = "error code: "+str(error)
