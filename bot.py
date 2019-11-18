@@ -22,7 +22,9 @@ class Twitter:
             "tweet_target_to_long": [186, "Tweetnya kepanjangan kalau di tambahin emoji, coba format yang lain"],
             "tweet_deleted_or_not_visible": [385, "Tweet deleted or not visible"]
         }
-        self.triggering_words = ["please", "pliisi", "please😂", "please👏"]
+        self.triggering_words = ["please", "pliisi",
+                                 "please😂", "please👏",
+                                 "please🤮", "please🤢"]
         self.my_user_id = 1012117785512558592
         self.my_bot_id = 1157825461277167616
         self.tweet_text = {
@@ -99,10 +101,11 @@ class Twitter:
         self.show_what_tweeted(text_transformed)
 
     def mock_in_emoji(self, tweet, emoji_type):
+        tweet_target = self.api.get_status(
+            tweet.in_reply_to_status_id, tweet_mode="extended")
+        k = Kalimat(tweet_target.full_text)
+
         if emoji_type == "laugh":
-            tweet_target = self.api.get_status(tweet.in_reply_to_status_id,
-                                               tweet_mode="extended")
-            k = Kalimat(tweet_target.full_text)
             text_transformoji = k.transformoji(emoji_type)
             self.api.update_status(status=text_transformoji,
                                    in_reply_to_status_id=tweet.id,
@@ -111,9 +114,22 @@ class Twitter:
             time.sleep(3)
 
         elif emoji_type == "clap":
-            tweet_target = self.api.get_status(tweet.in_reply_to_status_id,
-                                               tweet_mode="extended")
-            k = Kalimat(tweet_target.full_text)
+            text_transformoji = k.transformoji(emoji_type)
+            self.api.update_status(status=text_transformoji,
+                                   in_reply_to_status_id=tweet.id,
+                                   auto_populate_reply_metadata=True)
+            self.show_what_tweeted(text_transformoji)
+            time.sleep(3)
+
+        elif emoji_type == "vomit":
+            text_transformoji = k.transformoji(emoji_type)
+            self.api.update_status(status=text_transformoji,
+                                   in_reply_to_status_id=tweet.id,
+                                   auto_populate_reply_metadata=True)
+            self.show_what_tweeted(text_transformoji)
+            time.sleep(3)
+
+        elif emoji_type == "sick":
             text_transformoji = k.transformoji(emoji_type)
             self.api.update_status(status=text_transformoji,
                                    in_reply_to_status_id=tweet.id,
@@ -134,7 +150,6 @@ class Twitter:
                 for tw in self.triggering_words:
                     if tw == "pliisi" in words:
                         fs = self.check_follower(self.my_bot_id, tweet.user.id)
-
                         if (fs[0].followed_by):
                             if self.my_user_id == tweet.in_reply_to_user_id:
                                 self.dont_mock_the_bot(self.tweet_text["dont_mock"][0],
@@ -150,7 +165,6 @@ class Twitter:
 
                     elif tw == "please" in words:
                         fs = self.check_follower(self.my_bot_id, tweet.user.id)
-
                         if (fs[0].followed_by):
                             if self.my_user_id == tweet.in_reply_to_user_id:
                                 self.dont_mock_the_bot(self.tweet_text["dont_mock"][0],
@@ -166,7 +180,6 @@ class Twitter:
 
                     elif tw == "please😂" in words:
                         fs = self.check_follower(self.my_bot_id, tweet.user.id)
-
                         if (fs[0].followed_by):
                             if self.my_user_id == tweet.in_reply_to_user_id:
                                 self.dont_mock_the_bot(self.tweet_text["dont_mock"][0],
@@ -181,9 +194,7 @@ class Twitter:
                                                   tweet)
 
                     elif tw == "please👏" in words:
-                        fs = self.check_follower(self.my_bot_id,
-                                                 tweet.user.id)
-
+                        fs = self.check_follower(self.my_bot_id, tweet.user.id)
                         if (fs[0].followed_by):
                             if self.my_user_id == tweet.in_reply_to_user_id:
                                 self.dont_mock_the_bot(self.tweet_text["dont_mock"][0],
@@ -193,6 +204,36 @@ class Twitter:
                                                        tweet)
                             else:
                                 self.mock_in_emoji(tweet, "clap")
+                        else:
+                            self.follow_dulu_dong(self.tweet_text["follow_dulu"],
+                                                  tweet)
+
+                    elif tw == "please🤮" in words:
+                        fs = self.check_follower(self.my_bot_id, tweet.user.id)
+                        if (fs[0].followed_by):
+                            if self.my_user_id == tweet.in_reply_to_user_id:
+                                self.dont_mock_the_bot(self.tweet_text["dont_mock"][0],
+                                                       tweet)
+                            elif self.my_bot_id == tweet.in_reply_to_user_id:
+                                self.dont_mock_the_bot(self.tweet_text["dont_mock"][1],
+                                                       tweet)
+                            else:
+                                self.mock_in_emoji(tweet, "vomit")
+                        else:
+                            self.follow_dulu_dong(self.tweet_text["follow_dulu"],
+                                                  tweet)
+
+                    elif tw == "please🤢" in words:
+                        fs = self.check_follower(self.my_bot_id, tweet.user.id)
+                        if (fs[0].followed_by):
+                            if self.my_user_id == tweet.in_reply_to_user_id:
+                                self.dont_mock_the_bot(self.tweet_text["dont_mock"][0],
+                                                       tweet)
+                            elif self.my_bot_id == tweet.in_reply_to_user_id:
+                                self.dont_mock_the_bot(self.tweet_text["dont_mock"][1],
+                                                       tweet)
+                            else:
+                                self.mock_in_emoji(tweet, "sick")
                         else:
                             self.follow_dulu_dong(self.tweet_text["follow_dulu"],
                                                   tweet)
@@ -235,7 +276,7 @@ class Twitter:
                 elif error == self.error_code['tweet_deleted_or_not_visible'][0]:
                     tweet_err = self.error_code['tweet_deleted_or_not_visible'][1]
                     self.show_what_tweeted(tweet_err)
-                    
+
                 else:
                     print(error)
                     tweet_err = "error code: "+str(error)+" "

@@ -80,12 +80,25 @@ class Kalimat:
                 finalText += word
             return finalText
 
+        elif emoji_type == "vomit":
+            for word in text:
+                word += "🤮"
+                finalText += word
+            return finalText
+
+        elif emoji_type == "sick":
+            for word in text:
+                word += "🤢"
+                finalText += word
+            return finalText
+
 
 # Testing purpose
-# k = Kalimat("Mbanya ada masalah apasih sebenernya ? Psikologis mba keganggu ya ? Yuk mba kita meet up, biar mbayna ga bar bar di Twitter n bisa tau di rl ya !!! 🙃 Soalnya orang yg di twitter bar bar, pasti dirlnya ciut, ga berani ngomong apa apa, n malu ama yg dihujatmya 🙃")
+# k = Kalimat(
+#     "Mbanya ada masalah apasih sebenernya ? Psikologis mba keganggu ya ? Yuk mba ")
 # k.removeWords()
 # kalimat = k.getSentence()
 # print(k.sentence)
 # print(k.transformoji("clap"))
-# print(k.transformoji("laugh"))
+# print(k.transformoji("sick"))
 # print(k.sentence)
