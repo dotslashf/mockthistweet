@@ -14,7 +14,10 @@ class Kalimat:
         finalText = ''
         excludedChars = [',', '.', '!', '?', '&', '-', '"']
         excludedWords = ['2beer!', 'mksfess',
-                         '[askmf]', '[cm]', '[gmf]', '[tanyarl]', '/wal', '/rlt/', '/krt']
+                         '[askmf]', '[cm]',
+                         '[gmf]', '[tanyarl]',
+                         '/wal', '/rlt/',
+                         '/krt/']
         invisibleChar = [u"\u2800", u"\u2063"]
         words = [i for j in self.sentence.split() for i in (j, ' ')][:-1]
         for word in words:
@@ -57,7 +60,7 @@ class Kalimat:
                 finalText += char
             else:
                 finalText += char
-                
+
         return finalText
 
     def transformoji(self, emoji_type):
