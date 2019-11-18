@@ -147,6 +147,11 @@ class Twitter:
             words = tweet.full_text.lower().split()
 
             try:
+                fs = self.check_follower(self.my_bot_id, tweet.user.id)
+                if (fs[0].followed_by):
+                    if 
+
+            try:
                 for tw in self.triggering_words:
                     if tw == "pliisi" in words:
                         fs = self.check_follower(self.my_bot_id, tweet.user.id)
