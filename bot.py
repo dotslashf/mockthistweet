@@ -18,7 +18,7 @@ class Twitter:
             "private_account": [179, "Inikan private account, mana bisa gue ngeliat tweetnya"],
             "blocked_account": [136, "Yah yang di mention ngeblock botnya"],
             "duplicate_tweet": [187, "Duplicated tweet"],
-            "tweet_target_deleted": [144, "Tweetnya udah dihapus sama dong:("],
+            "tweet_target_deleted": [144, "Tweetnya udah dihapus"],
             "tweet_target_to_long": [186, "Tweetnya kepanjangan kalau di tambahin emoji, coba format yang lain"],
             "tweet_deleted_or_not_visible": [385, "Tweet deleted or not visible"]
         }
