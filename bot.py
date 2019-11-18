@@ -6,9 +6,6 @@ from generator import drawText
 from kalimat import Kalimat
 
 
-fileMeme = {"output": "img/meme_new_format.png", "input": "img/meme_new.png"}
-
-
 class Twitter:
     def __init__(self, consumer_key, consumer_secret, access_token, access_token_secret):
         self.consumer_key = consumer_key
@@ -32,6 +29,8 @@ class Twitter:
                           "Ya lu mau nyoba buat gue ngemock diri gue sendiri? Lucu banget lo "],
             "follow_dulu": "Udah pake bot gratis apa susahnya follow dulu sih, "
         }
+        self.file_meme = {"output": ["img/meme_new_output.png", "img/meme_khaleesi_output.png"],
+                          "input": ["img/meme_new.png", "img/meme_khaleesi.png"]}
 
     def authentication(self):
         self.auth = tweepy.OAuthHandler(
@@ -76,20 +75,20 @@ class Twitter:
                                            tweet_mode="extended")
         k = Kalimat(tweet_target.full_text)
         text_trinsfirmid = k.trinsfirm()
-        self.api.update_status(status=text_trinsfirmid,
-                               in_reply_to_status_id=tweet.id,
-                               auto_populate_reply_metadata=True)
+        drawText(text_trinsfirmid, self.file_meme["input"][1])
+        time.sleep(5)
+        self.api.update_with_media(self.file_meme["output"][1],
+                                   status=text_trinsfirmid, in_reply_to_status_id=tweet.id, auto_populate_reply_metadata=True)
         self.show_what_tweeted(text_trinsfirmid)
-        time.sleep(3)
 
     def mock_in_please(self, tweet):
         tweet_target = self.api.get_status(tweet.in_reply_to_status_id,
                                            tweet_mode="extended")
         k = Kalimat(tweet_target.full_text)
         text_transformed = k.transform()
-        drawText(text_transformed, fileMeme["input"])
+        drawText(text_transformed, self.file_meme["input"][0])
         time.sleep(5)
-        self.api.update_with_media(fileMeme["output"],
+        self.api.update_with_media(self.file_meme["output"][0],
                                    status=text_transformed, in_reply_to_status_id=tweet.id, auto_populate_reply_metadata=True)
         self.show_what_tweeted(text_transformed)
 
