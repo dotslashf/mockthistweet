@@ -160,13 +160,13 @@ class Twitter:
                                 self.mock_in_pliisi(tweet)
                             elif tw is "please" in words:
                                 self.mock_in_please(tweet)
-                            elif tw is "please😂" in words:
+                            elif tw == "please😂" in words:
                                 self.mock_in_emoji(tweet, "laugh")
-                            elif tw is "please👏" in words:
+                            elif tw == "please👏" in words:
                                 self.mock_in_emoji(tweet, "clap")
-                            elif tw is "please🤮" in words:
+                            elif tw == "please🤮" in words:
                                 self.mock_in_emoji(tweet, "vomit")
-                            elif tw is "please🤢" in words:
+                            elif tw == "please🤢" in words:
                                 self.mock_in_emoji(tweet, "sick")
 
                 else:
