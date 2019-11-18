@@ -1,19 +1,23 @@
 # MOCK THAT TWEET
 
-you hate someone tweet? let this bot mock it for you, simply reply the tweet that you hate and tag me + "please" and ill mock that tweet with spongebob meme, or + "pliisi" and see the different, or you can use "please😂" and "please👏" for emoji mock.
+You hate someone tweet? Let this bot mock it for you. Simply reply the tweet that you hated. See usage.
 
-### Example
+### Usage
 
 ```
 hated tweet: so are you hating me because im making a bot?
 
-mocked tweet: sO ArE YoU HaTiNg mE BeCaUsE Im mAkInG A BoT
+please: sO ArE YoU HaTiNg mE BeCaUsE Im mAkInG A BoT
 
-mickid twiit: si iri yii hiting mi biciisi im miking i bit
+pliisi: si iri yii hiting mi biciisi im miking i bit
 
-laughed tweet: so😂are😂you😂hating😂me😂because😂im😂making😂a😂bot
+please😂: so😂are😂you😂hating😂me😂because😂im😂making😂a😂bot
 
-clapped tweet: so👏are👏you👏hating👏me👏because👏im👏making👏a👏bot
+please👏: so👏are👏you👏hating👏me👏because👏im👏making👏a👏bot
+
+please🤮: so🤮are🤮you🤮hating🤮me🤮because🤮im🤮making🤮a🤮bot🤮
+
+please🤢: so🤢are🤢you🤢hating🤢me🤢because🤢im🤢making🤢a🤢bot🤢
 ```
 
 ![spongebob meme](https://i.ibb.co/zQZswnP/meme-new-format-github.png)

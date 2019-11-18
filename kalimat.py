@@ -95,10 +95,10 @@ class Kalimat:
 
 # Testing purpose
 # k = Kalimat(
-#     "Mbanya ada masalah apasih sebenernya ? Psikologis mba keganggu ya ? Yuk mba ")
+#     "so are you hating me because im making a bot?")
 # k.removeWords()
 # kalimat = k.getSentence()
 # print(k.sentence)
-# print(k.transformoji("clap"))
 # print(k.transformoji("sick"))
+# print(k.transformoji("vomit"))
 # print(k.sentence)
