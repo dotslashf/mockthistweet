@@ -144,104 +144,34 @@ class Twitter:
             new_since_id = max(tweet.id, new_since_id)
             self.show_status(tweet)
 
-            words = tweet.full_text.lower().split()
-
             try:
+                words = tweet.full_text.lower().split()
                 fs = self.check_follower(self.my_bot_id, tweet.user.id)
                 if (fs[0].followed_by):
-                    if 
-
-            try:
-                for tw in self.triggering_words:
-                    if tw == "pliisi" in words:
-                        fs = self.check_follower(self.my_bot_id, tweet.user.id)
-                        if (fs[0].followed_by):
-                            if self.my_user_id == tweet.in_reply_to_user_id:
-                                self.dont_mock_the_bot(self.tweet_text["dont_mock"][0],
-                                                       tweet)
-                            elif self.my_bot_id == tweet.in_reply_to_user_id:
-                                self.dont_mock_the_bot(self.tweet_text["dont_mock"][1],
-                                                       tweet)
-                            else:
+                    if self.my_user_id == tweet.in_reply_to_user_id:
+                        self.dont_mock_the_bot(
+                            self.tweet_text["dont_mock"][0], tweet)
+                    elif self.my_bot_id == tweet.in_reply_to_user_id:
+                        self.dont_mock_the_bot(
+                            self.tweet_text["dont_mock"][1], tweet)
+                    else:
+                        for tw in self.triggering_words:
+                            if tw is "pliisi" in words:
                                 self.mock_in_pliisi(tweet)
-                        else:
-                            self.follow_dulu_dong(self.tweet_text["follow_dulu"],
-                                                  tweet)
-
-                    elif tw == "please" in words:
-                        fs = self.check_follower(self.my_bot_id, tweet.user.id)
-                        if (fs[0].followed_by):
-                            if self.my_user_id == tweet.in_reply_to_user_id:
-                                self.dont_mock_the_bot(self.tweet_text["dont_mock"][0],
-                                                       tweet)
-                            elif self.my_bot_id == tweet.in_reply_to_user_id:
-                                self.dont_mock_the_bot(self.tweet_text["dont_mock"][1],
-                                                       tweet)
-                            else:
+                            elif tw is "please" in words:
                                 self.mock_in_please(tweet)
-                        else:
-                            self.follow_dulu_dong(self.tweet_text["follow_dulu"],
-                                                  tweet)
-
-                    elif tw == "please😂" in words:
-                        fs = self.check_follower(self.my_bot_id, tweet.user.id)
-                        if (fs[0].followed_by):
-                            if self.my_user_id == tweet.in_reply_to_user_id:
-                                self.dont_mock_the_bot(self.tweet_text["dont_mock"][0],
-                                                       tweet)
-                            elif self.my_bot_id == tweet.in_reply_to_user_id:
-                                self.dont_mock_the_bot(self.tweet_text["dont_mock"][1],
-                                                       tweet)
-                            else:
+                            elif tw is "please😂" in words:
                                 self.mock_in_emoji(tweet, "laugh")
-                        else:
-                            self.follow_dulu_dong(self.tweet_text["follow_dulu"],
-                                                  tweet)
-
-                    elif tw == "please👏" in words:
-                        fs = self.check_follower(self.my_bot_id, tweet.user.id)
-                        if (fs[0].followed_by):
-                            if self.my_user_id == tweet.in_reply_to_user_id:
-                                self.dont_mock_the_bot(self.tweet_text["dont_mock"][0],
-                                                       tweet)
-                            elif self.my_bot_id == tweet.in_reply_to_user_id:
-                                self.dont_mock_the_bot(self.tweet_text["dont_mock"][1],
-                                                       tweet)
-                            else:
+                            elif tw is "please👏" in words:
                                 self.mock_in_emoji(tweet, "clap")
-                        else:
-                            self.follow_dulu_dong(self.tweet_text["follow_dulu"],
-                                                  tweet)
-
-                    elif tw == "please🤮" in words:
-                        fs = self.check_follower(self.my_bot_id, tweet.user.id)
-                        if (fs[0].followed_by):
-                            if self.my_user_id == tweet.in_reply_to_user_id:
-                                self.dont_mock_the_bot(self.tweet_text["dont_mock"][0],
-                                                       tweet)
-                            elif self.my_bot_id == tweet.in_reply_to_user_id:
-                                self.dont_mock_the_bot(self.tweet_text["dont_mock"][1],
-                                                       tweet)
-                            else:
+                            elif tw is "please🤮" in words:
                                 self.mock_in_emoji(tweet, "vomit")
-                        else:
-                            self.follow_dulu_dong(self.tweet_text["follow_dulu"],
-                                                  tweet)
-
-                    elif tw == "please🤢" in words:
-                        fs = self.check_follower(self.my_bot_id, tweet.user.id)
-                        if (fs[0].followed_by):
-                            if self.my_user_id == tweet.in_reply_to_user_id:
-                                self.dont_mock_the_bot(self.tweet_text["dont_mock"][0],
-                                                       tweet)
-                            elif self.my_bot_id == tweet.in_reply_to_user_id:
-                                self.dont_mock_the_bot(self.tweet_text["dont_mock"][1],
-                                                       tweet)
-                            else:
+                            elif tw is "please🤢" in words:
                                 self.mock_in_emoji(tweet, "sick")
-                        else:
-                            self.follow_dulu_dong(self.tweet_text["follow_dulu"],
-                                                  tweet)
+
+                else:
+                    self.follow_dulu_dong(
+                        self.tweet_text["follow_dulu"], tweet)
 
             except tweepy.TweepError as e:
                 error = e.api_code
