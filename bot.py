@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from generator import drawText
 from kalimat import Kalimat
 from load import writeDataError
+from emoji_k_generator import Emoji
 
 
 class Twitter:
@@ -26,7 +27,8 @@ class Twitter:
         }
         self.triggering_words = ["please", "pliisi",
                                  "please😂", "please👏",
-                                 "please🤮", "please🤢"]
+                                 "please🤮", "please🤢",
+                                 "pleasek"]
         self.my_user_id = 1012117785512558592
         self.my_bot_id = 1157825461277167616
         self.tweet_text = {
@@ -139,6 +141,19 @@ class Twitter:
             self.show_what_tweeted(text_transformoji)
             time.sleep(3)
 
+    def mock_in_emoji_k(self, tweet):
+        e = Emoji("kontol kau ")
+        tweet_target = self.api.get_status(tweet.in_reply_to_status_id, tweet_mode="extended")
+        re = e.random()
+        e.pick_emoji(re)
+        text_k = e.create_pattern()
+        text_k += tweet_target.user.screen_name
+        self.api.update_status(status=text_k,
+                               in_reply_to_status_id=tweet.id,
+                               auto_populate_reply_metadata=True)
+        self.show_what_tweeted(text_k)
+        time.sleep(3)
+
     def get_mention_tweet(self, since_id):
         new_since_id = since_id
 
@@ -153,17 +168,21 @@ class Twitter:
                     if self.my_user_id == tweet.in_reply_to_user_id:
                         for tw in self.triggering_words:
                             if tw in words:
-                                self.dont_mock_the_bot(self.tweet_text["dont_mock"][0], tweet)
+                                self.dont_mock_the_bot(
+                                    self.tweet_text["dont_mock"][0], tweet)
                     elif self.my_bot_id == tweet.in_reply_to_user_id:
                         for tw in self.triggering_words:
                             if tw in words:
-                                self.dont_mock_the_bot(self.tweet_text["dont_mock"][1], tweet)
+                                self.dont_mock_the_bot(
+                                    self.tweet_text["dont_mock"][1], tweet)
                     else:
                         for tw in self.triggering_words:
                             if tw is "pliisi" in words:
                                 self.mock_in_pliisi(tweet)
                             elif tw is "please" in words:
                                 self.mock_in_please(tweet)
+                            elif tw is "pleasek" in words:
+                                self.mock_in_emoji_k(tweet)
                             elif tw == "please😂" in words:
                                 self.mock_in_emoji(tweet, "laugh")
                             elif tw == "please👏" in words:
@@ -176,7 +195,8 @@ class Twitter:
                 else:
                     for tw in self.triggering_words:
                         if tw in words:
-                            self.follow_dulu_dong(self.tweet_text["follow_dulu"], tweet)
+                            self.follow_dulu_dong(
+                                self.tweet_text["follow_dulu"], tweet)
 
             except tweepy.TweepError as e:
                 error = e.api_code

@@ -1,23 +1,11 @@
 import emoji
 import random
-import time
-import os
-from dotenv import load_dotenv
-from bot import Twitter
-
-load_dotenv()
-
-CONSUMER_KEY = os.getenv("CONSUMER_KEY")
-CONSUMER_SECRET = os.getenv("CONSUMER_SECRET")
-ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
-ACCESS_TOKEN_SECRET = os.getenv("ACCESS_TOKEN_SECRET")
-LIST_EMOJI = emoji.unicode_codes.EMOJI_UNICODE
 
 
 class Emoji:
-    def __init__(self, sentence, list_emoji):
+    def __init__(self, sentence):
         self.sentence = sentence
-        self.list_emoji = list_emoji
+        self.list_emoji = emoji.unicode_codes.EMOJI_UNICODE
         self.emoji = ''
 
     def random(self):
@@ -62,7 +50,7 @@ class Emoji:
                     finalText += self.emoji
                     if j == 13:
                         finalText += self.sentence[1:(len(self.sentence))]
-                        finalText += '\n'
+
                 else:
                     if i == 0 and j in range(2, 11):
                         finalText += ' '
@@ -75,13 +63,13 @@ class Emoji:
         return finalText
 
 
-e = Emoji("kontol", LIST_EMOJI)
-b = Twitter(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+# e = Emoji("kontol")
+# # # b = Twitter(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
 
-while True:
-    re = e.random()
-    print(re)
-    e.pick_emoji(re)
-    jadi = e.create_pattern()
-    b.api.update_status(status=jadi)
-    time.sleep(60)
+# re = e.random()
+# print(re)
+# e.pick_emoji(re)
+# jadi = e.create_pattern()
+# jadi += "test"
+# print(jadi)
+# # b.api.update_status(status=jadi)
