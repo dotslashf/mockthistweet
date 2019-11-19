@@ -12,12 +12,15 @@ class Kalimat:
     def removeWords(self):
         self.sentence = demoji.replace(self.sentence)
         finalText = ''
-        excludedChars = [',', '.', '!', '?', '&', '-', '"']
+        excludedChars = [',', '.', '!', '?',
+                         '&', '-', '"', "<",
+                         ">", "*", "(", ")",
+                         "/"]
         excludedWords = ['2beer!', 'mksfess',
                          '[askmf]', '[cm]',
                          '[gmf]', '[tanyarl]',
                          '/wal', '/rlt/',
-                         '/krt/']
+                         '/krt/', 'fess']
         invisibleChar = [u"\u2800", u"\u2063"]
         words = [i for j in self.sentence.split() for i in (j, ' ')][:-1]
         for word in words:
