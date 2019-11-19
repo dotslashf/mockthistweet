@@ -64,14 +64,14 @@ class Emoji:
                             finalText += ' '
 
         elif pattern == 'b':
-            b1 = [0, 1, 2]
-            b2 = [0, 11]
+            b1 = [0, 1, 2, 3]
+            b2 = [0, 1, 10, 11]
 
             for i in range(6):
                 for j in range(12):
                     if i == 0 and j in b1:
                         finalText += self.emoji
-                        if j == 2:
+                        if j == 3:
                             finalText += '\n'
                     elif i == 1 and j in b2:
                         finalText += self.emoji
@@ -79,7 +79,7 @@ class Emoji:
                             finalText += '\n'
                     elif i == 2 and j in b1:
                         finalText += self.emoji
-                        if j == 2:
+                        if j == 3:
                             finalText += '\n'
                     elif i == 3 and j in b2:
                         finalText += self.emoji
@@ -91,7 +91,7 @@ class Emoji:
                             finalText += '\n'
                     elif i == 5 and j in b1:
                         finalText += self.emoji
-                        if j == 2:
+                        if j == 3:
                             finalText += self.sentence[1:len(self.sentence)]
                     else:
                         if i == 1 and j in range(1, 10):
