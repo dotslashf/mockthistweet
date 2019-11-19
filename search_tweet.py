@@ -13,6 +13,19 @@ ACCESS_TOKEN_SECRET = os.getenv("ACCESS_TOKEN_SECRET")
 bot = Twitter(CONSUMER_KEY, CONSUMER_SECRET,
               ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
 
-tweet = bot.api.get_status(id=1196628742044446720)
+tweet_bug = bot.api.get_status(id=1196782210642333696, include_entities=False)
+tweet = bot.api.get_status(id=1196799891961307136)
 
-print(tweet.text)
+# for key, entities in tweet_bug.entities.items():
+#     for value in entities:
+#         print(value['screen_name'])
+
+# print('\n')
+
+# for tweet in tweet.entities.items():
+#     for a in tweet[1]:
+#         last = list(a.items())[0][-1]
+# print(last)
+
+
+print(tweet_bug.text)
