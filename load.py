@@ -11,5 +11,5 @@ def writeData(file, last_id):
 
 
 def writeDataError(tweet, error):
-    f = open("error_log.txt", "a+")
+    f = open("text/error_log.txt", "a+")
     f.write("tweet id: "+tweet.id_str+" error code: "+str(error)+'\n')
