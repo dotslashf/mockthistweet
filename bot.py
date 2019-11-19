@@ -35,7 +35,7 @@ class Twitter:
             "dont_mock": ["Enak aja developernya mau di mock, jangan ngelawak deh ",
                           "Lu mau nyoba buat gue ngemock diri gue sendiri? Lucu banget lo "],
             "follow_dulu": "Udah pake bot gratis apa susahnya follow dulu sih, ",
-            "untag_dong": "Please untag botnya dong, berisik banget, "
+            "untag_dong": "Kalau jelasin cara kerja botnya tolong di untag yah, "
         }
         self.file_meme = {"output": ["img/meme_spongebob_output.png", "img/meme_khaleesi_output.png"],
                           "input": ["img/meme_new.png", "img/meme_khaleesi.png"]}
@@ -176,8 +176,8 @@ class Twitter:
             self.show_status(tweet)
 
             try:
+                words = tweet.full_text.lower().split()
                 if self.am_i_mentioned(tweet) == 'mockthistweet':
-                    words = tweet.full_text.lower().split()
                     fs = self.check_follower(self.my_bot_id, tweet.user.id)
                     if (fs[0].followed_by):
                         if self.my_user_id == tweet.in_reply_to_user_id:
@@ -220,7 +220,9 @@ class Twitter:
                                 self.tweeted_and_show(self.tweet_text["follow_dulu"], tweet)
 
                 elif self.am_i_mentioned(tweet) != 'mockthistweet':
-                    self.tweeted_and_show(self.tweet_text["untag_dong"], tweet)
+                    for tw in self.triggering_words:
+                        if tw in words:
+                            self.tweeted_and_show(self.tweet_text["untag_dong"], tweet)
 
             except tweepy.TweepError as e:
                 error = e.api_code
