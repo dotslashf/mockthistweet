@@ -6,6 +6,8 @@ from kalimat import Kalimat
 font = ImageFont.truetype("impact.ttf", 42)
 
 # draw the text and outline
+
+
 def drawTextOutline(text, x, y, draw):
     draw.text((x-2, y-2), text, (0, 0, 0), font=font)
     draw.text((x+2, y-2), text, (0, 0, 0), font=font)
@@ -14,7 +16,8 @@ def drawTextOutline(text, x, y, draw):
     draw.text((x, y), text, (255, 255, 255), font=font)
     return
 
-def splitLines(text, img, draw, pos):
+
+def splitLines(text, img, draw, pos, memeType):
     w, h = draw.textsize(text, font)  # measure the size the text will take
     lineCount = 1
     if w > img.width:
@@ -49,8 +52,11 @@ def splitLines(text, img, draw, pos):
                 print("may cut")
             else:
                 print("may not cut")
-                while text[nextCut] != " ":
-                    nextCut += 1
+                try:
+                    while text[nextCut] != " ":
+                        nextCut += 1
+                except:
+                    nextCut = round(len(text)/2)
                 print("new cut: {}".format(nextCut))
 
             line = text[cut:nextCut].strip()
@@ -77,7 +83,6 @@ def splitLines(text, img, draw, pos):
     elif pos == "bottom":
         lastY = img.height - h * (lineCount+1) - 25
 
-
     for i in range(0, lineCount):
         w, h = draw.textsize(lines[i], font)
         x = img.width/2 - w/2
@@ -85,19 +90,28 @@ def splitLines(text, img, draw, pos):
         drawTextOutline(lines[i], x, y, draw)
         lastY = y
 
-    img.save("img/meme_new_format.png")
+    if memeType == "spongebob":
+        img.save("img/meme_spongebob_output.png")
+    elif memeType == "khaleesi":
+        img.save("img/meme_khaleesi_output.png")
 
 
 # draw text
-def drawText(bottomText, memeLocation):
+def drawText(bottomText, memeLocation, memeType):
     img = Image.open(memeLocation)
     draw = ImageDraw.Draw(img)
 
-    splitLines(bottomText, img, draw, "bottom")
-    print('-------------------------------------')
+    splitLines(bottomText, img, draw, "bottom", memeType)
+    print("------------------------------------------------")
 
 
-# k = Kalimat(
-#     "coba dulu ini deh ya semoga bisa dong hehe coba dulu ini deh ya semoga bisa dong hehe")
-# text = k.transform()
-# drawText(text, "img/meme_new_2.png")
+# k = Kalimat("AKWOAKWOAKWOWKSOWKAOWKIWKAOAKWOAKWOAKSKKSOWAKOAKAOWKSOWKSOK")
+# text = k.getSentence()
+# # # text2 = k.trinsfirm()
+# # # text3 = k.transformoji("laugh")
+# # # text4 = k.transformoji("clap")
+# file_meme = {"output": ["img/meme_new_output.png", "img/meme_khaleesi_output.png"],
+#              "input": ["img/meme_new.png", "img/meme_khaleesi.png"]}
+
+# drawText("asdsadsads", file_meme["input"][1])
+# # # print(text4)

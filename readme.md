@@ -1,22 +1,33 @@
 # MOCK THAT TWEET
 
-you hate someone tweet? let this bot mock it for you, simply reply the tweet that you hate and tag me + "please" and ill mock that tweet with spongebob meme, or + "pliisi" and see the different.
+You hate someone tweet? Let this bot mock it for you. Simply reply the tweet that you hated. See usage.
 
-### Example
+### Usage
 
 ```
-hated tweet: khusus yg headernya quotes raden raup nga bole ketawa😠
+hated tweet: so are you hating me because im making a bot?
 
-mocked tweet: KhUsUs yG HeAdErNyA QuOtEs rAdEn rAuP NgA BoLe kEtAwA😠
+please: sO ArE YoU HaTiNg mE BeCaUsE Im mAkInG A BoT
 
-mickid twiit: khisis yg hiidirnyi qiitis ridin riip ngi bili kitiwi😠
+pliisi: si iri yii hiting mi biciisi im miking i bit
+
+please😂: so😂are😂you😂hating😂me😂because😂im😂making😂a😂bot
+
+please👏: so👏are👏you👏hating👏me👏because👏im👏making👏a👏bot
+
+please🤮: so🤮are🤮you🤮hating🤮me🤮because🤮im🤮making🤮a🤮bot🤮
+
+please🤢: so🤢are🤢you🤢hating🤢me🤢because🤢im🤢making🤢a🤢bot🤢
 ```
 
-![spongebob meme](https://i.ibb.co/VSwyfFK/meme-new-format.png)
+![spongebob meme](https://i.ibb.co/zQZswnP/meme-new-format-github.png)
+![khaleesi meme](https://i.ibb.co/vL8Zxzw/meme-khaleesi-output.png)
 
 ### Built With
 
 - [Tweepy](https://www.tweepy.org/) - An easy-to-use Python library for accessing the Twitter API.
+- [Pillow](https://github.com/python-pillow/Pillow) - PIL is the Python Imaging Library by Fredrik Lundh and Contributors.
+- [Demoji](https://pypi.org/project/demoji/) - Accurately find or remove emojis from a blob of text.
 
 ### Inspired from
 
