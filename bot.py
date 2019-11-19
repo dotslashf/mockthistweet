@@ -34,7 +34,8 @@ class Twitter:
         self.tweet_text = {
             "dont_mock": ["Enak aja developernya mau di mock, jangan ngelawak deh ",
                           "Lu mau nyoba buat gue ngemock diri gue sendiri? Lucu banget lo "],
-            "follow_dulu": "Udah pake bot gratis apa susahnya follow dulu sih, "
+            "follow_dulu": "Udah pake bot gratis apa susahnya follow dulu sih, ",
+            "untag_dong": "Please untag botnya dong, berisik banget, "
         }
         self.file_meme = {"output": ["img/meme_spongebob_output.png", "img/meme_khaleesi_output.png"],
                           "input": ["img/meme_new.png", "img/meme_khaleesi.png"]}
@@ -65,17 +66,11 @@ class Twitter:
               "\n"+u"\u2514"+"------------------------------------------------")
         time.sleep(1)
 
-    def follow_dulu_dong(self, tweet_text, tweet):
+    def tweeted_and_show(self, tweet_text, tweet):
         username = tweet.user.screen_name
         self.api.update_status(status=tweet_text+username,
                                in_reply_to_status_id=tweet.id,
                                auto_populate_reply_metadata=True)
-        self.show_what_tweeted(tweet_text)
-
-    def dont_mock_the_bot(self, tweet_text, tweet):
-        username = tweet.user.screen_name
-        self.api.update_status(
-            status=tweet_text+username, in_reply_to_status_id=tweet.id, auto_populate_reply_metadata=True)
         self.show_what_tweeted(tweet_text)
 
     def mock_in_pliisi(self, tweet):
@@ -142,7 +137,8 @@ class Twitter:
             time.sleep(3)
 
     def mock_in_emoji_pattern(self, tweet, pattern):
-        tweet_target = self.api.get_status(tweet.in_reply_to_status_id, tweet_mode="extended")
+        tweet_target = self.api.get_status(
+            tweet.in_reply_to_status_id, tweet_mode="extended")
         if pattern == 'k':
             e = Emoji("kamu mending delete akun twitter aja ")
             re = e.random()
@@ -150,8 +146,8 @@ class Twitter:
             text_k = e.create_pattern(pattern)
             text_k += tweet_target.user.screen_name
             self.api.update_status(status=text_k,
-                                in_reply_to_status_id=tweet.id,
-                                auto_populate_reply_metadata=True)
+                                   in_reply_to_status_id=tweet.id,
+                                   auto_populate_reply_metadata=True)
             self.show_what_tweeted(text_k)
             time.sleep(3)
         elif pattern == 'b':
@@ -166,6 +162,12 @@ class Twitter:
             self.show_what_tweeted(tweet_b)
             time.sleep(3)
 
+    def am_i_mentioned(self, tweet):
+        for t in tweet.entities.items():
+            for a in t[1]:
+                last = list(a.items())[0][-1]
+        return last
+
     def get_mention_tweet(self, since_id):
         new_since_id = since_id
 
@@ -174,50 +176,51 @@ class Twitter:
             self.show_status(tweet)
 
             try:
-                words = tweet.full_text.lower().split()
-                fs = self.check_follower(self.my_bot_id, tweet.user.id)
-                if (fs[0].followed_by):
-                    if self.my_user_id == tweet.in_reply_to_user_id:
-                        for tw in self.triggering_words:
-                            if tw in words:
-                                self.dont_mock_the_bot(
-                                    self.tweet_text["dont_mock"][0], tweet)
-                    elif self.my_bot_id == tweet.in_reply_to_user_id:
-                        for tw in self.triggering_words:
-                            if tw in words:
-                                self.dont_mock_the_bot(
-                                    self.tweet_text["dont_mock"][1], tweet)
+                if self.am_i_mentioned(tweet) == 'mockthistweet':
+                    words = tweet.full_text.lower().split()
+                    fs = self.check_follower(self.my_bot_id, tweet.user.id)
+                    if (fs[0].followed_by):
+                        if self.my_user_id == tweet.in_reply_to_user_id:
+                            for tw in self.triggering_words:
+                                if tw in words:
+                                    self.tweeted_and_show(self.tweet_text["dont_mock"][0], tweet)
+                        elif self.my_bot_id == tweet.in_reply_to_user_id:
+                            for tw in self.triggering_words:
+                                if tw in words:
+                                    self.tweeted_and_show(self.tweet_text["dont_mock"][1], tweet)
+                        else:
+                            for tw in self.triggering_words:
+                                if tw is "pliisi" in words:
+                                    self.mock_in_pliisi(tweet)
+
+                                elif tw is "please" in words:
+                                    self.mock_in_please(tweet)
+
+                                elif tw is "pleasek" in words:
+                                    self.mock_in_emoji_pattern(tweet, 'k')
+
+                                elif tw is "pleaseb" in words:
+                                    self.mock_in_emoji_pattern(tweet, 'b')
+
+                                elif tw == "please😂" in words:
+                                    self.mock_in_emoji(tweet, "laugh")
+
+                                elif tw == "please👏" in words:
+                                    self.mock_in_emoji(tweet, "clap")
+
+                                elif tw == "please🤮" in words:
+                                    self.mock_in_emoji(tweet, "vomit")
+
+                                elif tw == "please🤢" in words:
+                                    self.mock_in_emoji(tweet, "sick")
+
                     else:
                         for tw in self.triggering_words:
-                            if tw is "pliisi" in words:
-                                self.mock_in_pliisi(tweet)
+                            if tw in words:
+                                self.tweeted_and_show(self.tweet_text["follow_dulu"], tweet)
 
-                            elif tw is "please" in words:
-                                self.mock_in_please(tweet)
-
-                            elif tw is "pleasek" in words:
-                                self.mock_in_emoji_pattern(tweet, 'k')
-
-                            elif tw is "pleaseb" in words:
-                                self.mock_in_emoji_pattern(tweet, 'b')
-
-                            elif tw == "please😂" in words:
-                                self.mock_in_emoji(tweet, "laugh")
-
-                            elif tw == "please👏" in words:
-                                self.mock_in_emoji(tweet, "clap")
-
-                            elif tw == "please🤮" in words:
-                                self.mock_in_emoji(tweet, "vomit")
-
-                            elif tw == "please🤢" in words:
-                                self.mock_in_emoji(tweet, "sick")
-
-                else:
-                    for tw in self.triggering_words:
-                        if tw in words:
-                            self.follow_dulu_dong(
-                                self.tweet_text["follow_dulu"], tweet)
+                elif self.am_i_mentioned(tweet) != 'mockthistweet':
+                    self.tweeted_and_show(self.tweet_text["untag_dong"], tweet)
 
             except tweepy.TweepError as e:
                 error = e.api_code
