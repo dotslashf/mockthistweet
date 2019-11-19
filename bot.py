@@ -4,6 +4,7 @@ import time
 from dotenv import load_dotenv
 from generator import drawText
 from kalimat import Kalimat
+from load import writeDataError
 
 
 class Twitter:
@@ -154,7 +155,8 @@ class Twitter:
                             if tw in words:
                                 self.dont_mock_the_bot(self.tweet_text["dont_mock"][0], tweet)
                     elif self.my_bot_id == tweet.in_reply_to_user_id:
-                        for tw in words:
+                        for tw in self.triggering_words:
+                            if tw in words:
                                 self.dont_mock_the_bot(self.tweet_text["dont_mock"][1], tweet)
                     else:
                         for tw in self.triggering_words:
@@ -172,8 +174,9 @@ class Twitter:
                                 self.mock_in_emoji(tweet, "sick")
 
                 else:
-                    self.follow_dulu_dong(
-                        self.tweet_text["follow_dulu"], tweet)
+                    for tw in self.triggering_words:
+                        if tw in words:
+                            self.follow_dulu_dong(self.tweet_text["follow_dulu"], tweet)
 
             except tweepy.TweepError as e:
                 error = e.api_code
@@ -224,8 +227,8 @@ class Twitter:
                 else:
                     print(error)
                     tweet_err = "error code: "+str(error)+" "
-                    self.api.update_status(status=tweet_err+tweet.id_str)
                     self.show_what_tweeted(tweet_err)
+                    writeDataError(tweet, error)
 
                 continue
 
