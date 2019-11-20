@@ -4,8 +4,8 @@ import time
 from dotenv import load_dotenv
 from generator import drawText
 from kalimat import Kalimat
-from load import writeDataError
 from emoji_generator import Emoji
+from db_mongo import Database
 
 
 class Twitter:
@@ -271,10 +271,12 @@ class Twitter:
                     self.show_what_tweeted(tweet_err)
 
                 else:
-                    print(error)
-                    tweet_err = "error code: "+str(error)+" "
-                    self.show_what_tweeted(tweet_err)
-                    writeDataError(tweet, error)
+                    t = time.localtime()
+                    current_time = time.strftime("%H:%M:%S %D", t)
+                    db = Database()
+                    db.connect_db('twitter')
+                    db.select_col('tweet_error')
+                    db.insert_object({'error_code': str(error), 'timestamp': current_time, 'tweet_id': tweet.id})
 
                 continue
 
