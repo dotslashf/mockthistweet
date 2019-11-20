@@ -4,6 +4,7 @@ import os
 from dotenv import load_dotenv
 from bot import Twitter
 from load import loadData, writeData
+from db_mongo import Database
 
 load_dotenv()
 
@@ -16,10 +17,12 @@ FILE_LAST_ID = os.getenv("FILE_LAST_ID")
 
 def main(ck, cs, at, ats):
     bot = Twitter(ck, cs, at, ats)
+    db = Database('twitter', 'tweet')
 
     while True:
-        last_id = loadData(FILE_LAST_ID)
-        last_id = int(last_id[-1])
+        l = db.find_last_object()
+        last_id = l['last_tweet_id']
+
         since_id = bot.get_mention_tweet(last_id)
 
         follower = bot.api.get_user(user_id=1157825461277167616)
@@ -31,7 +34,7 @@ def main(ck, cs, at, ats):
               "\n"+u"\u2514"+"------------------------------------------------")
 
         if (last_id != since_id):
-            writeData(FILE_LAST_ID, str(since_id))
+            db.insert_object(since_id)
         else:
             print('no new mention')
 

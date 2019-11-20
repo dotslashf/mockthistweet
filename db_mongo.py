@@ -25,11 +25,3 @@ class Database:
         data = {'_id': l_id, 'tweet_last_id': tweet}
 
         self.col.insert_one(data)
-
-
-db = Database('twitter', 'tweet')
-l = db.find_last_object()
-print(l['last_id'])
-# db.insert_object(1197112985367408200)
-l = db.find_last_object()
-print(l['last_id'])
