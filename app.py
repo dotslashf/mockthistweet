@@ -27,8 +27,11 @@ def main(ck, cs, at, ats):
         since_id = bot.get_mention_tweet(last_id)
 
         follower = bot.api.get_user(user_id=1157825461277167616)
+        t = time.localtime()
+        current_time = time.strftime("%H:%M:%S %D", t)
 
         print("\n"+u"\u250C"+"------------------------------------------------",
+              "\n: current time: ", current_time,
               "\n| newest tweet: ", since_id,
               "\n| oldest tweet: ", last_id,
               "\n| current followers: ", follower.followers_count,
