@@ -255,6 +255,7 @@ class Twitter:
 
             except tweepy.TweepError as e:
                 error = e.api_code
+                error_text = e.response.text
 
                 if error == self.error_code['private_account'][0]:
                     tweet_err = self.error_code['private_account'][1]
@@ -310,7 +311,8 @@ class Twitter:
                          'timestamp': current_time,
                          'tweet_id': tweet.id,
                          'username': tweet.user.screen_name,
-                         'tweet_text': tweet.full_text})
+                         'tweet_text': tweet.full_text,
+                         'error_text': error_text})
 
                 continue
 
