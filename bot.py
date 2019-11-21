@@ -239,6 +239,12 @@ class Twitter:
                     else:
                         for tw in self.triggering_words:
                             if tw in words:
+                                current_time = time.strftime("%H:%M:%S %D", t)
+                                db = Database()
+                                db.connect_db('twitter')
+                                db.select_col('not_follower')
+                                db.insert_object({'tweet_id': tweet.id,
+                                                  'username': tweet.screen_name})
                                 self.tweeted_and_show(
                                     self.tweet_text["follow_dulu"], tweet, 'back')
 
