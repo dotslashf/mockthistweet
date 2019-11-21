@@ -17,10 +17,10 @@ class Twitter:
         self.auth = self.authentication()
         self.api = tweepy.API(self.auth)
         self.error_code = {
-            "private_account": [179, "Inikan private account, mana bisa gue ngeliat tweetnya"],
+            "private_account": [179, "Inikan private account, mana bisa gue ngeliat tweetnya sih"],
             "blocked_account": [136, "Yah yang di mention ngeblock botnya"],
             "duplicate_tweet": [187, "Duplicated tweet"],
-            "tweet_target_deleted": [144, "Tweetnya udah dihapus"],
+            "tweet_target_deleted": [144, "Tweetnya udah dihapu, kasian deh lo"],
             "tweet_target_to_long": [186, "Tweetnya kepanjangan kalau di tambahin emoji, coba format yang lain"],
             "tweet_deleted_or_not_visible": [385, "Tweet deleted or not visible"],
             "twitter_over_capacity": [130, "Twitternya lagi overcapacity, next time yah"]
@@ -34,8 +34,8 @@ class Twitter:
         self.my_bot_id = 1157825461277167616
         self.tweet_text = {
             "dont_mock": ["Enak aja developernya mau di mock, jangan ngelawak deh ",
-                          "Lu mau nyoba buat gue ngemock diri gue sendiri? Lucu banget lo "],
-            "follow_dulu": "Udah pake bot gratis apa susahnya follow dulu sih, ",
+                          " adalah akun yang bodoh banget, ya kali gue nge mock diri gue sendiri."],
+            "follow_dulu": "Gak usah sok asik deh main tag-tag kalau belum follow, lo mock manual aja yah ",
             "untag_dong": "Kalau jelasin cara kerja botnya tolong di untag yah, "
         }
         self.file_meme = {"output": ["img/meme_spongebob_output.png", "img/meme_khaleesi_output.png"],
@@ -67,9 +67,15 @@ class Twitter:
               "\n"+u"\u2514"+"------------------------------------------------")
         time.sleep(1)
 
-    def tweeted_and_show(self, tweet_text, tweet):
+    def tweeted_and_show(self, tweet_text, tweet, position):
         username = tweet.user.screen_name
-        self.api.update_status(status=tweet_text+username,
+
+        if position == 'back':
+            tweet_text = tweet_text+username
+        elif position == 'front':
+            tweet_text = '@'+username+tweet_text
+
+        self.api.update_status(status=tweet_text,
                                in_reply_to_status_id=tweet.id,
                                auto_populate_reply_metadata=True)
         self.show_what_tweeted(tweet_text)
@@ -195,12 +201,12 @@ class Twitter:
                             for tw in self.triggering_words:
                                 if tw in words:
                                     self.tweeted_and_show(
-                                        self.tweet_text["dont_mock"][0], tweet)
+                                        self.tweet_text["dont_mock"][0], tweet, 'back')
                         elif self.my_bot_id == tweet.in_reply_to_user_id:
                             for tw in self.triggering_words:
                                 if tw in words:
                                     self.tweeted_and_show(
-                                        self.tweet_text["dont_mock"][1], tweet)
+                                        self.tweet_text["dont_mock"][1], tweet, 'front')
                         else:
                             for tw in self.triggering_words:
                                 if tw is "pliisi" in words:
@@ -234,13 +240,13 @@ class Twitter:
                         for tw in self.triggering_words:
                             if tw in words:
                                 self.tweeted_and_show(
-                                    self.tweet_text["follow_dulu"], tweet)
+                                    self.tweet_text["follow_dulu"], tweet, 'back')
 
                 elif self.am_i_mentioned(tweet) != 'mockthistweet':
                     for tw in self.triggering_words:
                         if tw in words:
                             self.tweeted_and_show(
-                                self.tweet_text["untag_dong"], tweet)
+                                self.tweet_text["untag_dong"], tweet, 'back')
 
             except tweepy.TweepError as e:
                 error = e.api_code
