@@ -18,7 +18,7 @@ class Kalimat:
                          "/"]
         excludedWords = ['2beer!', 'mksfess',
                          '[askmf]', '[cm]',
-                         '[gmf]', '[tanyarl]',
+                         '[gmf]', 'tanyarl',
                          '/wal', '/rlt/',
                          '/krt/', 'fess']
         invisibleChar = [u"\u2800", u"\u2063"]
