@@ -190,7 +190,6 @@ class Twitter:
 
         for tweet in tweepy.Cursor(self.api.mentions_timeline, since_id=since_id, tweet_mode="extended").items():
             new_since_id = max(tweet.id, new_since_id)
-            tweet_output = tweet
             self.show_status(tweet)
 
             try:
@@ -317,4 +316,4 @@ class Twitter:
 
                 continue
 
-        return new_since_id, tweet_output
+        return new_since_id
