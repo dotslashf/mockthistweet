@@ -28,7 +28,8 @@ class Twitter:
         self.triggering_words = ["please", "pliisi",
                                  "please😂", "please👏",
                                  "please🤮", "please🤢",
-                                 "pleasek", "pleaseb"]
+                                 "pleasek", "pleaseb",
+                                 "please💩"]
         self.my_user_id = 1012117785512558592
         self.my_bot_id = 1157825461277167616
         self.tweet_text = {
@@ -136,6 +137,16 @@ class Twitter:
             self.show_what_tweeted(text_transformoji)
             time.sleep(3)
 
+        elif emoji_type == "poop":
+            text_transformoji = k.transformoji(emoji_type)
+            text_tambahan = "translatean tweet: {} tai semua yg lo tweet".format(
+                text_transformoji)
+            self.api.update_status(status=text_tambahan,
+                                   in_reply_to_status_id=tweet.id,
+                                   auto_populate_reply_metadata=True)
+            self.show_what_tweeted(text_tambahan)
+            time.sleep(3)
+
     def mock_in_emoji_pattern(self, tweet, pattern):
         tweet_target = self.api.get_status(
             tweet.in_reply_to_status_id, tweet_mode="extended")
@@ -183,11 +194,13 @@ class Twitter:
                         if self.my_user_id == tweet.in_reply_to_user_id:
                             for tw in self.triggering_words:
                                 if tw in words:
-                                    self.tweeted_and_show(self.tweet_text["dont_mock"][0], tweet)
+                                    self.tweeted_and_show(
+                                        self.tweet_text["dont_mock"][0], tweet)
                         elif self.my_bot_id == tweet.in_reply_to_user_id:
                             for tw in self.triggering_words:
                                 if tw in words:
-                                    self.tweeted_and_show(self.tweet_text["dont_mock"][1], tweet)
+                                    self.tweeted_and_show(
+                                        self.tweet_text["dont_mock"][1], tweet)
                         else:
                             for tw in self.triggering_words:
                                 if tw is "pliisi" in words:
@@ -214,15 +227,20 @@ class Twitter:
                                 elif tw == "please🤢" in words:
                                     self.mock_in_emoji(tweet, "sick")
 
+                                elif tw == "please💩" in words:
+                                    self.mock_in_emoji(tweet, "poop")
+
                     else:
                         for tw in self.triggering_words:
                             if tw in words:
-                                self.tweeted_and_show(self.tweet_text["follow_dulu"], tweet)
+                                self.tweeted_and_show(
+                                    self.tweet_text["follow_dulu"], tweet)
 
                 elif self.am_i_mentioned(tweet) != 'mockthistweet':
                     for tw in self.triggering_words:
                         if tw in words:
-                            self.tweeted_and_show(self.tweet_text["untag_dong"], tweet)
+                            self.tweeted_and_show(
+                                self.tweet_text["untag_dong"], tweet)
 
             except tweepy.TweepError as e:
                 error = e.api_code
@@ -276,7 +294,8 @@ class Twitter:
                     db = Database()
                     db.connect_db('twitter')
                     db.select_col('tweet_error')
-                    db.insert_object({'error_code': str(error), 'timestamp': current_time, 'tweet_id': tweet.id})
+                    db.insert_object(
+                        {'error_code': str(error), 'timestamp': current_time, 'tweet_id': tweet.id})
 
                 continue
 
