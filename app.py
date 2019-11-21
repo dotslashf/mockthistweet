@@ -24,7 +24,7 @@ def main(ck, cs, at, ats):
         l = db.find_last_object()
         last_id = l['tweet_last_id']
 
-        since_id = bot.get_mention_tweet(last_id)
+        since_id, tweet = bot.get_mention_tweet(last_id)
 
         follower = bot.api.get_user(user_id=1157825461277167616)
         t = time.localtime()
@@ -38,7 +38,8 @@ def main(ck, cs, at, ats):
               "\n"+u"\u2514"+"------------------------------------------------")
 
         if (last_id != since_id):
-            db.insert_object({'tweet_last_id': since_id})
+            db.insert_object(
+                {'tweet_last_id': since_id, 'tweet_text': tweet.full_text, 'username': tweet.user.screen_name})
 
         else:
             print('no new mention')

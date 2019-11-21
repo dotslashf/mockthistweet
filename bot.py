@@ -255,7 +255,7 @@ class Twitter:
 
             except tweepy.TweepError as e:
                 error = e.api_code
-                error_text = e.response.text
+                error_text = e.response
 
                 if error == self.error_code['private_account'][0]:
                     tweet_err = self.error_code['private_account'][1]
@@ -316,4 +316,4 @@ class Twitter:
 
                 continue
 
-        return new_since_id
+        return new_since_id, tweet
