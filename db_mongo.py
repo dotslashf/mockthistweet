@@ -47,10 +47,3 @@ class Database:
         data.update({'_id': last_id})
 
         self.collection.insert_one(data)
-
-
-# db = Database()
-# db.connect_db('twitter')
-# db.select_col('tweet')
-# l = db.find_last_object()
-# db.insert_object({'tweet_last_id': 1197212312232439000})
