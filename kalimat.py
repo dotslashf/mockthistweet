@@ -95,13 +95,22 @@ class Kalimat:
                 finalText += word
             return finalText
 
+        elif emoji_type == "poop":
+            text = self.removeWords()
+            for char in text:
+                if char is not ' ':
+                    char = char.replace(char, '💩')
+                    finalText += char
+                else:
+                    finalText += char
+            return finalText
+
 
 # Testing purpose
-# k = Kalimat(
-#     "so are you hating me because im making a bot?")
+# k = Kalimat("so are you hating me because im making a bot?")
 # k.removeWords()
 # kalimat = k.getSentence()
 # print(k.sentence)
 # print(k.transformoji("sick"))
-# print(k.transformoji("vomit"))
+# print(k.transformoji("poop"))
 # print(k.sentence)
