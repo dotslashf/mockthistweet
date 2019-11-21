@@ -56,7 +56,7 @@ class Twitter:
               "\n|",
               "\n| tweeted: ", tweet_text,
               "\n| ",
-              "\n"+u"\u2514"+"------------------------------------------------")
+              "\n"+u"\u2514"+"-----------------------------------------------")
         time.sleep(2)
 
     def show_status(self, tweet):
@@ -64,7 +64,7 @@ class Twitter:
               "\n| tweet id: ", tweet.id,
               "\n| username: ", tweet.user.screen_name,
               "\n| tweet: ", tweet.full_text,
-              "\n"+u"\u2514"+"------------------------------------------------")
+              "\n"+u"\u2514"+"-----------------------------------------------")
         time.sleep(1)
 
     def tweeted_and_show(self, tweet_text, tweet, position):
@@ -190,6 +190,7 @@ class Twitter:
 
         for tweet in tweepy.Cursor(self.api.mentions_timeline, since_id=since_id, tweet_mode="extended").items():
             new_since_id = max(tweet.id, new_since_id)
+            tweet_output = tweet
             self.show_status(tweet)
 
             try:
@@ -316,4 +317,4 @@ class Twitter:
 
                 continue
 
-        return new_since_id, tweet
+        return new_since_id, tweet_output
