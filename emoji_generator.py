@@ -100,14 +100,62 @@ class Emoji:
                             finalText += ' '
                         elif i == 4 and j in range(1, 10):
                             finalText += ' '
+
+        elif pattern == 'j':
+            b1 = [13, 14]
+            b2 = [0, 1, 8, 9]
+            b3 = [0, 1, 2, 3, 4]
+            b4 = [4, 5, 6]
+
+            for i in range(6):
+                for j in range(15):
+                    if i == 0 and j in b1:
+                        finalText += self.emoji
+                        if j == 14:
+                            finalText += '\n'
+                    elif i == 1 and j in b1:
+                        finalText += self.emoji
+                        if j == 14:
+                            finalText += '\n'
+                    elif i == 2 and j in b1:
+                        finalText += self.emoji
+                        if j == 14:
+                            finalText += '\n'
+                    elif i == 3 and j in b2:
+                        finalText += self.emoji
+                        if j == 9:
+                            finalText += '\n'
+                    elif i == 4 and j in b3:
+                        finalText += self.emoji
+                        if j == 4:
+                            finalText += '\n'
+                    elif i == 5 and j in b4:
+                        finalText += self.emoji
+                        if j == 8:
+                            finalText += self.sentence[1:len(self.sentence)]
+                    else:
+                        if i == 0 and j in range(0, 12):
+                            if j == 0 or j == 12:
+                                finalText += u"\u2800"
+                            else:
+                                finalText += ' '
+                        elif i == 1 and j in range(0, 14):
+                            finalText += ' '
+                        elif i == 2 and j in range(0, 14):
+                            finalText += ' '
+                        elif i == 3 and j in range(2, 7):
+                            finalText += ' '
+                        elif i == 5 and j in range(0, 4):
+                            finalText += ' '
+
         return finalText
 
 
-# e = Emoji("bacot banget loe")
+# e = Emoji("jancok raimu itu lho")
 
 # re = e.random()
 # print(re)
 # e.pick_emoji(re)
-# jadi = e.create_pattern('b')
+# jadi = e.create_pattern('j')
 # jadi += "test"
 # print(jadi)
