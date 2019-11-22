@@ -80,6 +80,12 @@ class Twitter:
                                auto_populate_reply_metadata=True)
         self.show_what_tweeted(tweet_text)
 
+    def tweeted_an_error(self, tweet_text, tweet):
+        self.api.update_status(status=tweet_text,
+                               in_reply_to_status_id=tweet.id,
+                               auto_populate_reply_metadata=True)
+        self.show_what_tweeted(tweet_text)
+
     def mock_in_pliisi(self, tweet):
         tweet_target = self.api.get_status(tweet.in_reply_to_status_id,
                                            tweet_mode="extended")
@@ -259,38 +265,23 @@ class Twitter:
 
                 if error == self.error_code['private_account'][0]:
                     tweet_err = self.error_code['private_account'][1]
-                    self.api.update_status(status=tweet_err,
-                                           in_reply_to_status_id=tweet.id,
-                                           auto_populate_reply_metadata=True)
-                    self.show_what_tweeted(tweet_err)
+                    self.tweeted_an_error(tweet_err, tweet)
 
                 elif error == self.error_code['blocked_account'][0]:
                     tweet_err = self.error_code['blocked_account'][1]
-                    self.api.update_status(status=tweet_err,
-                                           in_reply_to_status_id=tweet.id,
-                                           auto_populate_reply_metadata=True)
-                    self.show_what_tweeted(tweet_err)
+                    self.tweeted_an_error(tweet_err, tweet)
 
                 elif error == self.error_code['tweet_target_deleted'][0]:
                     tweet_err = self.error_code['tweet_target_deleted'][1]
-                    self.api.update_status(status=tweet_err,
-                                           in_reply_to_status_id=tweet.id,
-                                           auto_populate_reply_metadata=True)
-                    self.show_what_tweeted(tweet_err)
+                    self.tweeted_an_error(tweet_err, tweet)
 
                 elif error == self.error_code['tweet_target_to_long'][0]:
                     tweet_err = self.error_code['tweet_target_to_long'][1]
-                    self.api.update_status(status=tweet_err,
-                                           in_reply_to_status_id=tweet.id,
-                                           auto_populate_reply_metadata=True)
-                    self.show_what_tweeted(tweet_err)
+                    self.tweeted_an_error(tweet_err, tweet)
 
                 elif error == self.error_code['twitter_over_capacity'][0]:
                     tweet_err = self.error_code['twitter_over_capacity'][1]
-                    self.api.update_status(status=tweet_err,
-                                           in_reply_to_status_id=tweet.id,
-                                           auto_populate_reply_metadata=True)
-                    self.show_what_tweeted(tweet_err)
+                    self.tweeted_an_error(tweet_err, tweet)
 
                 elif error == self.error_code['duplicate_tweet'][0]:
                     tweet_err = self.error_code['duplicate_tweet'][1]
