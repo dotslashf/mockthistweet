@@ -44,7 +44,7 @@ def main(ck, cs, at, ats):
         else:
             print('no new mention')
 
-        for sec in range(180, 0, -1):
+        for sec in range(360, 0, -1):
             sys.stdout.write("\r")
             sys.stdout.write("{:2d} second to check mention.\r".format(sec))
             sys.stdout.flush()
