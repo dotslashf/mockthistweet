@@ -184,7 +184,7 @@ class Twitter:
             e.pick_emoji(re)
             tweet_j = e.create_pattern(pattern)
             tweet_j += tweet_target.user.screen_name
-            self.api.update_status(status=tweet_b,
+            self.api.update_status(status=tweet_j,
                                    in_reply_to_status_id=tweet.id,
                                    auto_populate_reply_metadata=True)
             self.show_what_tweeted(tweet_j)
