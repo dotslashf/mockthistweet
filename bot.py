@@ -199,10 +199,6 @@ class Twitter:
     def get_mention_tweet(self, since_id):
         new_since_id = since_id
 
-        db = Database()
-        db.connect_db('twitter')
-        db.select_col('tweet')
-
         for tweet in tweepy.Cursor(self.api.mentions_timeline, since_id=since_id, tweet_mode="extended").items():
             new_since_id = max(tweet.id, new_since_id)
             self.show_status(tweet)
@@ -334,6 +330,5 @@ class Twitter:
 
                 continue
 
-            db.insert_object({'tweet_last_id': tweet.id})
 
         return new_since_id
