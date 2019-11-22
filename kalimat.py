@@ -35,8 +35,8 @@ class Kalimat:
             for char in word:
                 if char in invisibleChar:  # remove invisible char
                     char = char.replace(char, '')
-                for ec in excludedChars:  # remove unnecessary char
-                    char = char.replace(ec, '')
+                if char in excludedChars:  # remove unnecessary char
+                    char = char.replace(char, '')
                 finalText += char
 
         return finalText
@@ -107,10 +107,12 @@ class Kalimat:
 
 
 # Testing purpose
-# k = Kalimat("so are you hating me because im making a bot?")
-# k.removeWords()
+# k = Kalimat("* test & dan * ( atau ) < test lagi ?")
+# kalimat = k.removeWords()
 # kalimat = k.getSentence()
 # print(k.sentence)
 # print(k.transformoji("sick"))
 # print(k.transformoji("poop"))
 # print(k.sentence)
+
+# print(kalimat)
