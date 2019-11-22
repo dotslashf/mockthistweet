@@ -28,7 +28,7 @@ class Twitter:
         self.triggering_words = ["please", "pliisi",
                                  "please😂", "please👏",
                                  "please🤮", "please🤢",
-                                 "pleasek", "pleaseb",
+                                 "pleasek", "pleaseb", "pleasej",
                                  "please💩"]
         self.my_user_id = 1012117785512558592
         self.my_bot_id = 1157825461277167616
@@ -178,6 +178,17 @@ class Twitter:
                                    auto_populate_reply_metadata=True)
             self.show_what_tweeted(tweet_b)
             time.sleep(3)
+        elif pattern == 'j':
+            e = Emoji("jancok raimu iku lho")
+            re = e.random()
+            e.pick_emoji(re)
+            tweet_j = e.create_pattern(pattern)
+            tweet_j += tweet_target.user.screen_name
+            self.api.update_status(status=tweet_b,
+                                   in_reply_to_status_id=tweet.id,
+                                   auto_populate_reply_metadata=True)
+            self.show_what_tweeted(tweet_j)
+            time.sleep(3)
 
     def am_i_mentioned(self, tweet):
         for t in tweet.entities.items():
@@ -220,6 +231,9 @@ class Twitter:
 
                                 elif tw is "pleaseb" in words:
                                     self.mock_in_emoji_pattern(tweet, 'b')
+
+                                elif tw is "pleasej" in words:
+                                    self.mock_in_emoji_pattern(tweet, 'j')
 
                                 elif tw == "please😂" in words:
                                     self.mock_in_emoji(tweet, "laugh")
