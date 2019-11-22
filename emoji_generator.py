@@ -131,18 +131,24 @@ class Emoji:
                             finalText += '\n'
                     elif i == 5 and j in b4:
                         finalText += self.emoji
-                        if j == 8:
+                        if j == 6:
                             finalText += self.sentence[1:len(self.sentence)]
                     else:
-                        if i == 0 and j in range(0, 12):
+                        if i == 0 and j in range(0, 14):
                             if j == 0 or j == 12:
                                 finalText += u"\u2800"
                             else:
                                 finalText += ' '
                         elif i == 1 and j in range(0, 14):
-                            finalText += ' '
+                            if j == 0 or j == 12:
+                                finalText += u"\u2800"
+                            else:
+                                finalText += ' '
                         elif i == 2 and j in range(0, 14):
-                            finalText += ' '
+                            if j == 0 or j == 12:
+                                finalText += u"\u2800"
+                            else:
+                                finalText += ' '
                         elif i == 3 and j in range(2, 7):
                             finalText += ' '
                         elif i == 5 and j in range(0, 4):
@@ -151,11 +157,11 @@ class Emoji:
         return finalText
 
 
-# e = Emoji("jancok raimu itu lho")
+e = Emoji("jancok raimu iku lho")
 
-# re = e.random()
-# print(re)
-# e.pick_emoji(re)
-# jadi = e.create_pattern('j')
+re = e.random()
+print(re)
+e.pick_emoji(re)
+jadi = e.create_pattern('j')
 # jadi += "test"
-# print(jadi)
+print(jadi)
