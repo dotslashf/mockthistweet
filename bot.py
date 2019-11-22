@@ -17,8 +17,8 @@ class Twitter:
         self.auth = self.authentication()
         self.api = tweepy.API(self.auth)
         self.error_code = {
-            "private_account": [179, "Inikan private account, mana bisa gue ngeliat tweetnya sih"],
-            "blocked_account": [136, "Yah yang di mention ngeblock botnya"],
+            "private_account": [179, "Kalau mau ngemock pikir-pikir juga dong, masa private akun, mana keliatan tweetnya "],
+            "blocked_account": [136, "Botnya diblock sama si dia, sedih banget jadi bot gini amat "],
             "duplicate_tweet": [187, "Duplicated tweet"],
             "tweet_target_deleted": [144, "Tweetnya udah dihapus, kasian deh lo"],
             "tweet_target_to_long": [186, "Tweetnya kepanjangan kalau di tambahin emoji, coba format yang lain"],
@@ -151,7 +151,7 @@ class Twitter:
 
         elif emoji_type == "poop":
             text_transformoji = k.transformoji(emoji_type)
-            text_tambahan = "translatean tweet: {} tai semua yg lo tweet".format(
+            text_tambahan = "translatean: {} alias tai semua yg lo tweet".format(
                 text_transformoji)
             self.api.update_status(status=text_tambahan,
                                    in_reply_to_status_id=tweet.id,
