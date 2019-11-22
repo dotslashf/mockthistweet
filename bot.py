@@ -179,7 +179,7 @@ class Twitter:
             self.show_what_tweeted(tweet_b)
             time.sleep(3)
         elif pattern == 'j':
-            e = Emoji("jancok raimu iku lho")
+            e = Emoji("jancok raimu iku lho ")
             re = e.random()
             e.pick_emoji(re)
             tweet_j = e.create_pattern(pattern)
