@@ -40,6 +40,7 @@ class Twitter:
         }
         self.file_meme = {"output": ["img/meme_spongebob_output.png", "img/meme_khaleesi_output.png"],
                           "input": ["img/meme_new.png", "img/meme_khaleesi.png"]}
+        self.time_interval = 7
 
     def authentication(self):
         self.auth = tweepy.OAuthHandler(
@@ -57,7 +58,6 @@ class Twitter:
               "\n| tweeted: ", tweet_text,
               "\n| ",
               "\n"+u"\u2514"+"-----------------------------------------------")
-        time.sleep(2)
 
     def show_status(self, tweet):
         print(u"\u250C"+"-----------------------------------------------",
@@ -65,7 +65,6 @@ class Twitter:
               "\n| username: ", tweet.user.screen_name,
               "\n| tweet: ", tweet.full_text,
               "\n"+u"\u2514"+"-----------------------------------------------")
-        time.sleep(1)
 
     def tweeted_and_show(self, tweet_text, tweet, position):
         username = tweet.user.screen_name
@@ -86,7 +85,7 @@ class Twitter:
         k = Kalimat(tweet_target.full_text)
         text_trinsfirmid = k.trinsfirm()
         drawText(text_trinsfirmid, self.file_meme["input"][1], "khaleesi")
-        time.sleep(5)
+        time.sleep(self.time_interval)
         self.api.update_with_media(filename=self.file_meme["output"][1],
                                    status=text_trinsfirmid,
                                    in_reply_to_status_id=tweet.id,
@@ -99,7 +98,7 @@ class Twitter:
         k = Kalimat(tweet_target.full_text)
         text_transformed = k.transform()
         drawText(text_transformed, self.file_meme["input"][0], "spongebob")
-        time.sleep(5)
+        time.sleep(self.time_interval)
         self.api.update_with_media(filename=self.file_meme["output"][0],
                                    status=text_transformed,
                                    in_reply_to_status_id=tweet.id,
@@ -117,7 +116,7 @@ class Twitter:
                                    in_reply_to_status_id=tweet.id,
                                    auto_populate_reply_metadata=True)
             self.show_what_tweeted(text_transformoji)
-            time.sleep(3)
+            time.sleep(self.time_interval)
 
         elif emoji_type == "clap":
             text_transformoji = k.transformoji(emoji_type)
@@ -125,7 +124,7 @@ class Twitter:
                                    in_reply_to_status_id=tweet.id,
                                    auto_populate_reply_metadata=True)
             self.show_what_tweeted(text_transformoji)
-            time.sleep(3)
+            time.sleep(self.time_interval)
 
         elif emoji_type == "vomit":
             text_transformoji = k.transformoji(emoji_type)
@@ -133,7 +132,7 @@ class Twitter:
                                    in_reply_to_status_id=tweet.id,
                                    auto_populate_reply_metadata=True)
             self.show_what_tweeted(text_transformoji)
-            time.sleep(3)
+            time.sleep(self.time_interval)
 
         elif emoji_type == "sick":
             text_transformoji = k.transformoji(emoji_type)
@@ -141,7 +140,7 @@ class Twitter:
                                    in_reply_to_status_id=tweet.id,
                                    auto_populate_reply_metadata=True)
             self.show_what_tweeted(text_transformoji)
-            time.sleep(3)
+            time.sleep(self.time_interval)
 
         elif emoji_type == "poop":
             text_transformoji = k.transformoji(emoji_type)
@@ -151,7 +150,7 @@ class Twitter:
                                    in_reply_to_status_id=tweet.id,
                                    auto_populate_reply_metadata=True)
             self.show_what_tweeted(text_tambahan)
-            time.sleep(3)
+            time.sleep(self.time_interval)
 
     def mock_in_emoji_pattern(self, tweet, pattern):
         tweet_target = self.api.get_status(
@@ -166,7 +165,7 @@ class Twitter:
                                    in_reply_to_status_id=tweet.id,
                                    auto_populate_reply_metadata=True)
             self.show_what_tweeted(text_k)
-            time.sleep(3)
+            time.sleep(self.time_interval)
         elif pattern == 'b':
             e = Emoji("bacot banget lo sumpah ")
             re = e.random()
@@ -177,7 +176,7 @@ class Twitter:
                                    in_reply_to_status_id=tweet.id,
                                    auto_populate_reply_metadata=True)
             self.show_what_tweeted(tweet_b)
-            time.sleep(3)
+            time.sleep(self.time_interval)
         elif pattern == 'j':
             e = Emoji("jancok raimu iku lho ")
             re = e.random()
@@ -188,7 +187,7 @@ class Twitter:
                                    in_reply_to_status_id=tweet.id,
                                    auto_populate_reply_metadata=True)
             self.show_what_tweeted(tweet_j)
-            time.sleep(3)
+            time.sleep(self.time_interval)
 
     def am_i_mentioned(self, tweet):
         for t in tweet.entities.items():
