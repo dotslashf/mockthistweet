@@ -23,7 +23,8 @@ class Twitter:
             "tweet_target_deleted": [144, "Tweetnya udah dihapus, kasian deh lo"],
             "tweet_target_to_long": [186, "Tweetnya kepanjangan kalau di tambahin emoji, coba format yang lain"],
             "tweet_deleted_or_not_visible": [385, "Tweet deleted or not visible"],
-            "twitter_over_capacity": [130, "Twitternya lagi overcapacity, next time yah"]
+            "twitter_over_capacity": [130, "Twitternya lagi overcapacity, next time yah"],
+            "page_does_not_exist": [34, "Pages does not exist"]
         }
         self.triggering_words = ["please", "pliisi",
                                  "please😂", "please👏",
@@ -270,12 +271,18 @@ class Twitter:
                 error = e.api_code
                 error_text = e.response
 
+                db = Database()
+                db.connect_db('twitter')
+                db.select_col('tweet')
+                db.insert_object({'tweet_last_id': tweet.id})
+
                 if error == self.error_code['private_account'][0]:
                     tweet_err = self.error_code['private_account'][1]
                     self.api.update_status(status=tweet_err,
                                in_reply_to_status_id=tweet.id,
                                auto_populate_reply_metadata=True)
                     self.show_what_tweeted(tweet_err)
+                    continue
 
                 elif error == self.error_code['blocked_account'][0]:
                     tweet_err = self.error_code['blocked_account'][1]
@@ -283,6 +290,7 @@ class Twitter:
                                            in_reply_to_status_id=tweet.id,
                                            auto_populate_reply_metadata=True)
                     self.show_what_tweeted(tweet_err)
+                    continue
 
                 elif error == self.error_code['tweet_target_deleted'][0]:
                     tweet_err = self.error_code['tweet_target_deleted'][1]
@@ -290,6 +298,7 @@ class Twitter:
                                in_reply_to_status_id=tweet.id,
                                auto_populate_reply_metadata=True)
                     self.show_what_tweeted(tweet_err)
+                    continue
 
                 elif error == self.error_code['tweet_target_to_long'][0]:
                     tweet_err = self.error_code['tweet_target_to_long'][1]
@@ -297,6 +306,7 @@ class Twitter:
                                in_reply_to_status_id=tweet.id,
                                auto_populate_reply_metadata=True)
                     self.show_what_tweeted(tweet_err)
+                    continue
 
                 elif error == self.error_code['twitter_over_capacity'][0]:
                     tweet_err = self.error_code['twitter_over_capacity'][1]
@@ -304,20 +314,26 @@ class Twitter:
                                            in_reply_to_status_id=tweet.id,
                                            auto_populate_reply_metadata=True)
                     self.show_what_tweeted(tweet_err)
+                    continue
 
                 elif error == self.error_code['duplicate_tweet'][0]:
                     tweet_err = self.error_code['duplicate_tweet'][1]
                     self.show_what_tweeted(tweet_err)
+                    continue
 
                 elif error == self.error_code['tweet_deleted_or_not_visible'][0]:
                     tweet_err = self.error_code['tweet_deleted_or_not_visible'][1]
                     self.show_what_tweeted(tweet_err)
+                    continue
+
+                elif error == self.error_code['page_does_not_exist'][0]:
+                    tweet_err = self.error_code['page_does_not_exist'][1]
+                    self.show_what_tweeted(tweet_err)
+                    continue
 
                 else:
                     t = time.localtime()
                     current_time = time.strftime("%H:%M:%S %D", t)
-                    db = Database()
-                    db.connect_db('twitter')
                     db.select_col('tweet_error')
                     db.insert_object(
                         {'error_code': str(error),
@@ -327,7 +343,7 @@ class Twitter:
                          'tweet_text': tweet.full_text,
                          'error_text': error_text})
 
-                continue
+                    continue
 
 
         return new_since_id
