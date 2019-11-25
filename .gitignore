@@ -3,4 +3,4 @@ __pycache__
 !img/meme_new.png
 !img/meme_khaleesi.png
 img/*
-text/last_id.txt
+test-db.py
