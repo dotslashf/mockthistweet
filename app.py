@@ -38,9 +38,7 @@ def main(ck, cs, at, ats):
               "\n"+u"\u2514"+"------------------------------------------------")
 
         if (last_id != since_id):
-            db.insert_object(
-                {'tweet_last_id': since_id})
-
+            db.insert_object({'tweet_last_id': since_id})
         else:
             print('no new mention')
 
