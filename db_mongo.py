@@ -51,3 +51,8 @@ class Database:
     def find_object(self, key):
         for a in self.collection.find({'key': key}):
             return a['value']
+
+    def find_and_modify(self, key, value):
+        self.collection.find_one_and_update(
+            {'key': key}, {'$set': {'value': value}})
+        print("Value of {0} changed to {1}".format(key, value))
