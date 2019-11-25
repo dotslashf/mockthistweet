@@ -43,6 +43,7 @@ class Twitter:
         self.file_meme = {"output": ["img/meme_spongebob_output.png", "img/meme_khaleesi_output.png"],
                           "input": ["img/meme_new.png", "img/meme_khaleesi.png"]}
         self.time_interval = 7
+        self.list_tweet = []
 
     def authentication(self):
         self.auth = tweepy.OAuthHandler(
@@ -197,76 +198,52 @@ class Twitter:
                 last = list(a.items())[0][-1]
         return last
 
-    def get_mention_tweet(self, since_id):
-        new_since_id = since_id
-
-        for tweet in tweepy.Cursor(self.api.mentions_timeline, since_id=since_id, tweet_mode="extended").items():
-            new_since_id = max(tweet.id, new_since_id)
+    def process_mention(self, list_tweet):
+        for tweet in reversed(list_tweet):
             self.show_status(tweet)
-
             try:
                 words = tweet.full_text.lower().split()
-                if self.am_i_mentioned(tweet) == 'mockthistweet':
-                    fs = self.check_follower(self.my_bot_id, tweet.user.id)
-                    if (fs[0].followed_by):
-                        if self.my_user_id == tweet.in_reply_to_user_id:
-                            for tw in self.triggering_words:
-                                if tw in words:
-                                    self.tweeted_and_show(
-                                        self.tweet_text["dont_mock"][0], tweet, 'back')
-                        elif self.my_bot_id == tweet.in_reply_to_user_id:
-                            for tw in self.triggering_words:
-                                if tw in words:
-                                    self.tweeted_and_show(
-                                        self.tweet_text["dont_mock"][1], tweet, 'front')
-                        else:
-                            for tw in self.triggering_words:
-                                if tw is "pliisi" in words:
-                                    self.mock_in_pliisi(tweet)
-
-                                elif tw is "please" in words:
-                                    self.mock_in_please(tweet)
-
-                                elif tw is "pleasek" in words:
-                                    self.mock_in_emoji_pattern(tweet, 'k')
-
-                                elif tw is "pleaseb" in words:
-                                    self.mock_in_emoji_pattern(tweet, 'b')
-
-                                elif tw is "pleasej" in words:
-                                    self.mock_in_emoji_pattern(tweet, 'j')
-
-                                elif tw == "please😂" in words:
-                                    self.mock_in_emoji(tweet, "laugh")
-
-                                elif tw == "please👏" in words:
-                                    self.mock_in_emoji(tweet, "clap")
-
-                                elif tw == "please🤮" in words:
-                                    self.mock_in_emoji(tweet, "vomit")
-
-                                elif tw == "please🤢" in words:
-                                    self.mock_in_emoji(tweet, "sick")
-
-                                elif tw == "please💩" in words:
-                                    self.mock_in_emoji(tweet, "poop")
-
-                    else:
-                        for tw in self.triggering_words:
-                            if tw in words:
-                                db = Database()
-                                db.connect_db('twitter')
-                                db.select_col('not_follower')
-                                db.insert_object({'tweet_id': tweet.id,
-                                                  'username': tweet.user.screen_name})
-                                self.tweeted_and_show(
-                                    self.tweet_text["follow_dulu"], tweet, 'back')
-
-                elif self.am_i_mentioned(tweet) != 'mockthistweet':
+                if self.my_user_id == tweet.in_reply_to_user_id:
                     for tw in self.triggering_words:
                         if tw in words:
                             self.tweeted_and_show(
-                                self.tweet_text["untag_dong"], tweet, 'back')
+                                self.tweet_text["dont_mock"][0], tweet, 'back')
+                elif self.my_bot_id == tweet.in_reply_to_user_id:
+                    for tw in self.triggering_words:
+                        if tw in words:
+                            self.tweeted_and_show(
+                                self.tweet_text["dont_mock"][1], tweet, 'front')
+                else:
+                    for tw in self.triggering_words:
+                        if tw is "pliisi" in words:
+                            self.mock_in_pliisi(tweet)
+
+                        elif tw is "please" in words:
+                            self.mock_in_please(tweet)
+
+                        elif tw is "pleasek" in words:
+                            self.mock_in_emoji_pattern(tweet, 'k')
+
+                        elif tw is "pleaseb" in words:
+                            self.mock_in_emoji_pattern(tweet, 'b')
+
+                        elif tw is "pleasej" in words:
+                            self.mock_in_emoji_pattern(tweet, 'j')
+
+                        elif tw == "please😂" in words:
+                            self.mock_in_emoji(tweet, "laugh")
+
+                        elif tw == "please👏" in words:
+                            self.mock_in_emoji(tweet, "clap")
+
+                        elif tw == "please🤮" in words:
+                            self.mock_in_emoji(tweet, "vomit")
+
+                        elif tw == "please🤢" in words:
+                            self.mock_in_emoji(tweet, "sick")
+
+                        elif tw == "please💩" in words:
+                            self.mock_in_emoji(tweet, "poop")
 
             except tweepy.TweepError as e:
                 error = e.api_code
@@ -280,48 +257,48 @@ class Twitter:
                 if error == self.error_code['private_account'][0]:
                     tweet_err = self.error_code['private_account'][1]
                     self.api.update_status(status=tweet_err,
-                               in_reply_to_status_id=tweet.id,
-                               auto_populate_reply_metadata=True)
+                                in_reply_to_status_id=tweet.id,
+                                auto_populate_reply_metadata=True)
                     self.show_what_tweeted(tweet_err)
                 
 
                 elif error == self.error_code['blocked_account'][0]:
                     tweet_err = self.error_code['blocked_account'][1]
                     self.api.update_status(status=tweet_err,
-                                           in_reply_to_status_id=tweet.id,
-                                           auto_populate_reply_metadata=True)
+                                            in_reply_to_status_id=tweet.id,
+                                            auto_populate_reply_metadata=True)
                     self.show_what_tweeted(tweet_err)
                 
 
                 elif error == self.error_code['tweet_target_deleted'][0]:
                     tweet_err = self.error_code['tweet_target_deleted'][1]
                     self.api.update_status(status=tweet_err,
-                               in_reply_to_status_id=tweet.id,
-                               auto_populate_reply_metadata=True)
+                                in_reply_to_status_id=tweet.id,
+                                auto_populate_reply_metadata=True)
                     self.show_what_tweeted(tweet_err)
                 
 
                 elif error == self.error_code['tweet_target_to_long'][0]:
                     tweet_err = self.error_code['tweet_target_to_long'][1]
                     self.api.update_status(status=tweet_err,
-                               in_reply_to_status_id=tweet.id,
-                               auto_populate_reply_metadata=True)
+                                in_reply_to_status_id=tweet.id,
+                                auto_populate_reply_metadata=True)
                     self.show_what_tweeted(tweet_err)
                 
 
                 elif error == self.error_code['twitter_over_capacity'][0]:
                     tweet_err = self.error_code['twitter_over_capacity'][1]
                     self.api.update_status(status=tweet_err,
-                                           in_reply_to_status_id=tweet.id,
-                                           auto_populate_reply_metadata=True)
+                                            in_reply_to_status_id=tweet.id,
+                                            auto_populate_reply_metadata=True)
                     self.show_what_tweeted(tweet_err)
                 
 
                 elif error == self.error_code['suspended_account'][0]:
                     tweet_err = self.error_code['suspended_account'][1]
                     self.api.update_status(status=tweet_err,
-                                           in_reply_to_status_id=tweet.id,
-                                           auto_populate_reply_metadata=True)
+                                            in_reply_to_status_id=tweet.id,
+                                            auto_populate_reply_metadata=True)
                     self.show_what_tweeted(tweet_err)
                 
 
@@ -346,11 +323,42 @@ class Twitter:
                     db.select_col('tweet_error')
                     db.insert_object(
                         {'error_code': str(error),
-                         'timestamp': current_time,
-                         'tweet_id': tweet.id,
-                         'username': tweet.user.screen_name,
-                         'tweet_text': tweet.full_text,
-                         'error_text': error_text})
+                            'timestamp': current_time,
+                            'tweet_id': tweet.id,
+                            'username': tweet.user.screen_name,
+                            'tweet_text': tweet.full_text,
+                            'error_text': error_text})
+                            
             continue
-                
+
+    def get_mention_tweet(self, since_id):
+        new_since_id = since_id
+
+        for tweet in tweepy.Cursor(self.api.mentions_timeline, since_id=since_id, tweet_mode="extended").items():
+            new_since_id = max(tweet.id, new_since_id)
+            
+            words = tweet.full_text.lower().split()
+            if self.am_i_mentioned(tweet) == 'mockthistweet':
+                fs = self.check_follower(self.my_bot_id, tweet.user.id)
+                if (fs[0].followed_by):
+                    self.list_tweet.append(tweet)
+                else:
+                    for tw in self.triggering_words:
+                        if tw in words:
+                            db = Database()
+                            db.connect_db('twitter')
+                            db.select_col('not_follower')
+                            db.insert_object({'tweet_id': tweet.id,
+                                                'username': tweet.user.screen_name})
+                            self.tweeted_and_show(
+                                self.tweet_text["follow_dulu"], tweet, 'back')
+
+            elif self.am_i_mentioned(tweet) != 'mockthistweet':
+                for tw in self.triggering_words:
+                    if tw in words:
+                        self.tweeted_and_show(
+                            self.tweet_text["untag_dong"], tweet, 'back')
+
+        self.process_mention(self.list_tweet)
+
         return new_since_id
