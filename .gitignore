@@ -4,3 +4,4 @@ __pycache__
 !img/meme_khaleesi.png
 img/*
 test-db.py
+playground.py
