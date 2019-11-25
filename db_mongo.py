@@ -47,3 +47,7 @@ class Database:
         data.update({'_id': last_id})
 
         self.collection.insert_one(data)
+
+    def find_object(self, key):
+        for a in self.collection.find({'key': key}):
+            return a['value']
