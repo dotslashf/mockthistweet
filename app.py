@@ -1,17 +1,17 @@
 import sys
 import time
 import os
-from dotenv import load_dotenv
 from bot import Twitter
 from db_mongo import Database
 
-load_dotenv()
+db = Database()
+db.connect_db('twitter')
+db.select_col('environment')
 
-CONSUMER_KEY = os.getenv("CONSUMER_KEY")
-CONSUMER_SECRET = os.getenv("CONSUMER_SECRET")
-ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
-ACCESS_TOKEN_SECRET = os.getenv("ACCESS_TOKEN_SECRET")
-FILE_LAST_ID = os.getenv("FILE_LAST_ID")
+consumer_key = db.find_object('CONSUMER_KEY')
+consumer_secret = db.find_object('CONSUMER_SECRET')
+access_token = db.find_object('ACCESS_TOKEN')
+access_token_secret = db.find_object('ACCESS_TOKEN_SECRET')
 
 
 def main(ck, cs, at, ats):
@@ -52,7 +52,7 @@ def main(ck, cs, at, ats):
 
 
 if __name__ == "__main__":
-    main(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+    main(consumer_key, consumer_secret, access_token, access_token_secret)
     # bot = Twitter(CONSUMER_KEY, CONSUMER_SECRET,
     #               ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
     # api_bot = bot.api
