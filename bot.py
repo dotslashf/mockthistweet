@@ -283,7 +283,7 @@ class Twitter:
                                in_reply_to_status_id=tweet.id,
                                auto_populate_reply_metadata=True)
                     self.show_what_tweeted(tweet_err)
-                    continue
+                
 
                 elif error == self.error_code['blocked_account'][0]:
                     tweet_err = self.error_code['blocked_account'][1]
@@ -291,7 +291,7 @@ class Twitter:
                                            in_reply_to_status_id=tweet.id,
                                            auto_populate_reply_metadata=True)
                     self.show_what_tweeted(tweet_err)
-                    continue
+                
 
                 elif error == self.error_code['tweet_target_deleted'][0]:
                     tweet_err = self.error_code['tweet_target_deleted'][1]
@@ -299,7 +299,7 @@ class Twitter:
                                in_reply_to_status_id=tweet.id,
                                auto_populate_reply_metadata=True)
                     self.show_what_tweeted(tweet_err)
-                    continue
+                
 
                 elif error == self.error_code['tweet_target_to_long'][0]:
                     tweet_err = self.error_code['tweet_target_to_long'][1]
@@ -307,7 +307,7 @@ class Twitter:
                                in_reply_to_status_id=tweet.id,
                                auto_populate_reply_metadata=True)
                     self.show_what_tweeted(tweet_err)
-                    continue
+                
 
                 elif error == self.error_code['twitter_over_capacity'][0]:
                     tweet_err = self.error_code['twitter_over_capacity'][1]
@@ -315,7 +315,7 @@ class Twitter:
                                            in_reply_to_status_id=tweet.id,
                                            auto_populate_reply_metadata=True)
                     self.show_what_tweeted(tweet_err)
-                    continue
+                
 
                 elif error == self.error_code['suspended_account'][0]:
                     tweet_err = self.error_code['suspended_account'][1]
@@ -323,22 +323,22 @@ class Twitter:
                                            in_reply_to_status_id=tweet.id,
                                            auto_populate_reply_metadata=True)
                     self.show_what_tweeted(tweet_err)
-                    continue
+                
 
                 elif error == self.error_code['duplicate_tweet'][0]:
                     tweet_err = self.error_code['duplicate_tweet'][1]
                     self.show_what_tweeted(tweet_err)
-                    continue
+                
 
                 elif error == self.error_code['tweet_deleted_or_not_visible'][0]:
                     tweet_err = self.error_code['tweet_deleted_or_not_visible'][1]
                     self.show_what_tweeted(tweet_err)
-                    continue
+                
 
                 elif error == self.error_code['page_does_not_exist'][0]:
                     tweet_err = self.error_code['page_does_not_exist'][1]
                     self.show_what_tweeted(tweet_err)
-                    continue
+                
 
                 else:
                     t = time.localtime()
@@ -351,8 +351,6 @@ class Twitter:
                          'username': tweet.user.screen_name,
                          'tweet_text': tweet.full_text,
                          'error_text': error_text})
-
-                    continue
-
-
+            continue
+                
         return new_since_id
