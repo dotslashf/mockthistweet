@@ -4,6 +4,15 @@ import demoji  # for removing emoji
 class Kalimat:
     def __init__(self, sentence):
         self.sentence = sentence
+        self.excludedWords = ['2beer!', 'mksfess',
+                              '[askmf]', '[cm]',
+                              '[gmf]', 'tanyarl',
+                              '/wal', '/rlt/',
+                              '/krt/', 'fess']
+        self.excludedChars = [',', '.', '!', '?',
+                              '&', '-', '"', "<",
+                              ">", "*", "(", ")",
+                              "/"]
 
     def getSentence(self):
         text = self.removeWords()
@@ -12,15 +21,6 @@ class Kalimat:
     def removeWords(self):
         self.sentence = demoji.replace(self.sentence)
         finalText = ''
-        excludedChars = [',', '.', '!', '?',
-                         '&', '-', '"', "<",
-                         ">", "*", "(", ")",
-                         "/"]
-        excludedWords = ['2beer!', 'mksfess',
-                         '[askmf]', '[cm]',
-                         '[gmf]', 'tanyarl',
-                         '/wal', '/rlt/',
-                         '/krt/', 'fess']
         invisibleChar = [u"\u2800", u"\u2063"]
         words = [i for j in self.sentence.split() for i in (j, ' ')][:-1]
         for word in words:
@@ -29,13 +29,13 @@ class Kalimat:
             # remove twt username, hashtag, and links
             if word[0] == '@' or word[0] == '#' or word[0:4] == 'http':
                 word = word.replace(word, '')
-            for ew in excludedWords:  # remove unnecassary words
+            for ew in self.excludedWords:  # remove unnecassary words
                 word = word.replace(ew, '')
 
             for char in word:
                 if char in invisibleChar:  # remove invisible char
                     char = char.replace(char, '')
-                if char in excludedChars:  # remove unnecessary char
+                if char in self.excludedChars:  # remove unnecessary char
                     char = char.replace(char, '')
                 finalText += char
 
