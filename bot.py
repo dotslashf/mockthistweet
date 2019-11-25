@@ -24,7 +24,8 @@ class Twitter:
             "tweet_target_to_long": [186, "Tweetnya kepanjangan kalau di tambahin emoji, coba format yang lain"],
             "tweet_deleted_or_not_visible": [385, "Tweet deleted or not visible"],
             "twitter_over_capacity": [130, "Twitternya lagi overcapacity, next time yah"],
-            "page_does_not_exist": [34, "Pages does not exist"]
+            "page_does_not_exist": [34, "Pages does not exist"],
+            "suspended_account": [63, "Yang mau dimock dah disuspend, twitter, mampus."]
         }
         self.triggering_words = ["please", "pliisi",
                                  "please😂", "please👏",
@@ -310,6 +311,14 @@ class Twitter:
 
                 elif error == self.error_code['twitter_over_capacity'][0]:
                     tweet_err = self.error_code['twitter_over_capacity'][1]
+                    self.api.update_status(status=tweet_err,
+                                           in_reply_to_status_id=tweet.id,
+                                           auto_populate_reply_metadata=True)
+                    self.show_what_tweeted(tweet_err)
+                    continue
+
+                elif error == self.error_code['suspended_account'][0]:
+                    tweet_err = self.error_code['suspended_account'][1]
                     self.api.update_status(status=tweet_err,
                                            in_reply_to_status_id=tweet.id,
                                            auto_populate_reply_metadata=True)
