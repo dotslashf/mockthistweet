@@ -43,7 +43,6 @@ class Twitter:
         self.file_meme = {"output": ["img/meme_spongebob_output.png", "img/meme_khaleesi_output.png"],
                           "input": ["img/meme_new.png", "img/meme_khaleesi.png"]}
         self.time_interval = 7
-        self.list_tweet = []
 
     def authentication(self):
         self.auth = tweepy.OAuthHandler(
@@ -162,13 +161,16 @@ class Twitter:
     def mock_in_emoji_pattern(self, tweet, pattern, db):
         tweet_target = self.api.get_status(tweet.in_reply_to_status_id,
                                            tweet_mode="extended")
-        k = Kalimat(tweet_target)
-        words = k.removeWords()
-        if k.excludedWords in words:
-            target_name = 'nder'
-        else:
-            target_name = tweet_target.user.screen_name
+        k = Kalimat(tweet_target.full_text)
+        words = k.sentence
+        words = [i for j in words.split() for i in (j, ' ')][:-1]
 
+        target_name = tweet_target.user.screen_name
+
+        for word in words:
+            if word in k.excludedWords:
+                target_name = 'nder'
+        
         if pattern == 'k':
             e = Emoji("kamu mending delete akun twitter aja ")
             re = e.random()
@@ -339,6 +341,12 @@ class Twitter:
     def get_mention_tweet(self, since_id):
         new_since_id = since_id
 
+        db = Database()
+        db.connect_db('twitter')
+        db.select_col('tweet')
+
+        list_tweet = []
+
         for tweet in tweepy.Cursor(self.api.mentions_timeline, since_id=since_id, tweet_mode="extended").items():
             new_since_id = max(tweet.id, new_since_id)
 
@@ -346,13 +354,12 @@ class Twitter:
             if self.am_i_mentioned(tweet) == 'mockthistweet':
                 fs = self.check_follower(self.my_bot_id, tweet.user.id)
                 if (fs[0].followed_by):
-                    self.list_tweet.append(tweet)
+                    if since_id != tweet.id:
+                        list_tweet.append(tweet)
                     print(tweet.id, ' added to next process')
                 else:
                     for tw in self.triggering_words:
                         if tw in words:
-                            db = Database()
-                            db.connect_db('twitter')
                             db.select_col('not_follower')
                             db.insert_object({'tweet_id': tweet.id,
                                               'username': tweet.user.screen_name})
@@ -366,6 +373,6 @@ class Twitter:
                         self.tweeted_and_show(
                             self.tweet_text["untag_dong"], tweet, 'back')
 
-        self.process_mention(self.list_tweet)
+        self.process_mention(list_tweet)
 
         return new_since_id
