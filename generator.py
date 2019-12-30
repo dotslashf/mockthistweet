@@ -66,8 +66,11 @@ def splitLines(text, img, draw, pos, memeType):
             if not isLast and w > img.width:
                 print("overshot")
                 nextCut -= 1
-                while text[nextCut] != " ":
-                    nextCut -= 1
+                try:
+                    while text[nextCut] != " ":
+                        nextCut += 1
+                except:
+                    nextCut = round(len(text)/2)
                 print("new cut: {}".format(nextCut))
 
             lastCut = nextCut
