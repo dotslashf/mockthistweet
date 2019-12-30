@@ -8,10 +8,10 @@ db = Database()
 db.connect_db('twitter')
 db.select_col('environment')
 
-consumer_key = db.find_object('CONSUMER_KEY')
-consumer_secret = db.find_object('CONSUMER_SECRET')
-access_token = db.find_object('ACCESS_TOKEN')
-access_token_secret = db.find_object('ACCESS_TOKEN_SECRET')
+consumer_key = db.find_object('consumer_key')
+consumer_secret = db.find_object('consumer_secret')
+access_token = db.find_object('access_token')
+access_token_secret = db.find_object('access_token_secret')
 
 
 def main(ck, cs, at, ats):
@@ -42,7 +42,7 @@ def main(ck, cs, at, ats):
         else:
             print('no new mention')
 
-        for sec in range(360, 0, -1):
+        for sec in range(600, 0, -1):
             sys.stdout.write("\r")
             sys.stdout.write("{:2d} second to check mention.\r".format(sec))
             sys.stdout.flush()
@@ -53,5 +53,6 @@ if __name__ == "__main__":
     main(consumer_key, consumer_secret, access_token, access_token_secret)
     # bot = Twitter(CONSUMER_KEY, CONSUMER_SECRET,
     #               ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
-    # api_bot = bot.api
+    # api_bot = bot.apiif word[0] == '@' or word[0] == '#' or word[0:4] == 'http' or word[0:5] == '&amp;':
+    word = word.replace(word, '')
     # api_bot.update_status(status="test error code 400")

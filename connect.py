@@ -5,8 +5,8 @@ db = Database()
 db.connect_db('twitter')
 db.select_col('environment')
 
-consumer_key = db.find_object('CONSUMER_KEY')
-consumer_secret = db.find_object('CONSUMER_SECRET')
+consumer_key = db.find_object('consumer_key')
+consumer_secret = db.find_object('consumer_secret')
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 print('Please visit: ' + auth.get_authorization_url())
@@ -20,7 +20,7 @@ verifier = input('Verifier code: ')
 
 try:
     a = auth.get_access_token(verifier)
-    db.find_and_modify('ACCESS_TOKEN', a[0])
-    db.find_and_modify('ACCESS_TOKEN_SECRET', a[1])
+    db.find_and_modify('access_token', a[0])
+    db.find_and_modify('access_token_secret', a[1])
 except tweepy.TweepError as e:
     print(e)
