@@ -9,10 +9,7 @@ class Kalimat:
                               '[gmf]', 'tanyarl',
                               '/wal', '/rlt/',
                               '/krt/', 'fess']
-        self.excludedChars = [',', '.', '!', '?',
-                              '&', '-', '"', "<",
-                              ">", "*", "(", ")",
-                              "/"]
+        self.excludedChars = ['%']
 
     def getSentence(self):
         text = self.removeWords()
@@ -29,6 +26,8 @@ class Kalimat:
             # remove twt username, hashtag, and links
             if word[0] == '@' or word[0] == '#' or word[0:4] == 'http':
                 word = word.replace(word, '')
+            if word[0:5] == '&amp;':
+                word = word.replace(word, '&')
             for ew in self.excludedWords:  # remove unnecassary words
                 word = word.replace(ew, '')
 
