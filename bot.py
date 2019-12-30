@@ -1,7 +1,6 @@
 import tweepy
 import os
 import time
-from dotenv import load_dotenv
 from generator import drawText
 from kalimat import Kalimat
 from emoji_generator import Emoji
@@ -42,7 +41,7 @@ class Twitter:
         }
         self.file_meme = {"output": ["img/meme_spongebob_output.png", "img/meme_khaleesi_output.png"],
                           "input": ["img/meme_new.png", "img/meme_khaleesi.png"]}
-        self.time_interval = 7
+        self.time_interval = 30
 
     def authentication(self):
         self.auth = tweepy.OAuthHandler(
@@ -76,10 +75,14 @@ class Twitter:
         elif position == 'front':
             tweet_text = '@'+username+tweet_text
 
-        self.api.update_status(status=tweet_text,
-                               in_reply_to_status_id=tweet.id,
-                               auto_populate_reply_metadata=True)
-        self.show_what_tweeted(tweet_text)
+        try:
+            self.api.update_status(status=tweet_text,
+                                    in_reply_to_status_id=tweet.id,
+                                    auto_populate_reply_metadata=True)
+            self.show_what_tweeted(tweet_text)
+        except tweepy.TweepError as e:
+            print(e.api_code, e.response)
+        time.sleep(self.time_interval)
 
     def mock_in_pliisi(self, tweet, db):
         tweet_target = self.api.get_status(tweet.in_reply_to_status_id,
@@ -170,7 +173,7 @@ class Twitter:
         for word in words:
             if word in k.excludedWords:
                 target_name = 'nder'
-        
+
         if pattern == 'k':
             e = Emoji("kamu mending delete akun twitter aja ")
             re = e.random()
@@ -315,6 +318,7 @@ class Twitter:
                 elif error == self.error_code['duplicate_tweet'][0]:
                     tweet_err = self.error_code['duplicate_tweet'][1]
                     self.show_what_tweeted(tweet_err)
+                    continue
 
                 elif error == self.error_code['tweet_deleted_or_not_visible'][0]:
                     tweet_err = self.error_code['tweet_deleted_or_not_visible'][1]
@@ -356,7 +360,7 @@ class Twitter:
                 if (fs[0].followed_by):
                     if since_id != tweet.id:
                         list_tweet.append(tweet)
-                    print(tweet.id, ' added to next process')
+                    print(tweet.id, 'added to next process')
                 else:
                     for tw in self.triggering_words:
                         if tw in words:
@@ -365,7 +369,7 @@ class Twitter:
                                               'username': tweet.user.screen_name})
                             self.tweeted_and_show(
                                 self.tweet_text["follow_dulu"], tweet, 'back')
-                    print(tweet.id, ' skipped not follower')
+                    print(tweet.id, 'skipped not follower')
 
             elif self.am_i_mentioned(tweet) != 'mockthistweet':
                 for tw in self.triggering_words:
