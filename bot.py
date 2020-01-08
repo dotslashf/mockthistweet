@@ -159,7 +159,7 @@ class Twitter:
 
         elif emoji_type == "poop":
             text_transformoji = k.transformoji(emoji_type)
-            text_tambahan = "translatean: {} alias tai semua yg lo tweet".format(
+            text_tambahan = "{} alias tai semua yg lo tweet".format(
                 text_transformoji)
             self.api.update_status(status=text_tambahan,
                                    in_reply_to_status_id=tweet.id,
