@@ -19,7 +19,7 @@ class Twitter:
         self.api = tweepy.API(self.auth)
         self.error_code = {
             "private_account": [179, "Kalau mau ngemock pikir-pikir juga dong, masa private akun, mana keliatan tweetnya "],
-            "blocked_account": [136, "Botnya diblock sama si dia, sedih banget jadi bot gini amat "],
+            "blocked_account": [136, "Botnya dah diblock sama doi, ah ga seru "],
             "duplicate_tweet": [187, "Duplicated tweet"],
             "tweet_target_deleted": [144, "Tweetnya udah dihapus, kasian deh lo"],
             "tweet_target_to_long": [186, "Tweetnya kepanjangan kalau di tambahin emoji, coba format yang lain"],
@@ -37,10 +37,10 @@ class Twitter:
         self.my_bot_id = 1157825461277167616
         self.tweet_text = {
             "dont_mock": ["Enak aja developernya mau di mock, jangan ngelawak deh ",
-                          " adalah akun yang bodoh banget, ya kali gue nge mock diri gue sendiri."],
-            "follow_dulu": "Gak usah sok asik deh main tag-tag kalau belum follow, lo mock manual aja yah ",
+                          " adalah orang yang paling gabut, gak usah nyoba buat ngebuat botnya ngemock diri sendiri."],
+            "follow_dulu": "Follow dulu, kalau gak mau ya mock manual aja yah ",
             "untag_dong": "Kalau jelasin cara kerja botnya tolong di untag yah, ",
-            "umur_account_gak_cukup": "Account baru bikin kok pake bot sih, ganti akun deh "
+            "umur_account_gak_cukup": "Account baru 6 bulan jadi kok pake bot sih, ganti akun deh "
         }
         self.file_meme = {"output": ["img/meme_spongebob_output.png", "img/meme_khaleesi_output.png"],
                           "input": ["img/meme_new.png", "img/meme_khaleesi.png"]}
@@ -183,7 +183,7 @@ class Twitter:
                 target_name = 'nder'
 
         if pattern == 'k':
-            e = Emoji("kamu mending delete akun twitter aja ")
+            e = Emoji("kamu mending tutup akun twitter aja ")
             re = e.random()
             e.pick_emoji(re)
             text_k = e.create_pattern(pattern)
@@ -194,7 +194,7 @@ class Twitter:
             self.show_what_tweeted(text_k)
             time.sleep(self.time_interval)
         elif pattern == 'b':
-            e = Emoji("bacot banget lo sumpah ")
+            e = Emoji("bacot banget lu ")
             re = e.random()
             e.pick_emoji(re)
             text_b = e.create_pattern(pattern)
@@ -205,7 +205,7 @@ class Twitter:
             self.show_what_tweeted(text_b)
             time.sleep(self.time_interval)
         elif pattern == 'j':
-            e = Emoji("jancok raimu iku lho ")
+            e = Emoji("jancok! raimu iku loh ")
             re = e.random()
             e.pick_emoji(re)
             text_j = e.create_pattern(pattern)
