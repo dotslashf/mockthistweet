@@ -1,6 +1,8 @@
 import tweepy
 import os
 import time
+from datetime import datetime
+from dateutil import relativedelta
 from generator import drawText
 from kalimat import Kalimat
 from emoji_generator import Emoji
@@ -17,7 +19,7 @@ class Twitter:
         self.api = tweepy.API(self.auth)
         self.error_code = {
             "private_account": [179, "Kalau mau ngemock pikir-pikir juga dong, masa private akun, mana keliatan tweetnya "],
-            "blocked_account": [136, "Botnya diblock sama si dia, sedih banget jadi bot gini amat "],
+            "blocked_account": [136, "Botnya dah diblock sama doi, ah ga seru "],
             "duplicate_tweet": [187, "Duplicated tweet"],
             "tweet_target_deleted": [144, "Tweetnya udah dihapus, kasian deh lo"],
             "tweet_target_to_long": [186, "Tweetnya kepanjangan kalau di tambahin emoji, coba format yang lain"],
@@ -35,9 +37,10 @@ class Twitter:
         self.my_bot_id = 1157825461277167616
         self.tweet_text = {
             "dont_mock": ["Enak aja developernya mau di mock, jangan ngelawak deh ",
-                          " adalah akun yang bodoh banget, ya kali gue nge mock diri gue sendiri."],
-            "follow_dulu": "Gak usah sok asik deh main tag-tag kalau belum follow, lo mock manual aja yah ",
-            "untag_dong": "Kalau jelasin cara kerja botnya tolong di untag yah, "
+                          " adalah orang yang paling gabut, gak usah nyoba buat ngebuat botnya ngemock diri sendiri."],
+            "follow_dulu": "Follow dulu, kalau gak mau ya mock manual aja yah ",
+            "untag_dong": "Kalau jelasin cara kerja botnya tolong di untag yah, ",
+            "umur_account_gak_cukup": "Account baru 6 bulan jadi kok pake bot sih, ganti akun deh "
         }
         self.file_meme = {"output": ["img/meme_spongebob_output.png", "img/meme_khaleesi_output.png"],
                           "input": ["img/meme_new.png", "img/meme_khaleesi.png"]}
@@ -52,6 +55,11 @@ class Twitter:
     def check_follower(self, source_id, target_id):
         fs = self.api.show_friendship(source_id=source_id, target_id=target_id)
         return fs
+
+    def check_account_old(self, user_old):
+        today = datetime.now()
+        diff = relativedelta.relativedelta(today, user_old)
+        return diff.months+(diff.years*12) > 12
 
     def show_what_tweeted(self, tweet_text):  # logger
         print(u"\u250C"+"-----------------------------------------------",
@@ -151,7 +159,7 @@ class Twitter:
 
         elif emoji_type == "poop":
             text_transformoji = k.transformoji(emoji_type)
-            text_tambahan = "translatean: {} alias tai semua yg lo tweet".format(
+            text_tambahan = "{} alias tai semua yg lo tweet".format(
                 text_transformoji)
             self.api.update_status(status=text_tambahan,
                                    in_reply_to_status_id=tweet.id,
@@ -175,7 +183,7 @@ class Twitter:
                 target_name = 'nder'
 
         if pattern == 'k':
-            e = Emoji("kamu mending delete akun twitter aja ")
+            e = Emoji("kamu mending tutup akun twitter aja ")
             re = e.random()
             e.pick_emoji(re)
             text_k = e.create_pattern(pattern)
@@ -186,7 +194,7 @@ class Twitter:
             self.show_what_tweeted(text_k)
             time.sleep(self.time_interval)
         elif pattern == 'b':
-            e = Emoji("bacot banget lo sumpah ")
+            e = Emoji("bacot banget lu ")
             re = e.random()
             e.pick_emoji(re)
             text_b = e.create_pattern(pattern)
@@ -197,7 +205,7 @@ class Twitter:
             self.show_what_tweeted(text_b)
             time.sleep(self.time_interval)
         elif pattern == 'j':
-            e = Emoji("jancok raimu iku lho ")
+            e = Emoji("jancok! raimu iku loh ")
             re = e.random()
             e.pick_emoji(re)
             text_j = e.create_pattern(pattern)
@@ -236,36 +244,39 @@ class Twitter:
                             self.tweeted_and_show(
                                 self.tweet_text["dont_mock"][1], tweet, 'front')
                 else:
-                    for tw in self.triggering_words:
-                        if tw is "pliisi" in words:
-                            self.mock_in_pliisi(tweet, db)
+                    if self.check_account_old(tweet.user.created_at.date()):
+                        for tw in self.triggering_words:
+                            if tw is "pliisi" in words:
+                                self.mock_in_pliisi(tweet, db)
 
-                        elif tw is "please" in words:
-                            self.mock_in_please(tweet, db)
+                            elif tw is "please" in words:
+                                self.mock_in_please(tweet, db)
 
-                        elif tw is "pleasek" in words:
-                            self.mock_in_emoji_pattern(tweet, 'k', db)
+                            elif tw is "pleasek" in words:
+                                self.mock_in_emoji_pattern(tweet, 'k', db)
 
-                        elif tw is "pleaseb" in words:
-                            self.mock_in_emoji_pattern(tweet, 'b', db)
+                            elif tw is "pleaseb" in words:
+                                self.mock_in_emoji_pattern(tweet, 'b', db)
 
-                        elif tw is "pleasej" in words:
-                            self.mock_in_emoji_pattern(tweet, 'j', db)
+                            elif tw is "pleasej" in words:
+                                self.mock_in_emoji_pattern(tweet, 'j', db)
 
-                        elif tw == "please😂" in words:
-                            self.mock_in_emoji(tweet, "laugh", db)
+                            elif tw == "please😂" in words:
+                                self.mock_in_emoji(tweet, "laugh", db)
 
-                        elif tw == "please👏" in words:
-                            self.mock_in_emoji(tweet, "clap", db)
+                            elif tw == "please👏" in words:
+                                self.mock_in_emoji(tweet, "clap", db)
 
-                        elif tw == "please🤮" in words:
-                            self.mock_in_emoji(tweet, "vomit", db)
+                            elif tw == "please🤮" in words:
+                                self.mock_in_emoji(tweet, "vomit", db)
 
-                        elif tw == "please🤢" in words:
-                            self.mock_in_emoji(tweet, "sick", db)
+                            elif tw == "please🤢" in words:
+                                self.mock_in_emoji(tweet, "sick", db)
 
-                        elif tw == "please💩" in words:
-                            self.mock_in_emoji(tweet, "poop", db)
+                            elif tw == "please💩" in words:
+                                self.mock_in_emoji(tweet, "poop", db)
+                    else:
+                        self.tweeted_and_show(self.tweet_text["umur_account_gak_cukup"], tweet, 'back')
 
             except tweepy.TweepError as e:
                 error = e.api_code

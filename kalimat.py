@@ -8,7 +8,9 @@ class Kalimat:
                               '[askmf]', '[cm]',
                               '[gmf]', 'tanyarl',
                               '/wal', '/rlt/',
-                              '/krt/', 'fess']
+                              '/krt/', 'fess',
+                              'brl!', 'yeet!',
+                              '/mahasantuy/', '(nyampah)']
         self.excludedChars = ['%']
 
     def getSentence(self):
