@@ -39,8 +39,7 @@ class Twitter:
             "dont_mock": ["Enak aja developernya mau di mock, jangan ngelawak deh ",
                           " adalah orang yang paling gabut, gak usah nyoba buat ngebuat botnya ngemock diri sendiri."],
             "follow_dulu": "Follow dulu, kalau gak mau ya mock manual aja yah ",
-            "untag_dong": "Kalau jelasin cara kerja botnya tolong di untag yah, ",
-            "umur_account_gak_cukup": "Account baru 6 bulan jadi kok pake bot sih, ganti akun deh "
+            "untag_dong": "Kalau jelasin cara kerja botnya tolong di untag yah, "
         }
         self.file_meme = {"output": ["img/meme_spongebob_output.png", "img/meme_khaleesi_output.png"],
                           "input": ["img/meme_new.png", "img/meme_khaleesi.png"]}
@@ -244,68 +243,37 @@ class Twitter:
                             self.tweeted_and_show(
                                 self.tweet_text["dont_mock"][1], tweet, 'front')
                 else:
-                    for tw in self.triggering_words:
-                        if tw is "pliisi" in words:
-                            if self.check_account_old(tweet.user.created_at.date()):
+                    if self.check_account_old(tweet.user.created_at.date()):
+                        for tw in self.triggering_words:
+                            if tw is "pliisi" in words:
                                 self.mock_in_pliisi(tweet, db)
-                            else:
-                                self.tweeted_and_show(self.tweet_text["umur_account_gak_cukup"], tweet, 'back')
 
-                        elif tw is "please" in words:
-                            if self.check_account_old(tweet.user.created_at.date()):
+                            elif tw is "please" in words:
                                 self.mock_in_please(tweet, db)
-                            else:
-                                self.tweeted_and_show(self.tweet_text["umur_account_gak_cukup"], tweet, 'back')
 
-                        elif tw is "pleasek" in words:
-                            if self.check_account_old(tweet.user.created_at.date()):
+                            elif tw is "pleasek" in words:
                                 self.mock_in_emoji_pattern(tweet, 'k', db)
-                            else:
-                                self.tweeted_and_show(self.tweet_text["umur_account_gak_cukup"], tweet, 'back')
 
-                        elif tw is "pleaseb" in words:
-                            if self.check_account_old(tweet.user.created_at.date()):
+                            elif tw is "pleaseb" in words:
                                 self.mock_in_emoji_pattern(tweet, 'b', db)
-                            else:
-                                self.tweeted_and_show(self.tweet_text["umur_account_gak_cukup"], tweet, 'back')
 
-                        elif tw is "pleasej" in words:
-                            if self.check_account_old(tweet.user.created_at.date()):
+                            elif tw is "pleasej" in words:
                                 self.mock_in_emoji_pattern(tweet, 'j', db)
-                            else:
-                                self.tweeted_and_show(self.tweet_text["umur_account_gak_cukup"], tweet, 'back')
 
-                        elif tw == "please😂" in words:
-                            if self.check_account_old(tweet.user.created_at.date()):
+                            elif tw == "please😂" in words:
                                 self.mock_in_emoji(tweet, "laugh", db)
-                            else:
-                                self.tweeted_and_show(self.tweet_text["umur_account_gak_cukup"], tweet, 'back')
 
-                        elif tw == "please👏" in words:
-                            if self.check_account_old(tweet.user.created_at.date()):
+                            elif tw == "please👏" in words:
                                 self.mock_in_emoji(tweet, "clap", db)
-                            else:
-                                self.tweeted_and_show(self.tweet_text["umur_account_gak_cukup"], tweet, 'back')
 
-                        elif tw == "please🤮" in words:
-                            if self.check_account_old(tweet.user.created_at.date()):
+                            elif tw == "please🤮" in words:
                                 self.mock_in_emoji(tweet, "vomit", db)
-                            else:
-                                self.tweeted_and_show(
-                                    self.tweet_text["umur_account_gak_cukup"], tweet, 'back')
 
-                        elif tw == "please🤢" in words:
-                            if self.check_account_old(tweet.user.created_at.date()):
+                            elif tw == "please🤢" in words:
                                 self.mock_in_emoji(tweet, "sick", db)
-                            else:
-                                self.tweeted_and_show(self.tweet_text["umur_account_gak_cukup"], tweet, 'back')
 
-                        elif tw == "please💩" in words:
-                            if self.check_account_old(tweet.user.created_at.date()):
+                            elif tw == "please💩" in words:
                                 self.mock_in_emoji(tweet, "poop", db)
-                            else:
-                                self.tweeted_and_show(
-                                    self.tweet_text["umur_account_gak_cukup"], tweet, 'back')
 
             except tweepy.TweepError as e:
                 error = e.api_code
