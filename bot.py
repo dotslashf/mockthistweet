@@ -55,10 +55,10 @@ class Twitter:
         fs = self.api.show_friendship(source_id=source_id, target_id=target_id)
         return fs
 
-    def check_account_old(self, user_old):
+    def account_old(self, user_old):
         today = datetime.now()
         diff = relativedelta.relativedelta(today, user_old)
-        return diff.months+(diff.years*12) > 12
+        return diff.months+(diff.years*12)
 
     def show_what_tweeted(self, tweet_text):  # logger
         print(u"\u250C"+"-----------------------------------------------",
@@ -84,8 +84,8 @@ class Twitter:
 
         try:
             self.api.update_status(status=tweet_text,
-                                    in_reply_to_status_id=tweet.id,
-                                    auto_populate_reply_metadata=True)
+                                   in_reply_to_status_id=tweet.id,
+                                   auto_populate_reply_metadata=True)
             self.show_what_tweeted(tweet_text)
         except tweepy.TweepError as e:
             print(e.api_code, e.response)
@@ -128,7 +128,6 @@ class Twitter:
                                    in_reply_to_status_id=tweet.id,
                                    auto_populate_reply_metadata=True)
             self.show_what_tweeted(text_transformoji)
-            
 
         elif emoji_type == "clap":
             text_transformoji = k.transformoji(emoji_type)
@@ -234,37 +233,36 @@ class Twitter:
                             self.tweeted_and_show(
                                 self.tweet_text["dont_mock"][1], tweet, 'front')
                 else:
-                    if self.check_account_old(tweet.user.created_at.date()):
-                        for tw in self.triggering_words:
-                            if tw is "pliisi" in words:
-                                self.mock_in_pliisi(tweet, db)
+                    for tw in self.triggering_words:
+                        if tw is "pliisi" in words:
+                            self.mock_in_pliisi(tweet, db)
 
-                            elif tw is "please" in words:
-                                self.mock_in_please(tweet, db)
+                        elif tw is "please" in words:
+                            self.mock_in_please(tweet, db)
 
-                            elif tw is "pleasek" in words:
-                                self.mock_in_emoji_pattern(tweet, 'k', db)
+                        elif tw is "pleasek" in words:
+                            self.mock_in_emoji_pattern(tweet, 'k', db)
 
-                            elif tw is "pleaseb" in words:
-                                self.mock_in_emoji_pattern(tweet, 'b', db)
+                        elif tw is "pleaseb" in words:
+                            self.mock_in_emoji_pattern(tweet, 'b', db)
 
-                            elif tw is "pleasej" in words:
-                                self.mock_in_emoji_pattern(tweet, 'j', db)
+                        elif tw is "pleasej" in words:
+                            self.mock_in_emoji_pattern(tweet, 'j', db)
 
-                            elif tw == "please😂" in words:
-                                self.mock_in_emoji(tweet, "laugh", db)
+                        elif tw == "please😂" in words:
+                            self.mock_in_emoji(tweet, "laugh", db)
 
-                            elif tw == "please👏" in words:
-                                self.mock_in_emoji(tweet, "clap", db)
+                        elif tw == "please👏" in words:
+                            self.mock_in_emoji(tweet, "clap", db)
 
-                            elif tw == "please🤮" in words:
-                                self.mock_in_emoji(tweet, "vomit", db)
+                        elif tw == "please🤮" in words:
+                            self.mock_in_emoji(tweet, "vomit", db)
 
-                            elif tw == "please🤢" in words:
-                                self.mock_in_emoji(tweet, "sick", db)
+                        elif tw == "please🤢" in words:
+                            self.mock_in_emoji(tweet, "sick", db)
 
-                            elif tw == "please💩" in words:
-                                self.mock_in_emoji(tweet, "poop", db)
+                        elif tw == "please💩" in words:
+                            self.mock_in_emoji(tweet, "poop", db)
 
             except tweepy.TweepError as e:
                 error = e.api_code
@@ -352,24 +350,28 @@ class Twitter:
         list_tweet = []
 
         for tweet in tweepy.Cursor(self.api.mentions_timeline, since_id=since_id, tweet_mode="extended").items():
+            user_account_old = tweet.user.created_at.date()
             new_since_id = max(tweet.id, new_since_id)
 
             words = tweet.full_text.lower().split()
             if self.am_i_mentioned(tweet) == 'mockthistweet':
-                fs = self.check_follower(self.my_bot_id, tweet.user.id)
-                if (fs[0].followed_by):
-                    if since_id != tweet.id:
-                        list_tweet.append(tweet)
-                    print(tweet.id, 'added to next process')
-                else:
-                    for tw in self.triggering_words:
-                        if tw in words:
-                            db.select_col('not_follower')
-                            db.insert_object({'tweet_id': tweet.id,
-                                              'username': tweet.user.screen_name})
-                            self.tweeted_and_show(
-                                self.tweet_text["follow_dulu"], tweet, 'back')
-                    print(tweet.id, 'skipped not follower')
+                if self.account_old(user_account_old) > 6:
+                    fs = self.check_follower(self.my_bot_id, tweet.user.id)
+                    if (fs[0].followed_by):
+                        if since_id != tweet.id:
+                            list_tweet.append(tweet)
+                        print("account old: {}".format(self.account_old(user_account_old)),
+                              tweet.id, 'added to next process')
+                    else:
+                        for tw in self.triggering_words:
+                            if tw in words:
+                                db.select_col('not_follower')
+                                db.insert_object({'tweet_id': tweet.id,
+                                                  'username': tweet.user.screen_name})
+                                self.tweeted_and_show(
+                                    self.tweet_text["follow_dulu"], tweet, 'back')
+                        print("account old: {}".format(self.account_old(user_account_old)),
+                              tweet.id, 'skipped not follower')
 
             elif self.am_i_mentioned(tweet) != 'mockthistweet':
                 for tw in self.triggering_words:
