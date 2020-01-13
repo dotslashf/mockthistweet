@@ -59,7 +59,7 @@ class Kalimat:
         text = self.removeWords()
         vokal = ['a', 'u', 'e', 'o']
         for char in text:
-            if char in consonant:
+            if char in vokal:
                 char = char.replace(char, 'i')
                 finalText += char
             else:
