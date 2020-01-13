@@ -97,7 +97,6 @@ class Twitter:
         k = Kalimat(tweet_target.full_text)
         text_trinsfirmid = k.trinsfirm()
         drawText(text_trinsfirmid, self.file_meme["input"][1], "khaleesi")
-        time.sleep(self.time_interval)
         self.api.update_with_media(filename=self.file_meme["output"][1],
                                    status=text_trinsfirmid,
                                    in_reply_to_status_id=tweet.id,
@@ -111,7 +110,6 @@ class Twitter:
         k = Kalimat(tweet_target.full_text)
         text_transformed = k.transform()
         drawText(text_transformed, self.file_meme["input"][0], "spongebob")
-        time.sleep(self.time_interval)
         self.api.update_with_media(filename=self.file_meme["output"][0],
                                    status=text_transformed,
                                    in_reply_to_status_id=tweet.id,
@@ -130,7 +128,7 @@ class Twitter:
                                    in_reply_to_status_id=tweet.id,
                                    auto_populate_reply_metadata=True)
             self.show_what_tweeted(text_transformoji)
-            time.sleep(self.time_interval)
+            
 
         elif emoji_type == "clap":
             text_transformoji = k.transformoji(emoji_type)
@@ -138,7 +136,6 @@ class Twitter:
                                    in_reply_to_status_id=tweet.id,
                                    auto_populate_reply_metadata=True)
             self.show_what_tweeted(text_transformoji)
-            time.sleep(self.time_interval)
 
         elif emoji_type == "vomit":
             text_transformoji = k.transformoji(emoji_type)
@@ -146,7 +143,6 @@ class Twitter:
                                    in_reply_to_status_id=tweet.id,
                                    auto_populate_reply_metadata=True)
             self.show_what_tweeted(text_transformoji)
-            time.sleep(self.time_interval)
 
         elif emoji_type == "sick":
             text_transformoji = k.transformoji(emoji_type)
@@ -154,7 +150,6 @@ class Twitter:
                                    in_reply_to_status_id=tweet.id,
                                    auto_populate_reply_metadata=True)
             self.show_what_tweeted(text_transformoji)
-            time.sleep(self.time_interval)
 
         elif emoji_type == "poop":
             text_transformoji = k.transformoji(emoji_type)
@@ -164,7 +159,6 @@ class Twitter:
                                    in_reply_to_status_id=tweet.id,
                                    auto_populate_reply_metadata=True)
             self.show_what_tweeted(text_tambahan)
-            time.sleep(self.time_interval)
 
         db.insert_object({'tweet_last_id': tweet.id})
 
@@ -191,7 +185,6 @@ class Twitter:
                                    in_reply_to_status_id=tweet.id,
                                    auto_populate_reply_metadata=True)
             self.show_what_tweeted(text_k)
-            time.sleep(self.time_interval)
         elif pattern == 'b':
             e = Emoji("bacot banget lu ")
             re = e.random()
@@ -202,7 +195,6 @@ class Twitter:
                                    in_reply_to_status_id=tweet.id,
                                    auto_populate_reply_metadata=True)
             self.show_what_tweeted(text_b)
-            time.sleep(self.time_interval)
         elif pattern == 'j':
             e = Emoji("jancok! raimu iku loh ")
             re = e.random()
@@ -213,7 +205,6 @@ class Twitter:
                                    in_reply_to_status_id=tweet.id,
                                    auto_populate_reply_metadata=True)
             self.show_what_tweeted(text_j)
-            time.sleep(self.time_interval)
 
         db.insert_object({'tweet_last_id': tweet.id})
 
@@ -348,6 +339,7 @@ class Twitter:
                             'tweet_text': tweet.full_text,
                             'error_text': error_text})
 
+            time.sleep(self.time_interval)
             continue
 
     def get_mention_tweet(self, since_id):
