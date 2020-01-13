@@ -57,7 +57,7 @@ class Kalimat:
     def trinsfirm(self):
         finalText = ''
         text = self.removeWords()
-        consonant = ['a', 'u', 'e', 'o']
+        vokal = ['a', 'u', 'e', 'o']
         for char in text:
             if char in consonant:
                 char = char.replace(char, 'i')
