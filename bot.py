@@ -355,23 +355,22 @@ class Twitter:
 
             words = tweet.full_text.lower().split()
             if self.am_i_mentioned(tweet) == 'mockthistweet':
-                if self.account_old(user_account_old) > 6:
-                    fs = self.check_follower(self.my_bot_id, tweet.user.id)
-                    if (fs[0].followed_by):
-                        if since_id != tweet.id:
-                            list_tweet.append(tweet)
-                        print("account old: {}".format(self.account_old(user_account_old)),
-                              tweet.id, 'added to next process')
-                    else:
-                        for tw in self.triggering_words:
-                            if tw in words:
-                                db.select_col('not_follower')
-                                db.insert_object({'tweet_id': tweet.id,
-                                                  'username': tweet.user.screen_name})
-                                self.tweeted_and_show(
-                                    self.tweet_text["follow_dulu"], tweet, 'back')
-                        print("account old: {}".format(self.account_old(user_account_old)),
-                              tweet.id, 'skipped not follower')
+                fs = self.check_follower(self.my_bot_id, tweet.user.id)
+                if (fs[0].followed_by and self.account_old(user_account_old) > 6):
+                    if since_id != tweet.id:
+                        list_tweet.append(tweet)
+                    print("account old: {}".format(self.account_old(user_account_old)),
+                            tweet.id, 'added to next process')
+                else:
+                    for tw in self.triggering_words:
+                        if tw in words:
+                            db.select_col('not_follower')
+                            db.insert_object({'tweet_id': tweet.id,
+                                                'username': tweet.user.screen_name})
+                            self.tweeted_and_show(
+                                self.tweet_text["follow_dulu"], tweet, 'back')
+                    print("account old: {}".format(self.account_old(user_account_old)),
+                            tweet.id, 'skipped not in the criteria')
 
             elif self.am_i_mentioned(tweet) != 'mockthistweet':
                 for tw in self.triggering_words:
