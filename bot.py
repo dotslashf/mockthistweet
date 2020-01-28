@@ -32,7 +32,7 @@ class Twitter:
                                  "please😂", "please👏",
                                  "please🤮", "please🤢",
                                  "pleasek", "pleaseb", "pleasej",
-                                 "please💩"]
+                                 "please💩", "pleasealay"]
         self.my_user_id = 1012117785512558592
         self.my_bot_id = 1157825461277167616
         self.tweet_text = {
@@ -207,6 +207,17 @@ class Twitter:
 
         db.insert_object({'tweet_last_id': tweet.id})
 
+    def mock_in_alay(self, tweet, db):
+        tweet_target = self.api.get_status(tweet.in_reply_to_status_id,
+                                           tweet_mode="extended")
+        k = Kalimat(tweet_target.full_text)
+        text_transformed = k.transformalay()
+        self.api.update_status(status=text_transformed,
+                               in_reply_to_status_id=tweet.id,
+                               auto_populate_reply_metadata=True)
+        self.show_what_tweeted(text_transformed)
+        db.insert_object({'tweet_last_id': tweet.id})
+
     def am_i_mentioned(self, tweet):
         for t in tweet.entities.items():
             for a in t[1]:
@@ -263,6 +274,11 @@ class Twitter:
 
                         elif tw == "please💩" in words:
                             self.mock_in_emoji(tweet, "poop", db)
+
+                        elif tw == "pleasealay" in words:
+                            self.mock_in_alay(tweet, db)
+
+                    time.sleep(self.time_interval)
 
             except tweepy.TweepError as e:
                 error = e.api_code
@@ -336,8 +352,6 @@ class Twitter:
                             'username': tweet.user.screen_name,
                             'tweet_text': tweet.full_text,
                             'error_text': error_text})
-
-            time.sleep(self.time_interval)
             continue
 
     def get_mention_tweet(self, since_id):
@@ -358,19 +372,14 @@ class Twitter:
                 fs = self.check_follower(self.my_bot_id, tweet.user.id)
                 if (fs[0].followed_by and self.account_old(user_account_old) > 6):
                     if since_id != tweet.id:
-                        list_tweet.append(tweet)
+                        for tw in self.triggering_words:
+                            if tw in words:
+                                list_tweet.append(tweet)
                     print("account old: {}".format(self.account_old(user_account_old)),
-                            tweet.id, 'added to next process')
+                          tweet.id, 'added to next process')
                 else:
-                    for tw in self.triggering_words:
-                        if tw in words:
-                            db.select_col('not_follower')
-                            db.insert_object({'tweet_id': tweet.id,
-                                                'username': tweet.user.screen_name})
-                            self.tweeted_and_show(
-                                self.tweet_text["follow_dulu"], tweet, 'back')
                     print("account old: {}".format(self.account_old(user_account_old)),
-                            tweet.id, 'skipped not in the criteria')
+                          tweet.id, 'skipped not in the criteria')
 
             elif self.am_i_mentioned(tweet) != 'mockthistweet':
                 for tw in self.triggering_words:
