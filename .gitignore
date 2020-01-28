@@ -5,3 +5,4 @@ __pycache__
 img/*
 test-db.py
 playground.py
+.vscode/

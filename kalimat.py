@@ -1,4 +1,5 @@
 import demoji  # for removing emoji
+from art import *
 
 
 class Kalimat:
@@ -57,9 +58,9 @@ class Kalimat:
     def trinsfirm(self):
         finalText = ''
         text = self.removeWords()
-        consonant = ['a', 'u', 'e', 'o']
+        vokal = ['a', 'u', 'e', 'o']
         for char in text:
-            if char in consonant:
+            if char in vokal:
                 char = char.replace(char, 'i')
                 finalText += char
             else:
@@ -105,6 +106,12 @@ class Kalimat:
                 else:
                     finalText += char
             return finalText
+
+    def transformalay(self):
+        finalText = ''
+        text = self.removeWords()
+        finalText = text2art(text, 'mix')
+        return finalText
 
 
 # Testing purpose

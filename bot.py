@@ -32,15 +32,14 @@ class Twitter:
                                  "please😂", "please👏",
                                  "please🤮", "please🤢",
                                  "pleasek", "pleaseb", "pleasej",
-                                 "please💩"]
+                                 "please💩", "pleasealay"]
         self.my_user_id = 1012117785512558592
         self.my_bot_id = 1157825461277167616
         self.tweet_text = {
             "dont_mock": ["Enak aja developernya mau di mock, jangan ngelawak deh ",
                           " adalah orang yang paling gabut, gak usah nyoba buat ngebuat botnya ngemock diri sendiri."],
             "follow_dulu": "Follow dulu, kalau gak mau ya mock manual aja yah ",
-            "untag_dong": "Kalau jelasin cara kerja botnya tolong di untag yah, ",
-            "umur_account_gak_cukup": "Account baru 6 bulan jadi kok pake bot sih, ganti akun deh "
+            "untag_dong": "Kalau jelasin cara kerja botnya tolong di untag yah, "
         }
         self.file_meme = {"output": ["img/meme_spongebob_output.png", "img/meme_khaleesi_output.png"],
                           "input": ["img/meme_new.png", "img/meme_khaleesi.png"]}
@@ -56,10 +55,10 @@ class Twitter:
         fs = self.api.show_friendship(source_id=source_id, target_id=target_id)
         return fs
 
-    def check_account_old(self, user_old):
+    def account_old(self, user_old):
         today = datetime.now()
         diff = relativedelta.relativedelta(today, user_old)
-        return diff.months+(diff.years*12) > 12
+        return diff.months+(diff.years*12)
 
     def show_what_tweeted(self, tweet_text):  # logger
         print(u"\u250C"+"-----------------------------------------------",
@@ -85,8 +84,8 @@ class Twitter:
 
         try:
             self.api.update_status(status=tweet_text,
-                                    in_reply_to_status_id=tweet.id,
-                                    auto_populate_reply_metadata=True)
+                                   in_reply_to_status_id=tweet.id,
+                                   auto_populate_reply_metadata=True)
             self.show_what_tweeted(tweet_text)
         except tweepy.TweepError as e:
             print(e.api_code, e.response)
@@ -98,7 +97,6 @@ class Twitter:
         k = Kalimat(tweet_target.full_text)
         text_trinsfirmid = k.trinsfirm()
         drawText(text_trinsfirmid, self.file_meme["input"][1], "khaleesi")
-        time.sleep(self.time_interval)
         self.api.update_with_media(filename=self.file_meme["output"][1],
                                    status=text_trinsfirmid,
                                    in_reply_to_status_id=tweet.id,
@@ -112,7 +110,6 @@ class Twitter:
         k = Kalimat(tweet_target.full_text)
         text_transformed = k.transform()
         drawText(text_transformed, self.file_meme["input"][0], "spongebob")
-        time.sleep(self.time_interval)
         self.api.update_with_media(filename=self.file_meme["output"][0],
                                    status=text_transformed,
                                    in_reply_to_status_id=tweet.id,
@@ -131,7 +128,6 @@ class Twitter:
                                    in_reply_to_status_id=tweet.id,
                                    auto_populate_reply_metadata=True)
             self.show_what_tweeted(text_transformoji)
-            time.sleep(self.time_interval)
 
         elif emoji_type == "clap":
             text_transformoji = k.transformoji(emoji_type)
@@ -139,7 +135,6 @@ class Twitter:
                                    in_reply_to_status_id=tweet.id,
                                    auto_populate_reply_metadata=True)
             self.show_what_tweeted(text_transformoji)
-            time.sleep(self.time_interval)
 
         elif emoji_type == "vomit":
             text_transformoji = k.transformoji(emoji_type)
@@ -147,7 +142,6 @@ class Twitter:
                                    in_reply_to_status_id=tweet.id,
                                    auto_populate_reply_metadata=True)
             self.show_what_tweeted(text_transformoji)
-            time.sleep(self.time_interval)
 
         elif emoji_type == "sick":
             text_transformoji = k.transformoji(emoji_type)
@@ -155,7 +149,6 @@ class Twitter:
                                    in_reply_to_status_id=tweet.id,
                                    auto_populate_reply_metadata=True)
             self.show_what_tweeted(text_transformoji)
-            time.sleep(self.time_interval)
 
         elif emoji_type == "poop":
             text_transformoji = k.transformoji(emoji_type)
@@ -165,7 +158,6 @@ class Twitter:
                                    in_reply_to_status_id=tweet.id,
                                    auto_populate_reply_metadata=True)
             self.show_what_tweeted(text_tambahan)
-            time.sleep(self.time_interval)
 
         db.insert_object({'tweet_last_id': tweet.id})
 
@@ -192,7 +184,6 @@ class Twitter:
                                    in_reply_to_status_id=tweet.id,
                                    auto_populate_reply_metadata=True)
             self.show_what_tweeted(text_k)
-            time.sleep(self.time_interval)
         elif pattern == 'b':
             e = Emoji("bacot banget lu ")
             re = e.random()
@@ -203,7 +194,6 @@ class Twitter:
                                    in_reply_to_status_id=tweet.id,
                                    auto_populate_reply_metadata=True)
             self.show_what_tweeted(text_b)
-            time.sleep(self.time_interval)
         elif pattern == 'j':
             e = Emoji("jancok! raimu iku loh ")
             re = e.random()
@@ -214,8 +204,18 @@ class Twitter:
                                    in_reply_to_status_id=tweet.id,
                                    auto_populate_reply_metadata=True)
             self.show_what_tweeted(text_j)
-            time.sleep(self.time_interval)
 
+        db.insert_object({'tweet_last_id': tweet.id})
+
+    def mock_in_alay(self, tweet, db):
+        tweet_target = self.api.get_status(tweet.in_reply_to_status_id,
+                                           tweet_mode="extended")
+        k = Kalimat(tweet_target.full_text)
+        text_transformed = k.transformalay()
+        self.api.update_status(status=text_transformed,
+                               in_reply_to_status_id=tweet.id,
+                               auto_populate_reply_metadata=True)
+        self.show_what_tweeted(text_transformed)
         db.insert_object({'tweet_last_id': tweet.id})
 
     def am_i_mentioned(self, tweet):
@@ -244,39 +244,41 @@ class Twitter:
                             self.tweeted_and_show(
                                 self.tweet_text["dont_mock"][1], tweet, 'front')
                 else:
-                    if self.check_account_old(tweet.user.created_at.date()):
-                        for tw in self.triggering_words:
-                            if tw is "pliisi" in words:
-                                self.mock_in_pliisi(tweet, db)
+                    for tw in self.triggering_words:
+                        if tw is "pliisi" in words:
+                            self.mock_in_pliisi(tweet, db)
 
-                            elif tw is "please" in words:
-                                self.mock_in_please(tweet, db)
+                        elif tw is "please" in words:
+                            self.mock_in_please(tweet, db)
 
-                            elif tw is "pleasek" in words:
-                                self.mock_in_emoji_pattern(tweet, 'k', db)
+                        elif tw is "pleasek" in words:
+                            self.mock_in_emoji_pattern(tweet, 'k', db)
 
-                            elif tw is "pleaseb" in words:
-                                self.mock_in_emoji_pattern(tweet, 'b', db)
+                        elif tw is "pleaseb" in words:
+                            self.mock_in_emoji_pattern(tweet, 'b', db)
 
-                            elif tw is "pleasej" in words:
-                                self.mock_in_emoji_pattern(tweet, 'j', db)
+                        elif tw is "pleasej" in words:
+                            self.mock_in_emoji_pattern(tweet, 'j', db)
 
-                            elif tw == "please😂" in words:
-                                self.mock_in_emoji(tweet, "laugh", db)
+                        elif tw == "please😂" in words:
+                            self.mock_in_emoji(tweet, "laugh", db)
 
-                            elif tw == "please👏" in words:
-                                self.mock_in_emoji(tweet, "clap", db)
+                        elif tw == "please👏" in words:
+                            self.mock_in_emoji(tweet, "clap", db)
 
-                            elif tw == "please🤮" in words:
-                                self.mock_in_emoji(tweet, "vomit", db)
+                        elif tw == "please🤮" in words:
+                            self.mock_in_emoji(tweet, "vomit", db)
 
-                            elif tw == "please🤢" in words:
-                                self.mock_in_emoji(tweet, "sick", db)
+                        elif tw == "please🤢" in words:
+                            self.mock_in_emoji(tweet, "sick", db)
 
-                            elif tw == "please💩" in words:
-                                self.mock_in_emoji(tweet, "poop", db)
-                    else:
-                        self.tweeted_and_show(self.tweet_text["umur_account_gak_cukup"], tweet, 'back')
+                        elif tw == "please💩" in words:
+                            self.mock_in_emoji(tweet, "poop", db)
+
+                        elif tw == "pleasealay" in words:
+                            self.mock_in_alay(tweet, db)
+
+                    time.sleep(self.time_interval)
 
             except tweepy.TweepError as e:
                 error = e.api_code
@@ -350,7 +352,6 @@ class Twitter:
                             'username': tweet.user.screen_name,
                             'tweet_text': tweet.full_text,
                             'error_text': error_text})
-
             continue
 
     def get_mention_tweet(self, since_id):
@@ -363,24 +364,22 @@ class Twitter:
         list_tweet = []
 
         for tweet in tweepy.Cursor(self.api.mentions_timeline, since_id=since_id, tweet_mode="extended").items():
+            user_account_old = tweet.user.created_at.date()
             new_since_id = max(tweet.id, new_since_id)
 
             words = tweet.full_text.lower().split()
             if self.am_i_mentioned(tweet) == 'mockthistweet':
                 fs = self.check_follower(self.my_bot_id, tweet.user.id)
-                if (fs[0].followed_by):
+                if (fs[0].followed_by and self.account_old(user_account_old) > 6):
                     if since_id != tweet.id:
-                        list_tweet.append(tweet)
-                    print(tweet.id, 'added to next process')
+                        for tw in self.triggering_words:
+                            if tw in words:
+                                list_tweet.append(tweet)
+                    print("account old: {}".format(self.account_old(user_account_old)),
+                          tweet.id, 'added to next process')
                 else:
-                    for tw in self.triggering_words:
-                        if tw in words:
-                            db.select_col('not_follower')
-                            db.insert_object({'tweet_id': tweet.id,
-                                              'username': tweet.user.screen_name})
-                            self.tweeted_and_show(
-                                self.tweet_text["follow_dulu"], tweet, 'back')
-                    print(tweet.id, 'skipped not follower')
+                    print("account old: {}".format(self.account_old(user_account_old)),
+                          tweet.id, 'skipped not in the criteria')
 
             elif self.am_i_mentioned(tweet) != 'mockthistweet':
                 for tw in self.triggering_words:
