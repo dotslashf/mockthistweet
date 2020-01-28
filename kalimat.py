@@ -1,4 +1,5 @@
 import demoji  # for removing emoji
+from art import *
 
 
 class Kalimat:
@@ -105,6 +106,12 @@ class Kalimat:
                 else:
                     finalText += char
             return finalText
+
+    def transformalay(self):
+        finalText = ''
+        text = self.removeWords()
+        finalText = text2art(text, 'mix')
+        return finalText
 
 
 # Testing purpose
