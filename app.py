@@ -19,7 +19,7 @@ access_token_secret = db.find_object('access_token_secret')
 def main(ck, cs, at, ats):
     bot = Twitter(ck, cs, at, ats)
     db = Database()
-    db.connect_db('twitter')
+    db.connect_db(db_name)
     db.select_col('tweet')
 
     while True:
