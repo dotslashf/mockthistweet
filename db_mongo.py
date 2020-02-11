@@ -1,9 +1,19 @@
 import pymongo
+import os
+from dotenv import load_dotenv
 
 
 class Database:
     def __init__(self):
-        self.client = pymongo.MongoClient("mongodb://localhost:27017/")
+        load_dotenv()
+
+        db_user = os.getenv("DB_USER")
+        db_password = os.getenv("DB_PASS")
+        db_cluster = os.getenv("DB_CLUSTER")
+
+        db_conn = "mongodb+srv://{}:{}@{}-kdbqm.mongodb.net/test?retryWrites=true&w=majority".format(
+            db_user, db_password, db_cluster)
+        self.client = pymongo.MongoClient(db_conn)
         self.db = None
         self.collection = None
 
