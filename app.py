@@ -4,8 +4,10 @@ import os
 from bot import Twitter
 from db_mongo import Database
 
+db_name = os.getenv("DB_NAME")
+
 db = Database()
-db.connect_db('twitter')
+db.connect_db(db_name)
 db.select_col('environment')
 
 consumer_key = db.find_object('consumer_key')

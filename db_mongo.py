@@ -11,9 +11,8 @@ class Database:
         db_password = os.getenv("DB_PASS")
         db_cluster = os.getenv("DB_CLUSTER")
 
-        db_conn = "mongodb+srv://{}:{}@{}-kdbqm.mongodb.net/test?retryWrites=true&w=majority".format(
-            db_user, db_password, db_cluster)
-        self.client = pymongo.MongoClient(db_conn)
+        self.client = pymongo.MongoClient("mongodb+srv://{}:{}@{}-kdbqm.mongodb.net/test?retryWrites=true&w=majority".format(
+            db_user, db_password, db_cluster))
         self.db = None
         self.collection = None
 
