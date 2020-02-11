@@ -4,7 +4,7 @@ import os
 from bot import Twitter
 from db_mongo import Database
 
-db_name = os.getenv("DB_NAME")
+db_name = os.environ.get("DB_NAME")
 
 db = Database()
 db.connect_db(db_name)

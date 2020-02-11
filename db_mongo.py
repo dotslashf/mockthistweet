@@ -1,15 +1,12 @@
 import pymongo
 import os
-from dotenv import load_dotenv
 
 
 class Database:
     def __init__(self):
-        load_dotenv()
-
-        db_user = os.getenv("DB_USER")
-        db_password = os.getenv("DB_PASS")
-        db_cluster = os.getenv("DB_CLUSTER")
+        db_user = os.environ.get("DB_USER")
+        db_password = os.environ.get("DB_PASS")
+        db_cluster = os.environ.get("DB_CLUSTER")
 
         self.client = pymongo.MongoClient("mongodb+srv://{}:{}@{}-kdbqm.mongodb.net/test?retryWrites=true&w=majority".format(
             db_user, db_password, db_cluster))
