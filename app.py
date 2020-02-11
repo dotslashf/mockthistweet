@@ -26,7 +26,7 @@ def main(ck, cs, at, ats):
 
         since_id = bot.get_mention_tweet(last_id)
 
-        follower = bot.api.get_user(user_id=1157825461277167616)
+        bot_account = bot.api.get_user(user_id=bot.my_bot_id)
         t = time.localtime()
         current_time = time.strftime("%H:%M:%S %D", t)
 
@@ -34,7 +34,8 @@ def main(ck, cs, at, ats):
               "\n: current time: ", current_time,
               "\n| newest tweet: ", since_id,
               "\n| oldest tweet: ", last_id,
-              "\n| current followers: ", follower.followers_count,
+              "\n| current followers: ", bot_account.followers_count,
+              "\n| total tweets: ", bot_account.statuses_count,
               "\n"+u"\u2514"+"------------------------------------------------")
 
         if (last_id != since_id):

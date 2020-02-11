@@ -185,11 +185,11 @@ class Twitter:
                                    auto_populate_reply_metadata=True)
             self.show_what_tweeted(text_k)
         elif pattern == 'b':
-            e = Emoji("bacot banget lu ")
+            e = Emoji("bisa diem gak lo jelek ")
             re = e.random()
             e.pick_emoji(re)
             text_b = e.create_pattern(pattern)
-            text_b += target_name
+            # text_b += target_name
             self.api.update_status(status=text_b,
                                    in_reply_to_status_id=tweet.id,
                                    auto_populate_reply_metadata=True)
