@@ -21,7 +21,7 @@ class Kalimat:
     def removeWords(self):
         self.sentence = demoji.replace(self.sentence)
         finalText = ''
-        invisibleChar = [u"\u2800", u"\u2063"]
+        invisibleChar = [u"\u2800", u"\u2063", u'\xe3', u'\xa4']
         words = [i for j in self.sentence.split() for i in (j, ' ')][:-1]
         for word in words:
             word = word.lower()
