@@ -44,6 +44,7 @@ class Twitter:
         self.file_meme = {"output": ["img/meme_spongebob_output.png", "img/meme_khaleesi_output.png"],
                           "input": ["img/meme_new.png", "img/meme_khaleesi.png"]}
         self.time_interval = 30
+        self.db_name = os.environ.get("DB_NAME")
 
     def authentication(self):
         self.auth = tweepy.OAuthHandler(
@@ -226,7 +227,7 @@ class Twitter:
 
     def process_mention(self, list_tweet):
         db = Database()
-        db.connect_db('twitter')
+        db.connect_db(self.db_name)
         db.select_col('tweet')
 
         for tweet in reversed(list_tweet):
@@ -358,7 +359,8 @@ class Twitter:
         new_since_id = since_id
 
         db = Database()
-        db.connect_db('twitter')
+        db_name = os.environ.get("DB_NAME")
+        db.connect_db(self.db_name)
         db.select_col('tweet')
 
         list_tweet = []
