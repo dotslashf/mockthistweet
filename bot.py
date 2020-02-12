@@ -92,17 +92,25 @@ class Twitter:
             print(e.api_code, e.response)
         time.sleep(self.time_interval)
 
+    def tweet_mocked_tweet_picture(self, mocked_text, tweet_id, type):
+        meme_type = None
+        if type == 'spongebob':
+            meme_type = 0
+        else:
+            meme_type = 1
+        drawText(mocked_text, self.file_meme["input"][meme_type], type)
+        self.api.update_with_media(filename=self.file_meme["output"][meme_type],
+                                   status=mocked_text,
+                                   in_reply_to_status_id=tweet_id,
+                                   auto_populate_reply_metadata=True)
+        self.show_what_tweeted(mocked_text)
+
     def mock_in_pliisi(self, tweet, db):
         tweet_target = self.api.get_status(tweet.in_reply_to_status_id,
                                            tweet_mode="extended")
         k = Kalimat(tweet_target.full_text)
         text_trinsfirmid = k.trinsfirm()
-        drawText(text_trinsfirmid, self.file_meme["input"][1], "khaleesi")
-        self.api.update_with_media(filename=self.file_meme["output"][1],
-                                   status=text_trinsfirmid,
-                                   in_reply_to_status_id=tweet.id,
-                                   auto_populate_reply_metadata=True)
-        self.show_what_tweeted(text_trinsfirmid)
+        self.tweet_mocked_tweet_picture(text_trinsfirmid, tweet.id, "khaleesi")
         db.insert_object({'tweet_last_id': tweet.id})
 
     def mock_in_please(self, tweet, db):
@@ -110,12 +118,8 @@ class Twitter:
                                            tweet_mode="extended")
         k = Kalimat(tweet_target.full_text)
         text_transformed = k.transform()
-        drawText(text_transformed, self.file_meme["input"][0], "spongebob")
-        self.api.update_with_media(filename=self.file_meme["output"][0],
-                                   status=text_transformed,
-                                   in_reply_to_status_id=tweet.id,
-                                   auto_populate_reply_metadata=True)
-        self.show_what_tweeted(text_transformed)
+        self.tweet_mocked_tweet_picture(
+            text_transformed, tweet.id, "spongebob")
         db.insert_object({'tweet_last_id': tweet.id})
 
     def mock_in_emoji(self, tweet, emoji_type, db):
@@ -125,40 +129,25 @@ class Twitter:
 
         if emoji_type == "laugh":
             text_transformoji = k.transformoji(emoji_type)
-            self.api.update_status(status=text_transformoji,
-                                   in_reply_to_status_id=tweet.id,
-                                   auto_populate_reply_metadata=True)
-            self.show_what_tweeted(text_transformoji)
 
         elif emoji_type == "clap":
             text_transformoji = k.transformoji(emoji_type)
-            self.api.update_status(status=text_transformoji,
-                                   in_reply_to_status_id=tweet.id,
-                                   auto_populate_reply_metadata=True)
-            self.show_what_tweeted(text_transformoji)
 
         elif emoji_type == "vomit":
             text_transformoji = k.transformoji(emoji_type)
-            self.api.update_status(status=text_transformoji,
-                                   in_reply_to_status_id=tweet.id,
-                                   auto_populate_reply_metadata=True)
-            self.show_what_tweeted(text_transformoji)
 
         elif emoji_type == "sick":
             text_transformoji = k.transformoji(emoji_type)
-            self.api.update_status(status=text_transformoji,
-                                   in_reply_to_status_id=tweet.id,
-                                   auto_populate_reply_metadata=True)
-            self.show_what_tweeted(text_transformoji)
 
         elif emoji_type == "poop":
             text_transformoji = k.transformoji(emoji_type)
-            text_tambahan = "{} alias tai semua yg lo tweet".format(
+            text_transformoji = "{} alias tai semua yg lo tweet".format(
                 text_transformoji)
-            self.api.update_status(status=text_tambahan,
-                                   in_reply_to_status_id=tweet.id,
-                                   auto_populate_reply_metadata=True)
-            self.show_what_tweeted(text_tambahan)
+
+        self.api.update_status(status=text_transformoji,
+                               in_reply_to_status_id=tweet.id,
+                               auto_populate_reply_metadata=True)
+        self.show_what_tweeted(text_transformoji)
 
         db.insert_object({'tweet_last_id': tweet.id})
 
@@ -179,32 +168,27 @@ class Twitter:
             e = Emoji("kamu mending tutup akun twitter aja ")
             re = e.random()
             e.pick_emoji(re)
-            text_k = e.create_pattern(pattern)
-            text_k += target_name
-            self.api.update_status(status=text_k,
-                                   in_reply_to_status_id=tweet.id,
-                                   auto_populate_reply_metadata=True)
-            self.show_what_tweeted(text_k)
+            tweet_pattern = e.create_pattern(pattern)
+            tweet_pattern += target_name
+
         elif pattern == 'b':
-            e = Emoji("bisa diem gak lo jelek ")
+            text = "bisa diem gak {}, lo jelek".format(target_name)
+            e = Emoji(text)
             re = e.random()
             e.pick_emoji(re)
-            text_b = e.create_pattern(pattern)
-            # text_b += target_name
-            self.api.update_status(status=text_b,
-                                   in_reply_to_status_id=tweet.id,
-                                   auto_populate_reply_metadata=True)
-            self.show_what_tweeted(text_b)
+            tweet_pattern = e.create_pattern(pattern)
+
         elif pattern == 'j':
             e = Emoji("jancok! raimu iku loh ")
             re = e.random()
             e.pick_emoji(re)
-            text_j = e.create_pattern(pattern)
-            text_j += target_name
-            self.api.update_status(status=text_j,
-                                   in_reply_to_status_id=tweet.id,
-                                   auto_populate_reply_metadata=True)
-            self.show_what_tweeted(text_j)
+            tweet_pattern = e.create_pattern(pattern)
+            tweet_pattern += target_name
+
+        self.api.update_status(status=tweet_pattern,
+                                in_reply_to_status_id=tweet.id,
+                                auto_populate_reply_metadata=True)
+        self.show_what_tweeted(tweet_pattern)
 
         db.insert_object({'tweet_last_id': tweet.id})
 
@@ -359,7 +343,6 @@ class Twitter:
         new_since_id = since_id
 
         db = Database()
-        db_name = os.environ.get("DB_NAME")
         db.connect_db(self.db_name)
         db.select_col('tweet')
 
