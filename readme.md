@@ -1,33 +1,40 @@
-# MOCK THAT TWEET
+# mockthistweet 🤖
 
-You hate someone tweet? Let this bot mock it for you. Simply reply the tweet that you hated. See usage.
+Hating someone tweet? Let this bot mock it for you. Simply reply the tweet that you hated, and let the bot mock it for you. See usage.
+
+## Description
+
+A simple twitter bot that replying with mocked tweet from the targeted user.
 
 ### Usage
 
-```
-hated tweet: so are you hating me because im making a bot?
+Just simply reply tweet that you want to mock and wait for the bot do the mock for you.
 
-please: sO ArE YoU HaTiNg mE BeCaUsE Im mAkInG A BoT
+Currently working method are:
 
-pliisi: si iri yii hiting mi biciisi im miking i bit
+- Mock with picture:
 
-please😂: so😂are😂you😂hating😂me😂because😂im😂making😂a😂bot
+  - please,
+  - pliisi
 
-please👏: so👏are👏you👏hating👏me👏because👏im👏making👏a👏bot
+- Mock only text:
+  - please👏,
+  - please🤮,
+  - please🤢,
+  - pleasek,
+  - pleaseb,
+  - pleasej,
+  - please💩,
+  - pleasealay
 
-please🤮: so🤮are🤮you🤮hating🤮me🤮because🤮im🤮making🤮a🤮bot🤮
+Example for mock with picture:
 
-please🤢: so🤢are🤢you🤢hating🤢me🤢because🤢im🤢making🤢a🤢bot🤢
-```
-
-![spongebob meme](https://i.ibb.co/zQZswnP/meme-new-format-github.png)
-![khaleesi meme](https://i.ibb.co/vL8Zxzw/meme-khaleesi-output.png)
+![spongebob meme](https://i.ibb.co/6F6LbpV/Screenshot-from-2020-02-12-09-38-13.png)
+![khaleesi meme](https://i.ibb.co/4JMRzLs/Screenshot-from-2020-02-12-09-39-17.png)
 
 ### Built With
 
-- [Tweepy](https://www.tweepy.org/) - An easy-to-use Python library for accessing the Twitter API.
-- [Pillow](https://github.com/python-pillow/Pillow) - PIL is the Python Imaging Library by Fredrik Lundh and Contributors.
-- [Demoji](https://pypi.org/project/demoji/) - Accurately find or remove emojis from a blob of text.
+    Can be seen in requirements.txt
 
 ### Inspired from
 
