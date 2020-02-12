@@ -4,7 +4,7 @@ import os
 from bot import Twitter
 from db_mongo import Database
 
-db_name = os.environ.get("DB_NAME")
+db_name = "mockthistweet_test"
 
 db = Database()
 db.connect_db(db_name)
@@ -30,7 +30,7 @@ def main(ck, cs, at, ats):
 
         since_id = bot.get_mention_tweet(last_id)
 
-        bot_account = bot.api.get_user(user_id=bot.my_bot_id)
+        bot_account = bot.api.get_user(screen_name="mocktesttweet")
         t = time.localtime()
         current_time = time.strftime("%H:%M:%S %D", t)
 

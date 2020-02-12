@@ -44,7 +44,7 @@ class Twitter:
         self.file_meme = {"output": ["img/meme_spongebob_output.png", "img/meme_khaleesi_output.png"],
                           "input": ["img/meme_new.png", "img/meme_khaleesi.png"]}
         self.time_interval = 30
-        self.db_name = os.environ.get("DB_NAME")
+        self.db_name = "mockthistweet_test"
 
     def authentication(self):
         self.auth = tweepy.OAuthHandler(
