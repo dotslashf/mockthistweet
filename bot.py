@@ -170,7 +170,7 @@ class Twitter:
             e.pick_emoji(re)
             tweet_pattern = e.create_pattern(pattern)
             tweet_pattern += target_name
-            
+
         elif pattern == 'b':
             text = "bisa diem gak {}, lo jelek".format(target_name)
             e = Emoji(text)
@@ -343,7 +343,6 @@ class Twitter:
         new_since_id = since_id
 
         db = Database()
-        db_name = os.environ.get("DB_NAME")
         db.connect_db(self.db_name)
         db.select_col('tweet')
 
