@@ -22,6 +22,8 @@ def main(ck, cs, at, ats):
     db.connect_db(db_name)
     db.select_col('tweet')
 
+    minute_wait = 7
+
     while True:
         l = db.find_last_object()
         last_id = l['tweet_last_id']
@@ -45,7 +47,7 @@ def main(ck, cs, at, ats):
         else:
             print('no new mention')
 
-        for sec in range(600, 0, -1):
+        for sec in range(minute_wait * 60, 0, -1):
             sys.stdout.write("\r")
             sys.stdout.write("{:2d} second to check mention.\r".format(sec))
             sys.stdout.flush()
