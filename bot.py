@@ -17,6 +17,7 @@ class Twitter:
         self.access_token_secret = access_token_secret
         self.auth = self.authentication()
         self.api = tweepy.API(self.auth)
+        self.me = self.api.me()
         self.error_code = {
             "private_account": [179, "Kalau mau ngemock pikir-pikir juga dong, masa private akun, mana keliatan tweetnya "],
             "blocked_account": [136, "Botnya dah diblock sama doi, ah ga seru "],
@@ -34,7 +35,7 @@ class Twitter:
                                  "pleasek", "pleaseb", "pleasej",
                                  "please💩", "pleasealay"]
         self.my_user_id = 1012117785512558592
-        self.my_bot_id = 1157825461277167616
+        self.my_bot_id = self.me.id
         self.tweet_text = {
             "dont_mock": ["Enak aja developernya mau di mock, jangan ngelawak deh ",
                           " adalah orang yang paling gabut, gak usah nyoba buat ngebuat botnya ngemock diri sendiri."],
@@ -44,8 +45,7 @@ class Twitter:
         self.file_meme = {"output": ["img/meme_spongebob_output.png", "img/meme_khaleesi_output.png"],
                           "input": ["img/meme_new.png", "img/meme_khaleesi.png"]}
         self.time_interval = 30
-        self.db_name = os.environ['DB_NAME']
-
+        self.db_name = os.environ.get("DB_NAME")
     def authentication(self):
         self.auth = tweepy.OAuthHandler(
             self.consumer_key, self.consumer_secret)
@@ -353,7 +353,7 @@ class Twitter:
             new_since_id = max(tweet.id, new_since_id)
 
             words = tweet.full_text.lower().split()
-            if self.am_i_mentioned(tweet) == 'mockthistweet':
+            if self.am_i_mentioned(tweet) == self.me.screen_name:
                 fs = self.check_follower(self.my_bot_id, tweet.user.id)
                 if (fs[0].followed_by and self.account_old(user_account_old) > 6):
                     if since_id != tweet.id:
@@ -366,7 +366,7 @@ class Twitter:
                     print("account old: {}".format(self.account_old(user_account_old)),
                           tweet.id, 'skipped not in the criteria')
 
-            elif self.am_i_mentioned(tweet) != 'mockthistweet':
+            elif self.am_i_mentioned(tweet) != self.me.screen_name:
                 for tw in self.triggering_words:
                     if tw in words:
                         self.tweeted_and_show(
