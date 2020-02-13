@@ -70,6 +70,8 @@ class Twitter:
             tweet_text = tweet_text+username
         elif position == 'front':
             tweet_text = '@'+username+tweet_text
+        elif position == 'format':
+            tweet_text = tweet_text.format(username)
 
         try:
             self.api.update_status(status=tweet_text,
@@ -215,7 +217,7 @@ class Twitter:
                     for tw in self.triggering_words:
                         if tw in words:
                             self.tweeted_and_show(
-                                self.tweet_text["dont_mock"][1], tweet, 'front')
+                                self.tweet_text["dont_mock"][1], tweet, 'format')
                 else:
                     for tw in self.triggering_words:
                         if tw is "pliisi" in words:
