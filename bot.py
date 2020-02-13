@@ -21,14 +21,15 @@ class Twitter:
         self.api = tweepy.API(self.auth)
         self.me = self.api.me()
         self.triggering_words = trigger_words
-        self.my_user_id = 1012117785512558592
-        self.my_bot_id = self.me.id
+        self.developer_id = 1012117785512558592
+        self.bot_id = 1157825461277167616
+        self.bot_test_id = 1182299095370629123
         self.error_code = self.load_dict(error_code)
         self.tweet_text = self.load_dict(tweet_text)
         self.file_meme = self.load_dict(file_meme)
         self.time_interval = 30
         self.db_name = os.environ.get("DB_NAME")
-        
+
     def authentication(self):
         self.auth = tweepy.OAuthHandler(
             self.consumer_key, self.consumer_secret)
@@ -81,7 +82,6 @@ class Twitter:
 
     def tweet_mocked_tweet_picture(self, mocked_text, tweet_id, type):
         meme_type = None
-        print(meme_type)
         if type == 'spongebob':
             meme_type = 0
         else:
@@ -206,12 +206,12 @@ class Twitter:
             self.show_status(tweet)
             try:
                 words = tweet.full_text.lower().split()
-                if self.my_user_id == tweet.in_reply_to_user_id:
+                if self.developer_id == tweet.in_reply_to_user_id:
                     for tw in self.triggering_words:
                         if tw in words:
                             self.tweeted_and_show(
                                 self.tweet_text["dont_mock"][0], tweet, 'back')
-                elif self.my_bot_id == tweet.in_reply_to_user_id:
+                elif self.bot_id == tweet.in_reply_to_user_id or self.bot_test_id == tweet.in_reply_to_user_id:
                     for tw in self.triggering_words:
                         if tw in words:
                             self.tweeted_and_show(
@@ -342,7 +342,7 @@ class Twitter:
 
             words = tweet.full_text.lower().split()
             if self.am_i_mentioned(tweet) == self.me.screen_name:
-                fs = self.check_follower(self.my_bot_id, tweet.user.id)
+                fs = self.check_follower(self.bot_id, tweet.user.id)
                 if (fs[0].followed_by and self.account_old(user_account_old) > 6):
                     if since_id != tweet.id:
                         for tw in self.triggering_words:
@@ -357,8 +357,8 @@ class Twitter:
             elif self.am_i_mentioned(tweet) != self.me.screen_name:
                 for tw in self.triggering_words:
                     if tw in words:
-                        self.tweeted_and_show(
-                            self.tweet_text["untag_dong"], tweet, 'back')
+                        # self.tweeted_and_show(self.tweet_text["untag_dong"], tweet, 'back')
+                        print("Skipped")
 
         self.process_mention(list_tweet)
 
