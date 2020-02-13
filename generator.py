@@ -23,7 +23,7 @@ def splitLines(text, img, draw, pos, memeType):
     if w > img.width:
         lineCount = int(round((w / img.width) + 1))
 
-    print("lineCount: {}".format(lineCount))
+    print("line count: {}".format(lineCount))
 
     lines = []
     if lineCount > 1:
@@ -42,7 +42,7 @@ def splitLines(text, img, draw, pos, memeType):
                 nextCut = len(text)
                 isLast = True
 
-            print("cut: {} -> {}".format(cut, nextCut))
+            # print("cut: {} -> {}".format(cut, nextCut))
 
             nextCut = round(nextCut)
             cut = round(cut)
@@ -51,27 +51,27 @@ def splitLines(text, img, draw, pos, memeType):
             if nextCut == len(text) or text[nextCut] == " ":
                 print("may cut")
             else:
-                print("may not cut")
+                # print("may not cut")
                 try:
                     while text[nextCut] != " ":
                         nextCut += 1
                 except:
                     nextCut = round(len(text)/2)
-                print("new cut: {}".format(nextCut))
+                # print("new cut: {}".format(nextCut))
 
             line = text[cut:nextCut].strip()
 
             # is line still fitting ?
             w, h = draw.textsize(line, font)
             if not isLast and w > img.width:
-                print("overshot")
+                # print("overshot")
                 nextCut -= 1
                 try:
                     while text[nextCut] != " ":
                         nextCut += 1
                 except:
                     nextCut = round(len(text)/2)
-                print("new cut: {}".format(nextCut))
+                # print("new cut: {}".format(nextCut))
 
             lastCut = nextCut
             lines.append(text[cut:nextCut].strip())
@@ -106,15 +106,3 @@ def drawText(bottomText, memeLocation, memeType):
 
     splitLines(bottomText, img, draw, "bottom", memeType)
     print("------------------------------------------------")
-
-
-# k = Kalimat("AKWOAKWOAKWOWKSOWKAOWKIWKAOAKWOAKWOAKSKKSOWAKOAKAOWKSOWKSOK")
-# text = k.getSentence()
-# # # text2 = k.trinsfirm()
-# # # text3 = k.transformoji("laugh")
-# # # text4 = k.transformoji("clap")
-# file_meme = {"output": ["img/meme_new_output.png", "img/meme_khaleesi_output.png"],
-#              "input": ["img/meme_new.png", "img/meme_khaleesi.png"]}
-
-# drawText("asdsadsads", file_meme["input"][1])
-# # # print(text4)
