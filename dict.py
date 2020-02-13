@@ -12,7 +12,7 @@ error_code = {
 
 tweet_text = {
     "dont_mock": ["Enak aja developernya mau di mock, jangan ngelawak deh ",
-                  " adalah orang yang paling gabut, gak usah nyoba buat ngebuat botnya ngemock diri sendiri."],
+                  "Kak {}, mending cari kegiatan produktif deh."],
     "follow_dulu": "Follow dulu, kalau gak mau ya mock manual aja yah ",
     "untag_dong": "Kalau jelasin cara kerja botnya tolong di untag yah, "
 }
