@@ -26,6 +26,7 @@ class Database:
             col_list = self.db.list_collection_names()
             if collection in col_list:
                 self.collection = self.db[collection]
+                print('{} collection selected'.format(collection))
             else:
                 print('no collection such as {} found'.format(collection))
         except Exception as e:
