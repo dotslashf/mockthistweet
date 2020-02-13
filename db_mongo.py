@@ -13,7 +13,7 @@ class Database:
         try:
             db_list = self.client.list_database_names()
             if database in db_list:
-                print('connected to {} database'.format(database))
+                print('🗄️  connected to {} database'.format(database))
                 self.db = self.client[database]
             else:
                 print('no database such as {} found'.format(database))
@@ -26,7 +26,7 @@ class Database:
             col_list = self.db.list_collection_names()
             if collection in col_list:
                 self.collection = self.db[collection]
-                print('{} collection selected'.format(collection))
+                print("➡️  {} collection selected".format(collection))
             else:
                 print('no collection such as {} found'.format(collection))
         except Exception as e:
@@ -39,9 +39,10 @@ class Database:
             for i, t in enumerate(list_col):
                 if i == 0:
                     last = t
+                    print("🔥 {} selected".format(last['tweet_last_id']))
                     return last
         else:
-            print('Please connect first')
+            print('!!! Please connect first !!!')
 
     def insert_object(self, data):
         last = self.find_last_object()
@@ -50,6 +51,7 @@ class Database:
         data.update({'_id': last_id})
 
         self.collection.insert_one(data)
+        print("💾 data saved:", data)
 
     def find_object(self, key):
         for a in self.collection.find({'key': key}):
