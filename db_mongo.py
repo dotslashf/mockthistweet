@@ -33,7 +33,7 @@ class Database:
             print(e)
 
     def find_last_object(self):
-        if self.collection is not None:
+        if self.collection:
             list_col = self.collection.find().sort('_id', -1)
 
             for i, t in enumerate(list_col):
@@ -51,7 +51,7 @@ class Database:
         data.update({'_id': last_id})
 
         self.collection.insert_one(data)
-        print("💾 data saved:", data)
+        print("💾 data {}".format(data))
 
     def find_object(self, key):
         for a in self.collection.find({'key': key}):
