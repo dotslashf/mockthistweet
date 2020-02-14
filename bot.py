@@ -218,7 +218,7 @@ class Twitter:
             self.show_status(tweet)
             try:
                 words = tweet.full_text.lower().split()
-                if self.developer_id == tweet.in_reply_to_user_id:
+                if self.important_ids["developer_id"] == tweet.in_reply_to_user_id:
                     for tw in self.triggering_words:
                         if tw in words:
                             self.tweeted_and_show(
