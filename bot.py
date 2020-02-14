@@ -235,10 +235,7 @@ class Twitter:
                             self.tweeted_and_show(
                                 self.tweet_text["dont_mock"][0], tweet, 'back')
                 elif self.bot_id == tweet.in_reply_to_user_id or self.bot_test_id == tweet.in_reply_to_user_id:
-                    for tw in self.triggering_words:
-                        if tw in words:
-                            self.tweeted_and_show(
-                                self.tweet_text["dont_mock"][1], tweet, 'format')
+                    continue
                 else:
                     for tw in self.triggering_words:
                         if tw is "pliisi" in words:
@@ -376,10 +373,7 @@ class Twitter:
                     print('tweet id: {} skipped, reason: {}'.format(tweet.id, criteria[1]))
 
             elif self.am_i_mentioned(tweet) != self.me.screen_name:
-                for tw in self.triggering_words:
-                    if tw in words:
-                        # self.tweeted_and_show(self.tweet_text["untag_dong"], tweet, 'back')
-                        print("Skipped")
+                continue
 
         self.process_mention(list_tweet)
 
