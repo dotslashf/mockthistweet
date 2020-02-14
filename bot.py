@@ -8,7 +8,7 @@ from generator import drawText
 from kalimat import Kalimat
 from emoji_generator import Emoji
 from db_mongo import Database
-from dict import error_code, tweet_text, file_meme, trigger_words
+from dict import error_code, tweet_text, file_meme, trigger_words, important_ids
 
 
 class Twitter:
@@ -21,9 +21,7 @@ class Twitter:
         self.api = tweepy.API(self.auth)
         self.me = self.api.me()
         self.triggering_words = trigger_words
-        self.developer_id = 1012117785512558592
-        self.bot_id = 1157825461277167616
-        self.bot_test_id = 1182299095370629123
+        self.important_ids = self.load_dict(important_ids)
         self.error_code = self.load_dict(error_code)
         self.tweet_text = self.load_dict(tweet_text)
         self.file_meme = self.load_dict(file_meme)
@@ -62,15 +60,9 @@ class Twitter:
               "\n| tweet: ", tweet.full_text,
               "\n"+u"\u2514"+"-----------------------------------------------")
 
-    def tweeted_and_show(self, tweet_text, tweet, position):
+    def tweeted_and_show(self, tweet_text, tweet):
         username = tweet.user.screen_name
-
-        if position == 'back':
-            tweet_text = tweet_text+username
-        elif position == 'front':
-            tweet_text = '@'+username+tweet_text
-        elif position == 'format':
-            tweet_text = tweet_text.format(username)
+        tweet_text = tweet_text.format(username)
 
         try:
             self.api.update_status(status=tweet_text,
@@ -199,7 +191,7 @@ class Twitter:
         return last
 
     def get_criteria(self, tweet):
-        fs = self.check_follower(self.bot_id, tweet.user.id)
+        fs = self.check_follower(self.important_ids["bot_id"], tweet.user.id)
         user_account_old = tweet.user.created_at.date()
         reason = None
 
@@ -230,8 +222,8 @@ class Twitter:
                     for tw in self.triggering_words:
                         if tw in words:
                             self.tweeted_and_show(
-                                self.tweet_text["dont_mock"][0], tweet, 'back')
-                elif self.bot_id == tweet.in_reply_to_user_id or self.bot_test_id == tweet.in_reply_to_user_id:
+                                self.tweet_text["dont_mock"][0], tweet)
+                elif self.important_ids["bot_id"] == tweet.in_reply_to_user_id or self.important_ids["bot_test_id"] == tweet.in_reply_to_user_id:
                     continue
                 else:
                     for tw in self.triggering_words:

@@ -11,7 +11,7 @@ error_code = {
 }
 
 tweet_text = {
-    "dont_mock": ["Enak aja developernya mau di mock, jangan ngelawak deh ",
+    "dont_mock": ["Enak aja developernya mau di mock, jangan ngelawak deh {}",
                   "Kak {}, mending cari kegiatan produktif deh."],
     "follow_dulu": "Follow dulu, kalau gak mau ya mock manual aja yah ",
     "untag_dong": "Kalau jelasin cara kerja botnya tolong di untag yah, "
@@ -19,6 +19,12 @@ tweet_text = {
 
 file_meme = {"output": ["img/meme_spongebob_output.png", "img/meme_khaleesi_output.png"],
              "input": ["img/meme_new.png", "img/meme_khaleesi.png"]}
+
+important_ids = {
+    "developer_id": 1012117785512558592,
+    "bot_id": 1157825461277167616,
+    "bot_test_id": 1182299095370629123
+}
 
 trigger_words = ["please", "pliisi",
                  "please😂", "please👏",
