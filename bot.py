@@ -206,19 +206,16 @@ class Twitter:
         is_follower = fs[0].followed_by
         is_old_enough = self.account_old(user_account_old) > 6
 
-        if is_follower and is_old_enough:
-            is_criteria = True
+        is_elligible = is_follower and is_old_enough
+
+        if is_follower:
+            reason = 'not a follower'
+        elif is_old_enough:
+            reason = 'not old enough'
         else:
-            if is_follower:
-                reason = 'not a follower'
-            elif is_old_enough:
-                reason = 'not old enough'
-            else:
-                reason = 'not in criteria'
+            reason = 'not in criteria'
 
-            is_criteria = False
-
-        return is_criteria, reason
+        return is_elligible, reason
 
     def process_mention(self, list_tweet):
         db = Database()
