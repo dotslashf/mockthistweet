@@ -51,15 +51,14 @@ class Twitter:
 
     def show_what_tweeted(self, tweet_text):  # logger
         print(u"\u250C"+"-----------------------------------------------",
-              "\n|",
-              "\n| tweeted: ", tweet_text,
-              "\n| ",
+              "\n| tweeted 🐦", tweet_text,
+              "\n| ", tweet_text,
               "\n"+u"\u2514"+"-----------------------------------------------")
 
     def show_status(self, tweet):
         print(u"\u250C"+"-----------------------------------------------",
+              "\n| 👉: {} / {}".format(tweet.user.screen_name, tweet.user.id),
               "\n| tweet id: ", tweet.id,
-              "\n| username: ", tweet.user.screen_name,
               "\n| tweet: ", tweet.full_text,
               "\n"+u"\u2514"+"-----------------------------------------------")
 
@@ -198,6 +197,28 @@ class Twitter:
             for a in t[1]:
                 last = list(a.items())[0][-1]
         return last
+
+    def get_criteria(self, tweet):
+        fs = self.check_follower(self.bot_id, tweet.user.id)
+        user_account_old = tweet.user.created_at.date()
+        reason = None
+
+        is_follower = fs[0].followed_by
+        is_old_enough = self.account_old(user_account_old) > 6
+
+        if is_follower and is_old_enough:
+            is_criteria = True
+        else:
+            if is_follower:
+                reason = 'not a follower'
+            elif is_old_enough:
+                reason = 'not old enough'
+            else:
+                reason = 'not in criteria'
+
+            is_criteria = False
+
+        return is_criteria, reason
 
     def process_mention(self, list_tweet):
         db = Database()
@@ -339,22 +360,20 @@ class Twitter:
         list_tweet = []
 
         for tweet in tweepy.Cursor(self.api.mentions_timeline, since_id=since_id, tweet_mode="extended").items():
-            user_account_old = tweet.user.created_at.date()
             new_since_id = max(tweet.id, new_since_id)
-
             words = tweet.full_text.lower().split()
+
             if self.am_i_mentioned(tweet) == self.me.screen_name:
-                fs = self.check_follower(self.bot_id, tweet.user.id)
-                if (fs[0].followed_by and self.account_old(user_account_old) > 6):
+                criteria = self.get_criteria(tweet)
+
+                if criteria[0]:
                     if since_id != tweet.id:
                         for tw in self.triggering_words:
                             if tw in words:
                                 list_tweet.append(tweet)
-                    print("account old: {}".format(self.account_old(user_account_old)),
-                          tweet.id, 'added to next process')
+                    print('tweet id: {} added to next process'.format(tweet.id))
                 else:
-                    print("account old: {}".format(self.account_old(user_account_old)),
-                          tweet.id, 'skipped not in the criteria')
+                    print('tweet id: {} skipped, reason: {}'.format(tweet.id, criteria[1]))
 
             elif self.am_i_mentioned(tweet) != self.me.screen_name:
                 for tw in self.triggering_words:
