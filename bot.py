@@ -44,7 +44,7 @@ class Twitter:
         fs = self.api.show_friendship(source_id=source_id, target_id=target_id)
         return fs
 
-    def account_old(self, user_old):
+    def get_account_old(self, user_old):
         today = datetime.now()
         diff = relativedelta.relativedelta(today, user_old)
         return diff.months+(diff.years*12)
@@ -204,7 +204,7 @@ class Twitter:
         reason = None
 
         is_follower = fs[0].followed_by
-        is_old_enough = self.account_old(user_account_old) > 6
+        is_old_enough = self.get_account_old(user_account_old) > 6
 
         is_elligible = is_follower and is_old_enough
 
