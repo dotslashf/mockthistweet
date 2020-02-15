@@ -49,8 +49,8 @@ class Twitter:
 
     def show_what_tweeted(self, tweet_text):  # logger
         print(u"\u250C"+"-----------------------------------------------",
-              "\n| tweeted 🐦", tweet_text,
-              "\n| ", tweet_text,
+              "\n| tweeted 🐦",
+              "\n", tweet_text,
               "\n"+u"\u2514"+"-----------------------------------------------")
 
     def show_status(self, tweet):
