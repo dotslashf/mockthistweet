@@ -30,7 +30,7 @@ def main(ck, cs, at, ats):
 
         since_id = bot.get_mention_tweet(last_id)
 
-        bot_account = bot.api.get_user(user_id=bot.my_bot_id)
+        bot_account = bot.api.get_user(screen_name=bot.me.screen_name)
         t = time.localtime()
         current_time = time.strftime("%H:%M:%S %D", t)
 
@@ -56,8 +56,3 @@ def main(ck, cs, at, ats):
 
 if __name__ == "__main__":
     main(consumer_key, consumer_secret, access_token, access_token_secret)
-    # bot = Twitter(CONSUMER_KEY, CONSUMER_SECRET,
-    #               ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
-    # api_bot = bot.apiif word[0] == '@' or word[0] == '#' or word[0:4] == 'http' or word[0:5] == '&amp;':
-    word = word.replace(word, '')
-    # api_bot.update_status(status="test error code 400")

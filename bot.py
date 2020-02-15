@@ -1,12 +1,14 @@
 import tweepy
 import os
 import time
+import yaml
 from datetime import datetime
 from dateutil import relativedelta
 from generator import drawText
 from kalimat import Kalimat
 from emoji_generator import Emoji
 from db_mongo import Database
+from dict import error_code, tweet_text, file_meme, trigger_words, important_ids
 
 
 class Twitter:
@@ -17,32 +19,12 @@ class Twitter:
         self.access_token_secret = access_token_secret
         self.auth = self.authentication()
         self.api = tweepy.API(self.auth)
-        self.error_code = {
-            "private_account": [179, "Kalau mau ngemock pikir-pikir juga dong, masa private akun, mana keliatan tweetnya "],
-            "blocked_account": [136, "Botnya dah diblock sama doi, ah ga seru "],
-            "duplicate_tweet": [187, "Duplicated tweet"],
-            "tweet_target_deleted": [144, "Tweetnya udah dihapus, kasian deh lo"],
-            "tweet_target_to_long": [186, "Tweetnya kepanjangan kalau di tambahin emoji, coba format yang lain"],
-            "tweet_deleted_or_not_visible": [385, "Tweet deleted or not visible"],
-            "twitter_over_capacity": [130, "Twitternya lagi overcapacity, next time yah"],
-            "page_does_not_exist": [34, "Pages does not exist"],
-            "suspended_account": [63, "Yang mau dimock dah disuspend, twitter, mampus."]
-        }
-        self.triggering_words = ["please", "pliisi",
-                                 "please😂", "please👏",
-                                 "please🤮", "please🤢",
-                                 "pleasek", "pleaseb", "pleasej",
-                                 "please💩", "pleasealay"]
-        self.my_user_id = 1012117785512558592
-        self.my_bot_id = 1157825461277167616
-        self.tweet_text = {
-            "dont_mock": ["Enak aja developernya mau di mock, jangan ngelawak deh ",
-                          " adalah orang yang paling gabut, gak usah nyoba buat ngebuat botnya ngemock diri sendiri."],
-            "follow_dulu": "Follow dulu, kalau gak mau ya mock manual aja yah ",
-            "untag_dong": "Kalau jelasin cara kerja botnya tolong di untag yah, "
-        }
-        self.file_meme = {"output": ["img/meme_spongebob_output.png", "img/meme_khaleesi_output.png"],
-                          "input": ["img/meme_new.png", "img/meme_khaleesi.png"]}
+        self.me = self.api.me()
+        self.triggering_words = trigger_words
+        self.important_ids = self.load_dict(important_ids)
+        self.error_code = self.load_dict(error_code)
+        self.tweet_text = self.load_dict(tweet_text)
+        self.file_meme = self.load_dict(file_meme)
         self.time_interval = 30
         self.db_name = os.environ.get("DB_NAME")
 
@@ -52,36 +34,35 @@ class Twitter:
         self.auth.set_access_token(self.access_token, self.access_token_secret)
         return self.auth
 
+    def load_dict(self, dict_name):
+        dict = yaml.load("{}".format(dict_name), Loader=yaml.BaseLoader)
+        return dict
+
     def check_follower(self, source_id, target_id):
         fs = self.api.show_friendship(source_id=source_id, target_id=target_id)
         return fs
 
-    def account_old(self, user_old):
+    def get_account_old(self, user_old):
         today = datetime.now()
         diff = relativedelta.relativedelta(today, user_old)
         return diff.months+(diff.years*12)
 
     def show_what_tweeted(self, tweet_text):  # logger
         print(u"\u250C"+"-----------------------------------------------",
-              "\n|",
-              "\n| tweeted: ", tweet_text,
-              "\n| ",
+              "\n| tweeted 🐦", tweet_text,
+              "\n| ", tweet_text,
               "\n"+u"\u2514"+"-----------------------------------------------")
 
     def show_status(self, tweet):
         print(u"\u250C"+"-----------------------------------------------",
+              "\n| 👉: {} / {}".format(tweet.user.screen_name, tweet.user.id),
               "\n| tweet id: ", tweet.id,
-              "\n| username: ", tweet.user.screen_name,
               "\n| tweet: ", tweet.full_text,
               "\n"+u"\u2514"+"-----------------------------------------------")
 
-    def tweeted_and_show(self, tweet_text, tweet, position):
+    def tweeted_and_show(self, tweet_text, tweet):
         username = tweet.user.screen_name
-
-        if position == 'back':
-            tweet_text = tweet_text+username
-        elif position == 'front':
-            tweet_text = '@'+username+tweet_text
+        tweet_text = tweet_text.format(username)
 
         try:
             self.api.update_status(status=tweet_text,
@@ -209,6 +190,25 @@ class Twitter:
                 last = list(a.items())[0][-1]
         return last
 
+    def get_criteria(self, tweet):
+        fs = self.check_follower(self.important_ids["bot_id"], tweet.user.id)
+        user_account_old = tweet.user.created_at.date()
+        reason = None
+
+        is_follower = fs[0].followed_by
+        is_old_enough = self.get_account_old(user_account_old) > 6
+
+        is_elligible = is_follower and is_old_enough
+
+        if is_follower:
+            reason = 'not a follower'
+        elif is_old_enough:
+            reason = 'not old enough'
+        else:
+            reason = 'not in criteria'
+
+        return is_elligible, reason
+
     def process_mention(self, list_tweet):
         db = Database()
         db.connect_db(self.db_name)
@@ -218,16 +218,13 @@ class Twitter:
             self.show_status(tweet)
             try:
                 words = tweet.full_text.lower().split()
-                if self.my_user_id == tweet.in_reply_to_user_id:
+                if self.important_ids["developer_id"] == tweet.in_reply_to_user_id:
                     for tw in self.triggering_words:
                         if tw in words:
                             self.tweeted_and_show(
-                                self.tweet_text["dont_mock"][0], tweet, 'back')
-                elif self.my_bot_id == tweet.in_reply_to_user_id:
-                    for tw in self.triggering_words:
-                        if tw in words:
-                            self.tweeted_and_show(
-                                self.tweet_text["dont_mock"][1], tweet, 'front')
+                                self.tweet_text["dont_mock"][0], tweet)
+                elif self.important_ids["bot_id"] == tweet.in_reply_to_user_id or self.important_ids["bot_test_id"] == tweet.in_reply_to_user_id:
+                    continue
                 else:
                     for tw in self.triggering_words:
                         if tw is "pliisi" in words:
@@ -349,28 +346,23 @@ class Twitter:
         list_tweet = []
 
         for tweet in tweepy.Cursor(self.api.mentions_timeline, since_id=since_id, tweet_mode="extended").items():
-            user_account_old = tweet.user.created_at.date()
             new_since_id = max(tweet.id, new_since_id)
-
             words = tweet.full_text.lower().split()
-            if self.am_i_mentioned(tweet) == 'mockthistweet':
-                fs = self.check_follower(self.my_bot_id, tweet.user.id)
-                if (fs[0].followed_by and self.account_old(user_account_old) > 6):
+
+            if self.am_i_mentioned(tweet) == self.me.screen_name:
+                criteria = self.get_criteria(tweet)
+
+                if criteria[0]:
                     if since_id != tweet.id:
                         for tw in self.triggering_words:
                             if tw in words:
                                 list_tweet.append(tweet)
-                    print("account old: {}".format(self.account_old(user_account_old)),
-                          tweet.id, 'added to next process')
+                    print('tweet id: {} added to next process'.format(tweet.id))
                 else:
-                    print("account old: {}".format(self.account_old(user_account_old)),
-                          tweet.id, 'skipped not in the criteria')
+                    print('tweet id: {} skipped, reason: {}'.format(tweet.id, criteria[1]))
 
-            elif self.am_i_mentioned(tweet) != 'mockthistweet':
-                for tw in self.triggering_words:
-                    if tw in words:
-                        self.tweeted_and_show(
-                            self.tweet_text["untag_dong"], tweet, 'back')
+            elif self.am_i_mentioned(tweet) != self.me.screen_name:
+                continue
 
         self.process_mention(list_tweet)
 

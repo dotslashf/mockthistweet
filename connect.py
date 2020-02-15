@@ -2,7 +2,7 @@ import tweepy
 from db_mongo import Database
 
 db = Database()
-db.connect_db('twitter')
+db.connect_db('mockthistweet_test')
 db.select_col('environment')
 
 consumer_key = db.find_object('consumer_key')
