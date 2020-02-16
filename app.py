@@ -35,7 +35,7 @@ def main(ck, cs, at, ats):
         current_time = time.strftime("%H:%M:%S %D", t)
 
         print("\n"+u"\u250C"+"------------------------------------------------",
-              "\n: current time: ", current_time,
+              "\n| current time: ", current_time,
               "\n| newest tweet: ", since_id,
               "\n| oldest tweet: ", last_id,
               "\n| current followers: ", bot_account.followers_count,
