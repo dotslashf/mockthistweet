@@ -216,18 +216,19 @@ class Twitter:
 
         for tweet in reversed(list_tweet):
             self.show_status(tweet)
-            try:
-                words = tweet.full_text.lower().split()
-                if int(self.important_ids["developer_id"]) == tweet.in_reply_to_user_id:
-                    for tw in self.triggering_words:
-                        if tw in words:
-                            self.tweeted_and_show(
-                                self.tweet_text["dont_mock"][0], tweet)
-                elif int(self.important_ids["bot_id"]) == tweet.in_reply_to_user_id or int(self.important_ids["bot_test_id"]) == tweet.in_reply_to_user_id:
-                    print("skipped: mocked itself")
-                    continue
-                else:
-                    for tw in self.triggering_words:
+            words = tweet.full_text.lower().split()
+
+            if int(self.important_ids["developer_id"]) == tweet.in_reply_to_user_id:
+                for tw in self.triggering_words:
+                    if tw in words:
+                        self.tweeted_and_show(
+                            self.tweet_text["dont_mock"][0], tweet)
+            elif int(self.important_ids["bot_id"]) == tweet.in_reply_to_user_id or int(self.important_ids["bot_test_id"]) == tweet.in_reply_to_user_id:
+                print("skipped: mocked itself")
+                continue
+            else:
+                for tw in self.triggering_words:
+                    try:
                         if tw is "pliisi" in words:
                             self.mock_in_pliisi(tweet, db)
 
@@ -260,81 +261,85 @@ class Twitter:
 
                         elif tw == "pleasealay" in words:
                             self.mock_in_alay(tweet, db)
+                    
+                    except tweepy.TweepError as e:
+                        error = e.api_code
+                        error = str(error)
+                        error_text = e.response
 
-                    time.sleep(self.time_interval)
+                        db.insert_object({'tweet_last_id': tweet.id})
 
-            except tweepy.TweepError as e:
-                error = e.api_code
-                error_text = e.response
+                        if error == self.error_code['private_account'][0]:
+                            tweet_err = self.error_code['private_account'][1]
+                            self.api.update_status(status=tweet_err,
+                                                in_reply_to_status_id=tweet.id,
+                                                auto_populate_reply_metadata=True)
+                            self.show_what_tweeted(tweet_err)
 
-                db.insert_object({'tweet_last_id': tweet.id})
+                        elif error == self.error_code['blocked_account'][0]:
+                            tweet_err = self.error_code['blocked_account'][1]
+                            target = self.api.get_user(id=tweet.in_reply_to_user_id)
+                            tweet_err = tweet_err.format(target.screen_name)
+                            self.api.update_status(status=tweet_err,
+                                                in_reply_to_status_id=tweet.id,
+                                                auto_populate_reply_metadata=True)
+                            self.show_what_tweeted(tweet_err)
 
-                if error == self.error_code['private_account'][0]:
-                    tweet_err = self.error_code['private_account'][1]
-                    self.api.update_status(status=tweet_err,
-                                           in_reply_to_status_id=tweet.id,
-                                           auto_populate_reply_metadata=True)
-                    self.show_what_tweeted(tweet_err)
+                        elif error == self.error_code['tweet_target_deleted'][0]:
+                            tweet_err = self.error_code['tweet_target_deleted'][1]
+                            self.api.update_status(status=tweet_err,
+                                                in_reply_to_status_id=tweet.id,
+                                                auto_populate_reply_metadata=True)
+                            self.show_what_tweeted(tweet_err)
 
-                elif error == self.error_code['blocked_account'][0]:
-                    tweet_err = self.error_code['blocked_account'][1]
-                    self.api.update_status(status=tweet_err,
-                                           in_reply_to_status_id=tweet.id,
-                                           auto_populate_reply_metadata=True)
-                    self.show_what_tweeted(tweet_err)
+                        elif error == self.error_code['tweet_target_to_long'][0]:
+                            tweet_err = self.error_code['tweet_target_to_long'][1]
+                            self.api.update_status(status=tweet_err,
+                                                in_reply_to_status_id=tweet.id,
+                                                auto_populate_reply_metadata=True)
+                            self.show_what_tweeted(tweet_err)
 
-                elif error == self.error_code['tweet_target_deleted'][0]:
-                    tweet_err = self.error_code['tweet_target_deleted'][1]
-                    self.api.update_status(status=tweet_err,
-                                           in_reply_to_status_id=tweet.id,
-                                           auto_populate_reply_metadata=True)
-                    self.show_what_tweeted(tweet_err)
+                        elif error == self.error_code['twitter_over_capacity'][0]:
+                            tweet_err = self.error_code['twitter_over_capacity'][1]
+                            self.api.update_status(status=tweet_err,
+                                                in_reply_to_status_id=tweet.id,
+                                                auto_populate_reply_metadata=True)
+                            self.show_what_tweeted(tweet_err)
 
-                elif error == self.error_code['tweet_target_to_long'][0]:
-                    tweet_err = self.error_code['tweet_target_to_long'][1]
-                    self.api.update_status(status=tweet_err,
-                                           in_reply_to_status_id=tweet.id,
-                                           auto_populate_reply_metadata=True)
-                    self.show_what_tweeted(tweet_err)
+                        elif error == self.error_code['suspended_account'][0]:
+                            tweet_err = self.error_code['suspended_account'][1]
+                            self.api.update_status(status=tweet_err,
+                                                in_reply_to_status_id=tweet.id,
+                                                auto_populate_reply_metadata=True)
+                            self.show_what_tweeted(tweet_err)
 
-                elif error == self.error_code['twitter_over_capacity'][0]:
-                    tweet_err = self.error_code['twitter_over_capacity'][1]
-                    self.api.update_status(status=tweet_err,
-                                           in_reply_to_status_id=tweet.id,
-                                           auto_populate_reply_metadata=True)
-                    self.show_what_tweeted(tweet_err)
+                        elif error == self.error_code['duplicate_tweet'][0]:
+                            tweet_err = self.error_code['duplicate_tweet'][1]
+                            self.show_what_tweeted(tweet_err)
+                            continue
 
-                elif error == self.error_code['suspended_account'][0]:
-                    tweet_err = self.error_code['suspended_account'][1]
-                    self.api.update_status(status=tweet_err,
-                                           in_reply_to_status_id=tweet.id,
-                                           auto_populate_reply_metadata=True)
-                    self.show_what_tweeted(tweet_err)
+                        elif error == self.error_code['tweet_deleted_or_not_visible'][0]:
+                            tweet_err = self.error_code['tweet_deleted_or_not_visible'][1]
+                            self.show_what_tweeted(tweet_err)
 
-                elif error == self.error_code['duplicate_tweet'][0]:
-                    tweet_err = self.error_code['duplicate_tweet'][1]
-                    self.show_what_tweeted(tweet_err)
-                    continue
+                        elif error == self.error_code['page_does_not_exist'][0]:
+                            tweet_err = self.error_code['page_does_not_exist'][1]
+                            self.show_what_tweeted(tweet_err)
 
-                elif error == self.error_code['tweet_deleted_or_not_visible'][0]:
-                    tweet_err = self.error_code['tweet_deleted_or_not_visible'][1]
-                    self.show_what_tweeted(tweet_err)
+                        else:
+                            t = time.localtime()
+                            current_time = time.strftime("%H:%M:%S %D", t)
+                            db.select_col('tweet_error')
+                            db.insert_object(
+                                {'error_code': str(error),
+                                    'timestamp': current_time,
+                                    'tweet_id': tweet.id,
+                                    'username': tweet.user.screen_name,
+                                    'tweet_text': tweet.full_text,
+                                    'error_text': error_text})
 
-                elif error == self.error_code['page_does_not_exist'][0]:
-                    tweet_err = self.error_code['page_does_not_exist'][1]
-                    self.show_what_tweeted(tweet_err)
+                time.sleep(self.time_interval)
 
-                else:
-                    t = time.localtime()
-                    current_time = time.strftime("%H:%M:%S %D", t)
-                    db.select_col('tweet_error')
-                    db.insert_object(
-                        {'error_code': str(error),
-                            'timestamp': current_time,
-                            'tweet_id': tweet.id,
-                            'username': tweet.user.screen_name,
-                            'tweet_text': tweet.full_text,
-                            'error_text': error_text})
             continue
 
     def get_mention_tweet(self, since_id):
