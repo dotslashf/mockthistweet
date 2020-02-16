@@ -363,7 +363,7 @@ class Twitter:
                     print('tweet id: {} skipped, reason: {}'.format(tweet.id, criteria[1]))
 
             elif self.is_mentioned(tweet) != self.me.screen_name:
-                print("skipped: am i mentioned")
+                print("skipped: not mentioned")
                 continue
 
         self.process_mention(list_tweet)

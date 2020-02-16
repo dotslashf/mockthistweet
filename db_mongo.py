@@ -48,7 +48,7 @@ class Database:
             for i, t in enumerate(list_col):
                 if i == 0:
                     last = t
-                    print("🔥 {} selected".format(last['tweet_last_id']))
+                    print("🔥 {} selected".format(last))
                     return last
         else:
             print('!!! Please connect first !!!')
