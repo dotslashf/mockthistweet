@@ -79,8 +79,6 @@ def splitLines(text, img, draw, pos, memeType):
     else:
         lines.append(text)
 
-    print(lines)
-
     if pos == "top":
         lastY = -h + 25
     elif pos == "bottom":
