@@ -184,7 +184,7 @@ class Twitter:
         self.show_what_tweeted(text_transformed)
         db.insert_object({'tweet_last_id': tweet.id})
 
-    def am_i_mentioned(self, tweet):
+    def is_mentioned(self, tweet):
         for t in tweet.entities.items():
             for a in t[1]:
                 last = list(a.items())[0][-1]
@@ -218,12 +218,13 @@ class Twitter:
             self.show_status(tweet)
             try:
                 words = tweet.full_text.lower().split()
-                if self.important_ids["developer_id"] == tweet.in_reply_to_user_id:
+                if int(self.important_ids["developer_id"]) == tweet.in_reply_to_user_id:
                     for tw in self.triggering_words:
                         if tw in words:
                             self.tweeted_and_show(
                                 self.tweet_text["dont_mock"][0], tweet)
-                elif self.important_ids["bot_id"] == tweet.in_reply_to_user_id or self.important_ids["bot_test_id"] == tweet.in_reply_to_user_id:
+                elif int(self.important_ids["bot_id"]) == tweet.in_reply_to_user_id or int(self.important_ids["bot_test_id"]) == tweet.in_reply_to_user_id:
+                    print("skipped: mocked itself")
                     continue
                 else:
                     for tw in self.triggering_words:
@@ -349,7 +350,7 @@ class Twitter:
             new_since_id = max(tweet.id, new_since_id)
             words = tweet.full_text.lower().split()
 
-            if self.am_i_mentioned(tweet) == self.me.screen_name:
+            if self.is_mentioned(tweet) == self.me.screen_name:
                 criteria = self.get_criteria(tweet)
 
                 if criteria[0]:
@@ -361,7 +362,8 @@ class Twitter:
                 else:
                     print('tweet id: {} skipped, reason: {}'.format(tweet.id, criteria[1]))
 
-            elif self.am_i_mentioned(tweet) != self.me.screen_name:
+            elif self.is_mentioned(tweet) != self.me.screen_name:
+                print("skipped: am i mentioned")
                 continue
 
         self.process_mention(list_tweet)
