@@ -60,7 +60,7 @@ class Database:
         data.update({'_id': last_id})
 
         self.collection.insert_one(data)
-        print("💾 data {}".format(data))
+        print("💾 saved {}".format(data))
 
     def find_object(self, key):
         for a in self.collection.find({'key': key}):

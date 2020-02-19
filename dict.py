@@ -1,6 +1,6 @@
 error_code = {
     "private_account": [179, "Kalau mau ngemock pikir-pikir juga dong, masa private akun, mana keliatan tweetnya "],
-    "blocked_account": [136, "Botnya dah diblock sama doi, ah ga seru "],
+    "blocked_account": [136, "Botnya dah diblock sama {}, ah ga seru"],
     "duplicate_tweet": [187, "Duplicated tweet"],
     "tweet_target_deleted": [144, "Tweetnya udah dihapus, kasian deh lo"],
     "tweet_target_to_long": [186, "Tweetnya kepanjangan kalau di tambahin emoji, coba format yang lain"],
