@@ -3,7 +3,7 @@ error_code = {
     "blocked_account": [136, "Botnya dah diblock sama {}, ah ga seru"],
     "duplicate_tweet": [187, "Duplicated tweet"],
     "tweet_target_deleted": [144, "Tweetnya udah dihapus, kasian deh lo"],
-    "tweet_target_to_long": [186, "Tweetnya kepanjangan kalau di tambahin emoji, coba format yang lain"],
+    "tweet_target_to_long": [186, "Tweet hasil formatnya kepanjangan, coba yang lain aja "],
     "tweet_deleted_or_not_visible": [385, "Tweet deleted or not visible"],
     "twitter_over_capacity": [130, "Twitternya lagi overcapacity, next time yah"],
     "page_does_not_exist": [34, "Pages does not exist"],
@@ -31,3 +31,17 @@ trigger_words = ["please", "pliisi",
                  "please🤮", "please🤢",
                  "pleasek", "pleaseb", "pleasej",
                  "please💩", "pleasealay"]
+
+emoji_tweet_text = {
+    "pleasek": ["kamu mending tutup akun twitter aja {}.",
+                "kalau mau ngetweet, dipikir pikir aja dulu kak {}.",
+                "kenapasih ngetweet ginian {}?",
+                "kok goblok banget sih {}."],
+    "pleaseb": ["bisa diem gak {}, lo jelek.",
+                "bagusan kalo tweet ini di simpen di draft aja kak {}.",
+                "bacooot {}.",
+                "berisik bat sih {}"],
+    "pleasej": ["jancok! raimu iku loh {}.",
+                "jangan bikin emosi deh {} jam segini.",
+                "juara, tweet {} juara dalam kegoblokan."]
+}

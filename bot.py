@@ -2,13 +2,14 @@ import tweepy
 import os
 import time
 import yaml
+import random
 from datetime import datetime
 from dateutil import relativedelta
 from generator import drawText
 from kalimat import Kalimat
 from emoji_generator import Emoji
 from db_mongo import Database
-from dict import error_code, tweet_text, file_meme, trigger_words, important_ids
+from dict import error_code, tweet_text, file_meme, trigger_words, important_ids, emoji_tweet_text
 
 
 class Twitter:
@@ -26,6 +27,7 @@ class Twitter:
         self.tweet_text = self.load_dict(tweet_text)
         self.file_meme = self.load_dict(file_meme)
         self.time_interval = 30
+        self.emoji_tweet = self.load_dict(emoji_tweet_text)
         self.db_name = os.environ.get("DB_NAME")
 
     def authentication(self):
@@ -146,25 +148,28 @@ class Twitter:
                 target_name = 'nder'
 
         if pattern == 'k':
-            e = Emoji("kamu mending tutup akun twitter aja ")
+            rn = random.randint(0, 3)
+            text = self.emoji_tweet["pleasek"][rn].format(target_name)
+            e = Emoji(text)
             re = e.random()
             e.pick_emoji(re)
             tweet_pattern = e.create_pattern(pattern)
-            tweet_pattern += target_name
 
         elif pattern == 'b':
-            text = "bisa diem gak {}, lo jelek".format(target_name)
+            rn = random.randint(0, 3)
+            text = self.emoji_tweet["pleaseb"][rn].format(target_name)
             e = Emoji(text)
             re = e.random()
             e.pick_emoji(re)
             tweet_pattern = e.create_pattern(pattern)
 
         elif pattern == 'j':
-            e = Emoji("jancok! raimu iku loh ")
+            rn = random.randint(0, 2)
+            text = self.emoji_tweet["pleasej"][rn].format(target_name)
+            e = Emoji(text)
             re = e.random()
             e.pick_emoji(re)
             tweet_pattern = e.create_pattern(pattern)
-            tweet_pattern += target_name
 
         self.api.update_status(status=tweet_pattern,
                                 in_reply_to_status_id=tweet.id,
