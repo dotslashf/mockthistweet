@@ -112,15 +112,3 @@ class Kalimat:
         text = self.removeWords()
         finalText = text2art(text, 'mix')
         return finalText
-
-
-# Testing purpose
-# k = Kalimat("* test & dan * ( atau ) < test lagi ?")
-# kalimat = k.removeWords()
-# kalimat = k.getSentence()
-# print(k.sentence)
-# print(k.transformoji("sick"))
-# print(k.transformoji("poop"))
-# print(k.sentence)
-
-# print(kalimat)
