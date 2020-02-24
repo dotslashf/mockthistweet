@@ -193,7 +193,9 @@ class Twitter:
     def mock_in_upsidedown(self, tweet, db):
         tweet_target = self.api.get_status(tweet.in_reply_to_status_id,
                                            tweet_mode="extended")
-        text_transformed = upsidedown.transform(tweet_target.full_text)
+        text_transformed = Kalimat(tweet_target.full_text)
+        text_transformed = text_transformed.removeWords()
+        text_transformed = upsidedown.transform(text_transformed)
         self.api.update_status(status=text_transformed,
                                in_reply_to_status_id=tweet.id,
                                auto_populate_reply_metadata=True)
