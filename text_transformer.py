@@ -1,5 +1,5 @@
 import demoji  # for removing emoji
-from art import *
+from art import text2art
 
 
 class Kalimat:

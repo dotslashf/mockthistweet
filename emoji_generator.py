@@ -155,13 +155,3 @@ class Emoji:
                             finalText += ' '
 
         return finalText
-
-
-# e = Emoji("jancok raimu iku lho")
-
-# re = e.random()
-# print(re)
-# e.pick_emoji(re)
-# jadi = e.create_pattern('j')
-# # jadi += "test"
-# print(jadi)
