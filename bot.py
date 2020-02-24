@@ -3,10 +3,11 @@ import os
 import time
 import yaml
 import random
+import upsidedown
 from datetime import datetime
 from dateutil import relativedelta
 from generator import drawText
-from kalimat import Kalimat
+from text_transformer import Kalimat
 from emoji_generator import Emoji
 from db_mongo import Database
 from dict import error_code, tweet_text, file_meme, trigger_words, important_ids, emoji_tweet_text
@@ -189,6 +190,16 @@ class Twitter:
         self.show_what_tweeted(text_transformed)
         db.insert_object({'tweet_last_id': tweet.id})
 
+    def mock_in_upsidedown(self, tweet, db):
+        tweet_target = self.api.get_status(tweet.in_reply_to_status_id,
+                                           tweet_mode="extended")
+        text_transformed = upsidedown.transform(tweet_target.full_text)
+        self.api.update_status(status=text_transformed,
+                               in_reply_to_status_id=tweet.id,
+                               auto_populate_reply_metadata=True)
+        self.show_what_tweeted(text_transformed)
+        db.insert_object({'tweet_last_id': tweet.id})
+
     def is_mentioned(self, tweet):
         for t in tweet.entities.items():
             for a in t[1]:
@@ -266,6 +277,9 @@ class Twitter:
 
                         elif tw == "pleasealay" in words:
                             self.mock_in_alay(tweet, db)
+
+                        elif tw == "pleaseud" in words:
+                            self.mock_in_upsidedown(tweet, db)
                     
                     except tweepy.TweepError as e:
                         error = e.api_code

@@ -30,7 +30,8 @@ trigger_words = ["please", "pliisi",
                  "please😂", "please👏",
                  "please🤮", "please🤢",
                  "pleasek", "pleaseb", "pleasej",
-                 "please💩", "pleasealay"]
+                 "please💩", "pleasealay",
+                 "pleaseud"]
 
 emoji_tweet_text = {
     "pleasek": ["kamu mending tutup akun twitter aja {}.",
