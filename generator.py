@@ -1,7 +1,7 @@
 from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw
-from kalimat import Kalimat
+from text_transformer import Kalimat
 
 font = ImageFont.truetype("impact.ttf", 42)
 
