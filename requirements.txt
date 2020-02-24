@@ -29,5 +29,5 @@ tqdm==4.25.0
 tweepy==3.7.0
 typed-ast==1.4.1
 upsidedown==0.4
-urllib3==1.23
+urllib3==1.24.2
 wrapt==1.11.2
