@@ -37,12 +37,12 @@ emoji_tweet_text = {
     "pleasek": ["kamu mending tutup akun twitter aja {}.",
                 "kalau mau ngetweet, dipikir pikir aja dulu kak {}.",
                 "kenapasih ngetweet ginian {}?",
-                "kok goblok banget sih {}."],
+                "kira kira aja kalau mau ngetweet {}."],
     "pleaseb": ["bisa diem gak {}, lo jelek.",
                 "bagusan kalo tweet ini di simpen di draft aja kak {}.",
                 "bacooot {}.",
                 "berisik bat sih {}"],
-    "pleasej": ["jancok! raimu iku loh {}.",
+    "pleasej": ["jujur, lu ngetweet ginian biar apasih {}.",
                 "jangan bikin emosi deh {} jam segini.",
                 "juara, tweet {} juara dalam kegoblokan."]
 }
