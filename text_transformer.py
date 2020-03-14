@@ -5,13 +5,8 @@ from art import text2art
 class Kalimat:
     def __init__(self, sentence):
         self.sentence = sentence
-        self.excludedWords = ['2beer!', 'mksfess',
-                              '[askmf]', '[cm]',
-                              '[gmf]', 'tanyarl',
-                              '/wal', '/rlt/',
-                              '/krt/', 'fess',
-                              'brl!', 'yeet!',
-                              '/mahasantuy/', '(nyampah)']
+        self.excludedWords = ['2beer!', 'mksfess', '[askmf]', '[cm]', '[gmf]', 'tanyarl',
+                              '/wal', '/rlt/', '/krt/', 'fess', 'brl!', 'yeet!', '/mahasantuy/', '(nyampah)', 'Brl!']
         self.excludedChars = ['%']
 
     def getSentence(self):
