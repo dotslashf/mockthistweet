@@ -27,7 +27,7 @@ class Twitter:
         self.error_code = self.load_dict(error_code)
         self.tweet_text = self.load_dict(tweet_text)
         self.file_meme = self.load_dict(file_meme)
-        self.time_interval = 30
+        self.time_interval = 15
         self.emoji_tweet = self.load_dict(emoji_tweet_text)
         self.db_name = os.environ.get("DB_NAME")
 
@@ -136,48 +136,51 @@ class Twitter:
         db.insert_object({'tweet_last_id': tweet.id})
 
     def mock_in_emoji_pattern(self, tweet, pattern, db):
-        tweet_target = self.api.get_status(tweet.in_reply_to_status_id,
-                                           tweet_mode="extended")
-        k = Kalimat(tweet_target.full_text)
-        words = k.sentence
-        words = [i for j in words.split() for i in (j, ' ')][:-1]
+        if int(self.important_ids["jokowi"]) == tweet.in_reply_to_user_id:
+            print("skipped: dont mock president in this format")
+        else:
+            tweet_target = self.api.get_status(tweet.in_reply_to_status_id,
+                                               tweet_mode="extended")
+            k = Kalimat(tweet_target.full_text)
+            words = k.sentence
+            words = [i for j in words.split() for i in (j, ' ')][:-1]
 
-        target_name = tweet_target.user.screen_name
+            target_name = tweet_target.user.screen_name
 
-        for word in words:
-            if word in k.excludedWords:
-                target_name = 'nder'
+            for word in words:
+                if word in k.excludedWords:
+                    target_name = 'nder'
 
-        if pattern == 'k':
-            rn = random.randint(0, 3)
-            text = self.emoji_tweet["pleasek"][rn].format(target_name)
-            e = Emoji(text)
-            re = e.random()
-            e.pick_emoji(re)
-            tweet_pattern = e.create_pattern(pattern)
+            if pattern == 'k':
+                rn = random.randint(0, 3)
+                text = self.emoji_tweet["pleasek"][rn].format(target_name)
+                e = Emoji(text)
+                re = e.random()
+                e.pick_emoji(re)
+                tweet_pattern = e.create_pattern(pattern)
 
-        elif pattern == 'b':
-            rn = random.randint(0, 3)
-            text = self.emoji_tweet["pleaseb"][rn].format(target_name)
-            e = Emoji(text)
-            re = e.random()
-            e.pick_emoji(re)
-            tweet_pattern = e.create_pattern(pattern)
+            elif pattern == 'b':
+                rn = random.randint(0, 3)
+                text = self.emoji_tweet["pleaseb"][rn].format(target_name)
+                e = Emoji(text)
+                re = e.random()
+                e.pick_emoji(re)
+                tweet_pattern = e.create_pattern(pattern)
 
-        elif pattern == 'j':
-            rn = random.randint(0, 2)
-            text = self.emoji_tweet["pleasej"][rn].format(target_name)
-            e = Emoji(text)
-            re = e.random()
-            e.pick_emoji(re)
-            tweet_pattern = e.create_pattern(pattern)
+            elif pattern == 'j':
+                rn = random.randint(0, 2)
+                text = self.emoji_tweet["pleasej"][rn].format(target_name)
+                e = Emoji(text)
+                re = e.random()
+                e.pick_emoji(re)
+                tweet_pattern = e.create_pattern(pattern)
 
-        self.api.update_status(status=tweet_pattern,
-                                in_reply_to_status_id=tweet.id,
-                                auto_populate_reply_metadata=True)
-        self.show_what_tweeted(tweet_pattern)
+            self.api.update_status(status=tweet_pattern,
+                                   in_reply_to_status_id=tweet.id,
+                                   auto_populate_reply_metadata=True)
+            self.show_what_tweeted(tweet_pattern)
 
-        db.insert_object({'tweet_last_id': tweet.id})
+            db.insert_object({'tweet_last_id': tweet.id})
 
     def mock_in_alay(self, tweet, db):
         tweet_target = self.api.get_status(tweet.in_reply_to_status_id,
@@ -282,7 +285,7 @@ class Twitter:
 
                         elif tw == "pleaseud" in words:
                             self.mock_in_upsidedown(tweet, db)
-                    
+
                     except tweepy.TweepError as e:
                         error = e.api_code
                         error = str(error)
@@ -293,45 +296,46 @@ class Twitter:
                         if error == self.error_code['private_account'][0]:
                             tweet_err = self.error_code['private_account'][1]
                             self.api.update_status(status=tweet_err,
-                                                in_reply_to_status_id=tweet.id,
-                                                auto_populate_reply_metadata=True)
+                                                   in_reply_to_status_id=tweet.id,
+                                                   auto_populate_reply_metadata=True)
                             self.show_what_tweeted(tweet_err)
 
                         elif error == self.error_code['blocked_account'][0]:
                             tweet_err = self.error_code['blocked_account'][1]
-                            target = self.api.get_user(id=tweet.in_reply_to_user_id)
+                            target = self.api.get_user(
+                                id=tweet.in_reply_to_user_id)
                             tweet_err = tweet_err.format(target.screen_name)
                             self.api.update_status(status=tweet_err,
-                                                in_reply_to_status_id=tweet.id,
-                                                auto_populate_reply_metadata=True)
+                                                   in_reply_to_status_id=tweet.id,
+                                                   auto_populate_reply_metadata=True)
                             self.show_what_tweeted(tweet_err)
 
                         elif error == self.error_code['tweet_target_deleted'][0]:
                             tweet_err = self.error_code['tweet_target_deleted'][1]
                             self.api.update_status(status=tweet_err,
-                                                in_reply_to_status_id=tweet.id,
-                                                auto_populate_reply_metadata=True)
+                                                   in_reply_to_status_id=tweet.id,
+                                                   auto_populate_reply_metadata=True)
                             self.show_what_tweeted(tweet_err)
 
                         elif error == self.error_code['tweet_target_to_long'][0]:
                             tweet_err = self.error_code['tweet_target_to_long'][1]
                             self.api.update_status(status=tweet_err,
-                                                in_reply_to_status_id=tweet.id,
-                                                auto_populate_reply_metadata=True)
+                                                   in_reply_to_status_id=tweet.id,
+                                                   auto_populate_reply_metadata=True)
                             self.show_what_tweeted(tweet_err)
 
                         elif error == self.error_code['twitter_over_capacity'][0]:
                             tweet_err = self.error_code['twitter_over_capacity'][1]
                             self.api.update_status(status=tweet_err,
-                                                in_reply_to_status_id=tweet.id,
-                                                auto_populate_reply_metadata=True)
+                                                   in_reply_to_status_id=tweet.id,
+                                                   auto_populate_reply_metadata=True)
                             self.show_what_tweeted(tweet_err)
 
                         elif error == self.error_code['suspended_account'][0]:
                             tweet_err = self.error_code['suspended_account'][1]
                             self.api.update_status(status=tweet_err,
-                                                in_reply_to_status_id=tweet.id,
-                                                auto_populate_reply_metadata=True)
+                                                   in_reply_to_status_id=tweet.id,
+                                                   auto_populate_reply_metadata=True)
                             self.show_what_tweeted(tweet_err)
 
                         elif error == self.error_code['duplicate_tweet'][0]:
@@ -386,7 +390,8 @@ class Twitter:
                                 list_tweet.append(tweet)
                     print('tweet id: {} added to next process'.format(tweet.id))
                 else:
-                    print('tweet id: {} skipped, reason: {}'.format(tweet.id, criteria[1]))
+                    print('tweet id: {} skipped, reason: {}'.format(
+                        tweet.id, criteria[1]))
 
             elif self.is_mentioned(tweet) != self.me.screen_name:
                 print("skipped: not mentioned")
