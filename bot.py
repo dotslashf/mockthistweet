@@ -27,7 +27,7 @@ class Twitter:
         self.error_code = self.load_dict(error_code)
         self.tweet_text = self.load_dict(tweet_text)
         self.file_meme = self.load_dict(file_meme)
-        self.time_interval = 30
+        self.time_interval = 15
         self.emoji_tweet = self.load_dict(emoji_tweet_text)
         self.db_name = os.environ.get("DB_NAME")
 

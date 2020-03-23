@@ -22,7 +22,7 @@ def main(ck, cs, at, ats):
     db.connect_db(db_name)
     db.select_col('tweet')
 
-    minute_wait = 7
+    minute_wait = 5
 
     while True:
         l = db.find_last_object()
