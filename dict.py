@@ -22,7 +22,7 @@ file_meme = {"output": ["img/meme_spongebob_output.png", "img/meme_khaleesi_outp
 
 important_ids = {
     "developer_id": 1012117785512558592,
-    "bot_id": 1157825461277167616,
+    "bot_id": 1256630345480278017,
     "bot_test_id": 1182299095370629123,
     "jokowi": 366987179,
 }
