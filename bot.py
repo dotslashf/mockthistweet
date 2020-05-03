@@ -45,6 +45,18 @@ class Twitter:
         fs = self.api.show_friendship(source_id=source_id, target_id=target_id)
         return fs
 
+    def follower_counter(self, current_follower):
+        db = Database()
+        db.connect_db(self.db_name)
+        db.select_col('follower_counter')
+
+        follower_status = db.find_last_object()
+        previous_follower = follower_status['previous_follower']
+        diff_follower = current_follower - previous_follower
+        db.insert_object({'previous_follower': previous_follower,
+                          'current_follower': current_follower,
+                          'diff_follower': diff_follower})
+
     def get_account_old(self, user_old):
         today = datetime.now()
         diff = relativedelta.relativedelta(today, user_old)
