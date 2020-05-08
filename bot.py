@@ -53,8 +53,8 @@ class Twitter:
         follower_status = db.find_last_object()
         previous_follower = follower_status['previous_follower']
         diff_follower = current_follower - previous_follower
-        db.insert_object({'previous_follower': previous_follower,
-                          'current_follower': current_follower,
+        db.insert_object({'previous_follower': current_follower,
+                          'current_follower': current_follower + diff_follower,
                           'diff_follower': diff_follower})
 
     def get_account_old(self, user_old):
