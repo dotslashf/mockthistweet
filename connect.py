@@ -2,7 +2,7 @@ import tweepy
 from db_mongo import Database
 import os
 
-db_name = os.environ.get("DB_NAME")
+db_name = os.environ.get("DB_MOCKTHISTWEET")
 
 db = Database()
 db.connect_db(db_name)

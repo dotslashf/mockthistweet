@@ -29,7 +29,7 @@ class Twitter:
         self.file_meme = self.load_dict(file_meme)
         self.time_interval = 15
         self.emoji_tweet = self.load_dict(emoji_tweet_text)
-        self.db_name = os.environ.get("DB_NAME")
+        self.db_name = os.environ.get("DB_MOCKTHISTWEET")
 
     def authentication(self):
         self.auth = tweepy.OAuthHandler(
