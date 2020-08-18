@@ -388,7 +388,7 @@ class Twitter:
 
         list_tweet = []
 
-        for tweet in tweepy.Cursor(self.api.mentions_timeline, since_id=since_id, tweet_mode="extended").items():
+        for tweet in tweepy.Cursor(self.api.mentions_timeline, since_id=since_id, tweet_mode="extended").items(limit=10):
             new_since_id = max(tweet.id, new_since_id)
             words = tweet.full_text.lower().split()
 
