@@ -2,7 +2,7 @@ art==4.4
 ascii-graph==1.5.1
 astroid==2.3.3
 autopep8==1.5
-certifi==2018.8.24
+certifi==2022.12.7
 chardet==3.0.4
 coverage==5.0.3
 demoji==0.1.5
